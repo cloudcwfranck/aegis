@@ -19,6 +19,8 @@
     "@aegis/shared": "*",
     "@apollo/server": "^4.9.5",
     "@aws-sdk/client-s3": "^3.470.0",
+    "@azure/identity": "^4.13.0",
+    "@azure/storage-blob": "^12.29.1",
     "bullmq": "^4.15.0",
     "class-validator": "^0.14.0",
     "cors": "^2.8.5",
