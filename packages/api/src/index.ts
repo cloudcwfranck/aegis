@@ -14,6 +14,7 @@ import { logger } from './utils/logger';
 import evidenceRoutes from './routes/evidence.routes';
 import { errorHandler, notFoundHandler } from './middleware/error-handler';
 import { createApolloServer } from './graphql/server';
+import { startWorkers, stopWorkers } from './queues/worker-manager';
 
 dotenv.config();
 
@@ -54,6 +55,11 @@ async function start() {
     await initializeDatabase();
     logger.info('Database connected successfully');
 
+    // Start BullMQ workers
+    logger.info('Starting BullMQ workers...');
+    await startWorkers();
+    logger.info('BullMQ workers started successfully');
+
     // Create HTTP server (required for Apollo Server)
     const httpServer = createServer(app);
 
@@ -74,9 +80,11 @@ async function start() {
       logger.info(`📊 Health check: http://localhost:${PORT}/health`);
       logger.info(`🔮 GraphQL playground: http://localhost:${PORT}/graphql`);
       logger.info(`📡 REST API: http://localhost:${PORT}/api/v1/scans`);
+      logger.info(`⚙️  BullMQ workers processing async jobs`);
     });
   } catch (error) {
     logger.error('Failed to start server:', error);
+    await stopWorkers();
     process.exit(1);
   }
 }
