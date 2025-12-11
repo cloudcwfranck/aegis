@@ -1,3 +1,4 @@
+import { VulnerabilitySeverity, POAMStatus } from '@aegis/shared';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -6,7 +7,6 @@ import {
   UpdateDateColumn,
   Index,
 } from 'typeorm';
-import { VulnerabilitySeverity, POAMStatus } from '@aegis/shared';
 
 @Entity('poam_items')
 @Index(['tenantId', 'status'])

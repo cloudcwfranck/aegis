@@ -1,3 +1,4 @@
+import { TenantTier, TenantStatus } from '@aegis/shared';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -7,11 +8,10 @@ import {
   Index,
   OneToMany,
 } from 'typeorm';
-import { TenantTier, TenantStatus } from '@aegis/shared';
 
-import { UserEntity } from './user.entity';
-import { ProjectEntity } from './project.entity';
 import { EvidenceEntity } from './evidence.entity';
+import { ProjectEntity } from './project.entity';
+import { UserEntity } from './user.entity';
 
 @Entity('tenants')
 @Index(['slug'], { unique: true })
