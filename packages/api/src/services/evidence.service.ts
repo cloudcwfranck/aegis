@@ -11,7 +11,7 @@ import {
 import { EvidenceType, SBOMFormat } from '@aegis/shared';
 import { Repository } from 'typeorm';
 
-import { StorageService } from './storage.service';
+import { IStorageService, UploadResult } from './storage.service';
 import {
   UploadScanInputDto,
   UploadScanResponse,
@@ -25,7 +25,7 @@ export class EvidenceService {
   private buildRepo: Repository<BuildEntity>;
   private projectRepo: Repository<ProjectEntity>;
 
-  constructor(private storageService: StorageService) {
+  constructor(private storageService: IStorageService) {
     this.evidenceRepo = AppDataSource.getRepository(EvidenceEntity);
     this.buildRepo = AppDataSource.getRepository(BuildEntity);
     this.projectRepo = AppDataSource.getRepository(ProjectEntity);
@@ -207,13 +207,7 @@ export class EvidenceService {
     imageDigest: string,
     type: EvidenceType,
     format: SBOMFormat | undefined,
-    upload: {
-      s3Uri: string;
-      s3Bucket: string;
-      s3Key: string;
-      sha256: string;
-      sizeBytes: number;
-    }
+    upload: UploadResult
   ): Promise<EvidenceEntity> {
     const evidence = this.evidenceRepo.create({
       tenantId,
@@ -223,9 +217,9 @@ export class EvidenceService {
       imageDigest,
       type,
       format,
-      s3Uri: upload.s3Uri,
-      s3Bucket: upload.s3Bucket,
-      s3Key: upload.s3Key,
+      storageUri: upload.uri,
+      storageContainer: upload.container,
+      storageKey: upload.key,
       fileSizeBytes: upload.sizeBytes,
       sha256Checksum: upload.sha256,
       metadata: {},

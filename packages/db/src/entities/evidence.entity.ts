@@ -65,13 +65,13 @@ export class EvidenceEntity {
   format?: SBOMFormat;
 
   @Column({ type: 'varchar', length: 512 })
-  s3Uri!: string;
+  storageUri!: string;
 
   @Column({ type: 'varchar', length: 255 })
-  s3Bucket!: string;
+  storageContainer!: string;
 
   @Column({ type: 'varchar', length: 512 })
-  s3Key!: string;
+  storageKey!: string;
 
   @Column({ type: 'bigint', nullable: true })
   fileSizeBytes?: number;

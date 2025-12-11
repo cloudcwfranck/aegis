@@ -9,6 +9,8 @@ import dotenv from 'dotenv';
 import express from 'express';
 
 import { logger } from './utils/logger';
+import evidenceRoutes from './routes/evidence.routes';
+import { errorHandler, notFoundHandler } from './middleware/error-handler';
 
 dotenv.config();
 
@@ -24,20 +26,29 @@ app.get('/health', (_req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// Placeholder routes (will be implemented in M1+)
+// API Info endpoint
 app.get('/api/v1', (_req, res) => {
   res.json({
     name: 'Aegis DevSecOps Platform API',
     version: '0.1.0',
     endpoints: {
       health: '/health',
-      graphql: '/graphql (coming in M1)',
-      scans: '/api/v1/scans (coming in M1)',
+      graphql: '/graphql (coming soon)',
+      scans: '/api/v1/scans',
       policies: '/api/v1/policies (coming in M2)',
       poam: '/api/v1/poam (coming in M2)',
     },
   });
 });
+
+// REST API Routes
+app.use('/api/v1/scans', evidenceRoutes);
+
+// 404 handler (must be after all routes)
+app.use(notFoundHandler);
+
+// Global error handler (must be last)
+app.use(errorHandler);
 
 async function start() {
   try {
