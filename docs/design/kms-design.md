@@ -9,6 +9,7 @@
 This document describes the cryptographic key management architecture for the Aegis DevSecOps Platform. The design supports multi-cloud government deployments (Azure Government, AWS GovCloud) with FIPS 140-2 validated encryption modules.
 
 **Compliance Requirements**:
+
 - NIST 800-53 Rev 5: SC-12 (Cryptographic Key Establishment), SC-13 (Cryptographic Protection)
 - FIPS 140-2 Level 2 (minimum for FedRAMP Moderate)
 - FIPS 140-3 Level 3 (preferred for IL4/IL5)
@@ -40,19 +41,20 @@ Root Key (HSM-protected)
 
 ### Encryption Standards
 
-| Data Type | Algorithm | Key Size | Mode | Purpose |
-|-----------|-----------|----------|------|---------|
-| Data at rest | AES-256 | 256-bit | GCM | Database, S3 objects |
-| Data in transit | TLS 1.3 | 256-bit | ECDHE | HTTPS, PostgreSQL connections |
-| JWT tokens | RS256 | 2048-bit RSA | - | User authentication |
-| Document signing | ECDSA | P-256 | - | SBOM/POA&M integrity |
-| Password hashing | Argon2id | - | - | User passwords (if local auth) |
+| Data Type        | Algorithm | Key Size     | Mode  | Purpose                        |
+| ---------------- | --------- | ------------ | ----- | ------------------------------ |
+| Data at rest     | AES-256   | 256-bit      | GCM   | Database, S3 objects           |
+| Data in transit  | TLS 1.3   | 256-bit      | ECDHE | HTTPS, PostgreSQL connections  |
+| JWT tokens       | RS256     | 2048-bit RSA | -     | User authentication            |
+| Document signing | ECDSA     | P-256        | -     | SBOM/POA&M integrity           |
+| Password hashing | Argon2id  | -            | -     | User passwords (if local auth) |
 
 ## Cloud-Specific Implementations
 
 ### Azure Government (Azure Key Vault)
 
 **Architecture**:
+
 ```
 Azure Key Vault (usgovvirginia)
     ├─> Managed HSM (FIPS 140-3 Level 3)
@@ -71,6 +73,7 @@ Azure Key Vault (usgovvirginia)
 ```
 
 **Terraform Configuration**:
+
 ```hcl
 # Azure Key Vault (Government Cloud)
 resource "azurerm_key_vault" "aegis" {
@@ -203,6 +206,7 @@ resource "azurerm_key_vault_secret" "postgres_password" {
 ```
 
 **AKS Integration** (CSI Driver):
+
 ```yaml
 apiVersion: v1
 kind: SecretProviderClass
@@ -220,11 +224,11 @@ spec:
         - objectName: postgres-password
           key: DB_PASSWORD
   parameters:
-    usePodIdentity: "false"
-    useVMManagedIdentity: "true"
-    userAssignedIdentityID: "550e8400-e29b-41d4-a716-446655440000"
-    keyvaultName: "aegis-kv-prod-usgovva"
-    tenantId: "12345678-1234-1234-1234-123456789012"
+    usePodIdentity: 'false'
+    useVMManagedIdentity: 'true'
+    userAssignedIdentityID: '550e8400-e29b-41d4-a716-446655440000'
+    keyvaultName: 'aegis-kv-prod-usgovva'
+    tenantId: '12345678-1234-1234-1234-123456789012'
     objects: |
       array:
         - |
@@ -238,6 +242,7 @@ spec:
 ### AWS GovCloud (AWS KMS)
 
 **Architecture**:
+
 ```
 AWS KMS (us-gov-west-1)
     ├─> Customer Managed Keys (CMKs)
@@ -252,6 +257,7 @@ AWS KMS (us-gov-west-1)
 ```
 
 **Terraform Configuration**:
+
 ```hcl
 # AWS KMS Key (GovCloud)
 resource "aws_kms_key" "aegis_dek" {
@@ -373,6 +379,7 @@ resource "aws_secretsmanager_secret_version" "postgres_password" {
 ```
 
 **EKS Integration** (Secrets Store CSI Driver):
+
 ```yaml
 apiVersion: secrets-store.csi.x-k8s.io/v1
 kind: SecretProviderClass
@@ -407,13 +414,13 @@ spec:
 
 ### Automatic Rotation
 
-| Key Type | Rotation Frequency | Method | Downtime |
-|----------|-------------------|--------|----------|
-| Database Encryption Key | 90 days | Azure KV / AWS KMS auto-rotation | Zero (transparent) |
-| Blob Storage Key | 90 days | Azure KV / AWS KMS auto-rotation | Zero |
-| JWT Signing Key | 90 days | Manual rotation with grace period | Zero (dual-key period) |
-| TLS Certificates | 365 days | cert-manager automation | Zero (rolling update) |
-| Application Secrets | On-demand | Manual via Terraform | Requires restart |
+| Key Type                | Rotation Frequency | Method                            | Downtime               |
+| ----------------------- | ------------------ | --------------------------------- | ---------------------- |
+| Database Encryption Key | 90 days            | Azure KV / AWS KMS auto-rotation  | Zero (transparent)     |
+| Blob Storage Key        | 90 days            | Azure KV / AWS KMS auto-rotation  | Zero                   |
+| JWT Signing Key         | 90 days            | Manual rotation with grace period | Zero (dual-key period) |
+| TLS Certificates        | 365 days           | cert-manager automation           | Zero (rolling update)  |
+| Application Secrets     | On-demand          | Manual via Terraform              | Requires restart       |
 
 ### JWT Key Rotation Process
 
@@ -462,6 +469,7 @@ export async function rotateJWTKey(): Promise<void> {
 ### PostgreSQL Transparent Data Encryption (TDE)
 
 **Azure PostgreSQL**:
+
 ```hcl
 resource "azurerm_postgresql_flexible_server" "aegis" {
   name                = "aegis-postgres-prod"
@@ -493,6 +501,7 @@ resource "azurerm_postgresql_flexible_server" "aegis" {
 ```
 
 **AWS RDS PostgreSQL**:
+
 ```hcl
 resource "aws_db_instance" "aegis" {
   identifier     = "aegis-postgres-prod"
@@ -530,6 +539,7 @@ resource "aws_db_instance" "aegis" {
 ### RBAC for Key Access
 
 **Azure RBAC Roles**:
+
 ```hcl
 # Grant AKS cluster access to Key Vault
 resource "azurerm_role_assignment" "aks_kv_secrets_user" {
@@ -546,6 +556,7 @@ resource "azurerm_role_assignment" "aks_kv_crypto_user" {
 ```
 
 **AWS IAM Policy**:
+
 ```hcl
 resource "aws_iam_policy" "eks_kms_policy" {
   name = "aegis-eks-kms-policy"
@@ -583,11 +594,13 @@ resource "aws_iam_policy" "eks_kms_policy" {
 ### Audit Logging (NIST 800-53 AU-2)
 
 **Azure Monitor**:
+
 - All Key Vault access logged to Log Analytics
 - Alerts on key access from unknown IPs
 - 90-day retention minimum (365 days for prod)
 
 **AWS CloudTrail**:
+
 - All KMS API calls logged to CloudWatch
 - Alerts on key deletion attempts
 - 90-day retention in S3-Gov

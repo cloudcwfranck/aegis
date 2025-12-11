@@ -11,8 +11,8 @@
     "clean": "rm -rf dist *.tsbuildinfo",
     "lint": "eslint . --ext .ts",
     "typecheck": "tsc --noEmit",
-    "test": "jest",
-    "test:ci": "jest --ci --coverage"
+    "test": "jest --passWithNoTests",
+    "test:ci": "jest --ci --coverage --passWithNoTests"
   },
   "dependencies": {
     "@aegis/db": "*",

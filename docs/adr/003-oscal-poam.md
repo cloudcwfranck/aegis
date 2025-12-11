@@ -9,12 +9,14 @@
 Plan of Action and Milestones (POA&M) is a critical FedRAMP deliverable for tracking security vulnerabilities and remediation progress. Traditional POA&M workflows involve manual Excel/Word document creation, which is error-prone and time-consuming.
 
 **Current State**:
+
 - Manual POA&M creation takes 2-4 hours per report
 - Copy-paste errors lead to compliance findings
 - No automated tracking of CVE → POA&M item linkage
 - Excel templates incompatible with automation tools
 
 **Requirements**:
+
 - OSCAL 1.0.4 compliance (FedRAMP automation initiative)
 - Map CVEs to POA&M items automatically
 - Calculate risk scores using CVSS v3.1 + NIST 800-30
@@ -90,17 +92,20 @@ Use OSCAL 1.0.4 `plan-of-action-and-milestones` schema:
 ### 2. Automatic CVE → POA&M Mapping
 
 **Mapping Logic**:
+
 ```typescript
 interface POAMGenerationRule {
   // Only create POA&M items for vulnerabilities meeting criteria
-  severityThreshold: VulnerabilitySeverity.HIGH | VulnerabilitySeverity.CRITICAL;
+  severityThreshold:
+    | VulnerabilitySeverity.HIGH
+    | VulnerabilitySeverity.CRITICAL;
 
   // Calculate due date based on severity (NIST 800-40 guidance)
   dueDateDays: {
-    CRITICAL: 30,  // 30 days
-    HIGH: 90,      // 90 days
-    MEDIUM: 180,   // 180 days (optional)
-    LOW: 365       // 365 days (optional)
+    CRITICAL: 30; // 30 days
+    HIGH: 90; // 90 days
+    MEDIUM: 180; // 180 days (optional)
+    LOW: 365; // 365 days (optional)
   };
 
   // Risk level mapping (CVSS v3.1 → NIST 800-30)
@@ -128,17 +133,21 @@ async function generatePOAMFromVulnerabilities(
 
         // Remediation steps
         remediationTracking: {
-          trackingEntries: [{
-            title: `Upgrade ${vuln.packageName} to ${vuln.fixedVersion}`,
-            description: generateRemediationSteps(vuln),
-            scheduledCompletionDate: calculateDueDate(vuln.severity),
-          }]
+          trackingEntries: [
+            {
+              title: `Upgrade ${vuln.packageName} to ${vuln.fixedVersion}`,
+              description: generateRemediationSteps(vuln),
+              scheduledCompletionDate: calculateDueDate(vuln.severity),
+            },
+          ],
         },
 
         // Link to original vulnerability scan
-        relatedObservations: [{
-          observationUuid: vuln.evidenceId,
-        }],
+        relatedObservations: [
+          {
+            observationUuid: vuln.evidenceId,
+          },
+        ],
       };
 
       poamItems.push(poamItem);
@@ -158,15 +167,18 @@ async function generatePOAMFromVulnerabilities(
 ### 3. Risk Score Calculation (NIST 800-30)
 
 ```typescript
-function calculateRisk(cvssScore: number, severity: string): RiskCharacterization {
+function calculateRisk(
+  cvssScore: number,
+  severity: string
+): RiskCharacterization {
   // NIST 800-30 Risk = Likelihood × Impact
   // CVSS Score → Likelihood mapping
-  const likelihood = cvssScore >= 9.0 ? 'high' :
-                     cvssScore >= 7.0 ? 'medium' : 'low';
+  const likelihood =
+    cvssScore >= 9.0 ? 'high' : cvssScore >= 7.0 ? 'medium' : 'low';
 
   // Severity → Impact mapping
-  const impact = severity === 'CRITICAL' ? 'high' :
-                 severity === 'HIGH' ? 'medium' : 'low';
+  const impact =
+    severity === 'CRITICAL' ? 'high' : severity === 'HIGH' ? 'medium' : 'low';
 
   // Risk matrix
   const riskMatrix = {
@@ -187,10 +199,18 @@ function calculateRisk(cvssScore: number, severity: string): RiskCharacterizatio
     status: 'open',
     characterization: {
       facets: [
-        { name: 'likelihood', system: 'https://fedramp.gov', value: likelihood },
+        {
+          name: 'likelihood',
+          system: 'https://fedramp.gov',
+          value: likelihood,
+        },
         { name: 'impact', system: 'https://fedramp.gov', value: impact },
         { name: 'risk-level', system: 'https://fedramp.gov', value: riskLevel },
-        { name: 'cvss-score', system: 'https://www.first.org/cvss', value: cvssScore.toString() },
+        {
+          name: 'cvss-score',
+          system: 'https://www.first.org/cvss',
+          value: cvssScore.toString(),
+        },
       ],
     },
   };
@@ -200,17 +220,20 @@ function calculateRisk(cvssScore: number, severity: string): RiskCharacterizatio
 ### 4. Export Formats
 
 #### OSCAL JSON (Primary Format)
+
 - Direct export of OSCAL data model
 - Validated against OSCAL 1.0.4 JSON schema
 - Compatible with FedRAMP automation tools
 
 #### CSV (Legacy Compatibility)
+
 ```csv
 POA&M Item ID,Weakness Name,Weakness Description,Severity,Remediation Plan,Scheduled Completion Date,Status
 CVE-2024-1234,OpenSSL Vulnerability,Critical vulnerability in libssl,Very High,Upgrade to libssl 3.0.0,2025-01-15,Open
 ```
 
 #### DOCX (Official POA&M Template)
+
 - Use OpenXML SDK to generate Word documents
 - FedRAMP POA&M template (OMB A-123)
 - Populate tables with POA&M items
@@ -232,13 +255,17 @@ async function exportPOAMToDocx(poam: OSCALPOAM): Promise<Buffer> {
   doc.render({
     systemName: poam.metadata.title,
     dateGenerated: new Date().toISOString().split('T')[0],
-    poamItems: poam.poamItems.map(item => ({
+    poamItems: poam.poamItems.map((item) => ({
       id: item.uuid,
       weakness: item.title,
       description: item.description,
-      severity: item.risk.characterization.facets.find(f => f.name === 'risk-level')?.value,
+      severity: item.risk.characterization.facets.find(
+        (f) => f.name === 'risk-level'
+      )?.value,
       remediation: item.remediationTracking.trackingEntries[0]?.title ?? '',
-      dueDate: item.remediationTracking.trackingEntries[0]?.scheduledCompletionDate ?? '',
+      dueDate:
+        item.remediationTracking.trackingEntries[0]?.scheduledCompletionDate ??
+        '',
       status: item.risk.status,
     })),
   });
@@ -250,6 +277,7 @@ async function exportPOAMToDocx(poam: OSCALPOAM): Promise<Buffer> {
 ### 5. Continuous POA&M Updates
 
 **Workflow**:
+
 1. CI/CD pipeline uploads new vulnerability scan
 2. Aegis worker processes scan results
 3. New CVEs automatically create POA&M items
@@ -259,9 +287,14 @@ async function exportPOAMToDocx(poam: OSCALPOAM): Promise<Buffer> {
 
 ```typescript
 // Automatic POA&M status update
-async function updatePOAMStatus(cveId: string, tenantId: string): Promise<void> {
+async function updatePOAMStatus(
+  cveId: string,
+  tenantId: string
+): Promise<void> {
   const latestScan = await getLatestVulnerabilityScan(tenantId);
-  const cveStillPresent = latestScan.matches.some(m => m.vulnerability.id === cveId);
+  const cveStillPresent = latestScan.matches.some(
+    (m) => m.vulnerability.id === cveId
+  );
 
   if (!cveStillPresent) {
     await db.poamItem.update({
@@ -285,6 +318,7 @@ async function updatePOAMStatus(cveId: string, tenantId: string): Promise<void> 
 ## Consequences
 
 ### Positive
+
 ✅ **Automation**: POA&M generation time reduced from 2-4 hours to <1 minute
 ✅ **Accuracy**: Eliminates copy-paste errors and manual tracking
 ✅ **Compliance**: OSCAL 1.0.4 compliance enables FedRAMP automation
@@ -293,24 +327,29 @@ async function updatePOAMStatus(cveId: string, tenantId: string): Promise<void> 
 ✅ **Integration**: OSCAL JSON can be imported into GRC tools
 
 ### Negative
+
 ❌ **Learning curve**: ISSOs must understand OSCAL format
 ❌ **Validation complexity**: OSCAL schema validation adds processing overhead
 ❌ **Template maintenance**: FedRAMP DOCX template changes require updates
 ❌ **Risk calculation**: NIST 800-30 mapping may not align with org-specific risk frameworks
 
 ### Neutral
+
 ⚖️ **Legacy support**: CSV/DOCX exports maintain compatibility with non-OSCAL tools
 ⚖️ **Manual overrides**: ISSOs can manually adjust risk levels and due dates
 
 ## Alternatives Considered
 
 ### Alternative 1: Manual POA&M creation (status quo)
+
 **Rejected**: Does not scale. Human error rate too high. No automation possible.
 
 ### Alternative 2: Custom JSON schema (not OSCAL)
+
 **Rejected**: Not FedRAMP-compliant. Cannot integrate with gov automation tools. Reinventing the wheel.
 
 ### Alternative 3: Direct integration with GRC tools (Archer, ServiceNow)
+
 **Rejected**: Vendor lock-in. Not all agencies use same GRC tool. OSCAL provides vendor-neutral format.
 
 ## Implementation Notes

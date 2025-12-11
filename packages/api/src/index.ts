@@ -10,7 +10,6 @@ import express from 'express';
 
 import { logger } from './utils/logger';
 
-
 dotenv.config();
 
 const PORT = process.env['PORT'] ?? 4000;

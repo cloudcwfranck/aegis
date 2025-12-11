@@ -7,6 +7,7 @@
 ## Context
 
 Aegis ingests large volumes of evidence artifacts from CI/CD pipelines:
+
 - **SBOM documents** (SPDX JSON, CycloneDX JSON) - 500KB to 50MB per build
 - **Vulnerability scan results** (Grype JSON) - 100KB to 10MB per scan
 - **Cosign signature bundles** - 5KB to 50KB per image
@@ -14,11 +15,13 @@ Aegis ingests large volumes of evidence artifacts from CI/CD pipelines:
 - **Audit logs** (JSON) - 1KB to 100KB per log entry
 
 **Volume estimates**:
+
 - 1000 builds/day × 10MB average = **10GB/day** (3.65TB/year)
 - Retention: 2 years minimum (FedRAMP requirement)
 - Total storage: **7.3TB** for active data
 
 **Requirements**:
+
 - NIST 800-53 SC-8: Encryption at rest (AES-256)
 - NIST 800-53 SC-13: FIPS 140-2 validated cryptographic modules
 - Multi-cloud support (Azure Gov + AWS GovCloud)
@@ -34,10 +37,12 @@ We will use **S3-compatible object storage** with the following architecture:
 ### 1. Storage Backend
 
 **Production (Government Cloud)**:
+
 - **AWS GovCloud**: S3-Gov buckets (`us-gov-west-1` + `us-gov-east-1` for DR)
 - **Azure Government**: Azure Blob Storage with versioning enabled
 
 **Development**:
+
 - **Local**: MinIO (S3-compatible) for development and testing
 
 ### 2. Bucket Structure
@@ -73,6 +78,7 @@ aegis-evidence-{environment}-{region}
 ```
 
 **Example S3 URI**:
+
 ```
 s3://aegis-evidence-prod-usgovwest1/sbom/550e8400-e29b-41d4-a716-446655440000/proj-123/build-456/sbom-abc123.spdx.json
 ```
@@ -109,6 +115,7 @@ CREATE INDEX idx_evidence_image_digest ON evidence(image_digest);
 ### 4. Encryption Configuration
 
 #### AWS S3-Gov
+
 ```hcl
 resource "aws_s3_bucket" "evidence" {
   bucket = "aegis-evidence-prod-usgovwest1"
@@ -174,6 +181,7 @@ resource "aws_s3_bucket" "evidence" {
 ```
 
 #### Azure Blob Storage (Government)
+
 ```hcl
 resource "azurerm_storage_account" "evidence" {
   name                     = "aegisevidenceprod"
@@ -215,6 +223,7 @@ resource "azurerm_storage_account" "evidence" {
 ### 5. Access Control
 
 #### S3 Bucket Policy (Least Privilege)
+
 ```json
 {
   "Version": "2012-10-17",
@@ -225,11 +234,7 @@ resource "azurerm_storage_account" "evidence" {
       "Principal": {
         "AWS": "arn:aws-us-gov:iam::123456789012:role/aegis-api-role"
       },
-      "Action": [
-        "s3:PutObject",
-        "s3:GetObject",
-        "s3:GetObjectVersion"
-      ],
+      "Action": ["s3:PutObject", "s3:GetObject", "s3:GetObjectVersion"],
       "Resource": "arn:aws-us-gov:s3:::aegis-evidence-prod-usgovwest1/*",
       "Condition": {
         "StringEquals": {
@@ -256,7 +261,11 @@ resource "azurerm_storage_account" "evidence" {
 ### 6. Application Layer (Node.js SDK)
 
 ```typescript
-import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
+import {
+  S3Client,
+  PutObjectCommand,
+  GetObjectCommand,
+} from '@aws-sdk/client-s3';
 import { createHash } from 'crypto';
 
 export class EvidenceStorageService {
@@ -301,7 +310,7 @@ export class EvidenceStorageService {
       new GetObjectCommand({ Bucket: bucket, Key: key })
     );
 
-    return await response.Body?.transformToString() ?? '';
+    return (await response.Body?.transformToString()) ?? '';
   }
 }
 ```
@@ -309,6 +318,7 @@ export class EvidenceStorageService {
 ## Consequences
 
 ### Positive
+
 ✅ **Performance**: PostgreSQL queries remain fast (no large blob storage)
 ✅ **Scalability**: S3 scales infinitely, handles petabytes of data
 ✅ **Cost-effective**: S3 Glacier reduces storage costs by 90% after 90 days
@@ -317,24 +327,29 @@ export class EvidenceStorageService {
 ✅ **Multi-cloud**: Same architecture works on Azure Blob Storage
 
 ### Negative
+
 ❌ **Network latency**: Retrieving blobs adds 50-200ms vs. database
 ❌ **Eventual consistency**: S3 replication has 1-5 second delay
 ❌ **Complexity**: Two systems to manage (PostgreSQL + S3)
 ❌ **Cost**: S3 API calls add operational cost (~$0.005 per 1000 requests)
 
 ### Neutral
+
 ⚖️ **Backup strategy**: S3 versioning provides point-in-time recovery
 ⚖️ **Data migration**: Moving between clouds requires bulk S3 copy (manageable with AWS DataSync)
 
 ## Alternatives Considered
 
 ### Alternative 1: Store blobs in PostgreSQL BYTEA column
+
 **Rejected**: Degrades database performance. 10MB blob causes 10MB memory allocation per query. VACUUM becomes extremely slow.
 
 ### Alternative 2: MongoDB GridFS
+
 **Rejected**: Adds another database to manage. No government cloud compliance story. Not FedRAMP authorized.
 
 ### Alternative 3: Distributed filesystem (GlusterFS, Ceph)
+
 **Rejected**: Operational complexity too high. No managed service in government cloud. Kubernetes persistent volumes not designed for multi-TB datasets.
 
 ## Implementation Notes
