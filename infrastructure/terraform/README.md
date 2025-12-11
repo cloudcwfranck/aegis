@@ -19,11 +19,13 @@ This directory contains Terraform Infrastructure as Code (IaC) for deploying Aeg
 ## Prerequisites
 
 ### Azure Government
+
 1. Azure Government subscription approved
 2. Azure CLI configured for Azure Government
 3. Service Principal with appropriate permissions
 
 ### AWS GovCloud
+
 1. AWS GovCloud account approved
 2. AWS CLI configured for GovCloud region
 3. IAM user/role with appropriate permissions
@@ -48,6 +50,7 @@ terraform destroy
 ## Compliance
 
 All modules are configured to meet:
+
 - NIST 800-53 Rev 5 controls
 - FedRAMP Moderate baseline
 - DISA STIGs (where applicable)
@@ -56,10 +59,12 @@ All modules are configured to meet:
 ## Government Cloud Regions
 
 **Azure Government:**
+
 - Primary: `usgovvirginia`
 - Secondary: `usgovtexas`
 - DoD IL4/IL5: `usdodeast`, `usdodcentral`
 
 **AWS GovCloud:**
+
 - Primary: `us-gov-west-1`
 - Secondary: `us-gov-east-1`
