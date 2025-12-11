@@ -1,0 +1,106 @@
+# Aegis CI Template for User Projects
+# Copy this file to your repository as .github/workflows/aegis-scan.yml
+
+name: Aegis Security Scan
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+env:
+  # Configure these for your project
+  IMAGE_NAME: your-org/your-app
+  IMAGE_TAG: ${{ github.sha }}
+
+  # Aegis configuration (set in repository secrets)
+  AEGIS_API_URL: ${{ secrets.AEGIS_API_URL }}
+  AEGIS_API_TOKEN: ${{ secrets.AEGIS_API_TOKEN }}
+
+jobs:
+  build-and-scan:
+    name: Build, Scan & Attest
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+      packages: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build container image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: false
+          load: true
+          tags: ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+
+      - name: Install Syft (SBOM generation)
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin
+
+      - name: Generate SBOM (SPDX 2.3 format)
+        run: |
+          syft packages ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} \
+            -o spdx-json=sbom.spdx.json
+
+      - name: Install Grype (vulnerability scanner)
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b /usr/local/bin
+
+      - name: Scan for vulnerabilities
+        run: |
+          grype ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} \
+            -o json=vulnerabilities.json \
+            --fail-on critical
+
+      - name: Install cosign (signing)
+        uses: sigstore/cosign-installer@v3
+
+      - name: Sign container image
+        run: |
+          cosign sign --yes ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+
+      - name: Attest SBOM
+        run: |
+          cosign attest --yes \
+            --predicate sbom.spdx.json \
+            --type spdx \
+            ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+
+      - name: Upload evidence to Aegis
+        run: |
+          IMAGE_DIGEST=$(docker inspect --format='{{index .Id}}' ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }})
+
+          curl -X POST "${AEGIS_API_URL}/api/v1/scans/upload" \
+            -H "Authorization: Bearer ${AEGIS_API_TOKEN}" \
+            -H "Content-Type: application/json" \
+            -d @- <<EOF
+          {
+            "projectName": "${{ github.repository }}",
+            "buildId": "${{ github.run_id }}",
+            "imageDigest": "${IMAGE_DIGEST}",
+            "gitCommitSha": "${{ github.sha }}",
+            "gitBranch": "${{ github.ref_name }}",
+            "ciPipelineUrl": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}",
+            "sbom": $(cat sbom.spdx.json),
+            "vulnerabilities": $(cat vulnerabilities.json)
+          }
+          EOF
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: security-evidence
+          path: |
+            sbom.spdx.json
+            vulnerabilities.json
+          retention-days: 90
