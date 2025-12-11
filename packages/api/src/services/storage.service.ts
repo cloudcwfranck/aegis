@@ -3,6 +3,9 @@
  * Supports both AWS S3-Gov and MinIO (local development)
  */
 
+import { createHash } from 'crypto';
+import { Readable } from 'stream';
+
 import {
   S3Client,
   PutObjectCommand,
@@ -11,8 +14,7 @@ import {
   DeleteObjectCommand,
   PutObjectCommandInput,
 } from '@aws-sdk/client-s3';
-import { createHash } from 'crypto';
-import { Readable } from 'stream';
+
 import { logger } from '../utils/logger';
 
 export interface UploadResult {

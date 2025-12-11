@@ -1,3 +1,4 @@
+import { UserRole, UserStatus } from '@aegis/shared';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -8,7 +9,6 @@ import {
   JoinColumn,
   Index,
 } from 'typeorm';
-import { UserRole, UserStatus } from '@aegis/shared';
 
 import { TenantEntity } from './tenant.entity';
 
