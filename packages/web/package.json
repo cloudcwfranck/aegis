@@ -15,10 +15,11 @@
   "dependencies": {
     "@aegis/shared": "*",
     "@apollo/client": "^3.8.8",
+    "axios": "^1.13.2",
     "graphql": "^16.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.20.1"
+    "react-router-dom": "^6.30.2"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",
