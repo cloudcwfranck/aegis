@@ -1,0 +1,52 @@
+# Node modules (will be installed during build)
+node_modules/
+**/node_modules/
+
+# Build outputs (will be generated during build)
+dist/
+**/dist/
+build/
+**/build/
+
+# Development files
+*.log
+npm-debug.log*
+.env
+.env.*
+.DS_Store
+
+# Git
+.git/
+.gitignore
+.github/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Testing
+coverage/
+**/.turbo/
+.turbo/
+
+# Documentation
+docs/
+*.md
+!packages/*/README.md
+
+# CI/CD
+.github/
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Misc
+.prettierrc
+.prettierignore
+.eslintrc.js
+.eslintignore
