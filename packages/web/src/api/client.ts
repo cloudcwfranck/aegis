@@ -4,7 +4,9 @@
 
 import axios, { AxiosInstance } from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL ||
+  'https://aegis-api.braverock-7d82ef8f.usgovvirginia.azurecontainerapps.us';
 
 export interface UploadScanRequest {
   projectName: string;
