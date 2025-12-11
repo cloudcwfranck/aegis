@@ -67,6 +67,18 @@ export class EvidenceEntity {
   @Column({ type: 'varchar', length: 512 })
   s3Uri!: string;
 
+  @Column({ type: 'varchar', length: 255 })
+  s3Bucket!: string;
+
+  @Column({ type: 'varchar', length: 512 })
+  s3Key!: string;
+
+  @Column({ type: 'bigint', nullable: true })
+  fileSizeBytes?: number;
+
+  @Column({ type: 'varchar', length: 64, nullable: true })
+  sha256Checksum?: string;
+
   @Column({ type: 'jsonb', default: {} })
   metadata!: Record<string, unknown>;
 
