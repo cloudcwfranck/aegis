@@ -6,13 +6,11 @@ import { Repository } from 'typeorm';
 import { AppDataSource } from '@aegis/db';
 import {
   EvidenceEntity,
-  VulnerabilityEntity,
   BuildEntity,
   ProjectEntity,
 } from '@aegis/db';
-import { EvidenceType, SBOMFormat, VulnerabilitySeverity } from '@aegis/shared';
+import { EvidenceType, SBOMFormat } from '@aegis/shared';
 import { StorageService } from './storage.service';
-import { QueueService } from './queue.service';
 import {
   UploadScanInputDto,
   UploadScanResponse,
@@ -23,16 +21,11 @@ import { logger } from '../utils/logger';
 
 export class EvidenceService {
   private evidenceRepo: Repository<EvidenceEntity>;
-  private vulnerabilityRepo: Repository<VulnerabilityEntity>;
   private buildRepo: Repository<BuildEntity>;
   private projectRepo: Repository<ProjectEntity>;
 
-  constructor(
-    private storageService: StorageService,
-    private queueService: QueueService
-  ) {
+  constructor(private storageService: StorageService) {
     this.evidenceRepo = AppDataSource.getRepository(EvidenceEntity);
-    this.vulnerabilityRepo = AppDataSource.getRepository(VulnerabilityEntity);
     this.buildRepo = AppDataSource.getRepository(BuildEntity);
     this.projectRepo = AppDataSource.getRepository(ProjectEntity);
   }
@@ -102,13 +95,11 @@ export class EvidenceService {
       scanUpload
     );
 
-    // 9. Enqueue worker job for async processing
-    await this.queueService.enqueueEvidenceProcessing({
-      evidenceId: sbomEvidence.id,
+    // 9. TODO: Enqueue worker job for async processing (Week 5)
+    // Will implement BullMQ queue in next iteration
+    logger.info('Evidence records created', {
+      sbomEvidenceId: sbomEvidence.id,
       scanEvidenceId: scanEvidence.id,
-      tenantId,
-      sbomDoc,
-      scanResults,
     });
 
     // 10. Calculate summary statistics
@@ -132,7 +123,7 @@ export class EvidenceService {
    * Validate SBOM document (SPDX 2.3)
    */
   private validateSBOM(sbom: Record<string, unknown>): SPDXDocument {
-    const doc = sbom as SPDXDocument;
+    const doc = sbom as unknown as SPDXDocument;
 
     if (!doc.spdxVersion || !doc.spdxVersion.startsWith('SPDX-2.')) {
       throw new Error('Invalid SPDX version. Expected SPDX-2.x');
@@ -149,7 +140,7 @@ export class EvidenceService {
    * Validate Grype scan results
    */
   private validateGrypeScan(scan: Record<string, unknown>): GrypeScanResults {
-    const results = scan as GrypeScanResults;
+    const results = scan as unknown as GrypeScanResults;
 
     if (!results.matches || !Array.isArray(results.matches)) {
       throw new Error('Scan results must contain matches array');

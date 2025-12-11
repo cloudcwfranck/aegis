@@ -110,8 +110,6 @@ export class StorageService {
     content: string | Buffer,
     contentType: string
   ): Promise<UploadResult> {
-    const contentStr = Buffer.isBuffer(content) ? content.toString() : content;
-    const sha256 = this.calculateSHA256(contentStr);
     const key = `poam/${tenantId}/${exportId}/${fileName}`;
 
     return await this.uploadFile(key, content, contentType);

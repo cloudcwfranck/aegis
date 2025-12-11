@@ -2,8 +2,7 @@
  * Data Transfer Objects for Evidence Upload API
  */
 
-import { IsString, IsNotEmpty, IsOptional, IsObject, ValidateNested } from 'class-validator';
-import { Type } from 'class-transformer';
+import { IsString, IsNotEmpty, IsOptional, IsObject } from 'class-validator';
 
 export class UploadScanInputDto {
   @IsString()

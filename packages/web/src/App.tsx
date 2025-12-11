@@ -1,5 +1,4 @@
-import React from 'react';
-import { AEGIS_VERSION } from '@aegis/shared';
+const AEGIS_VERSION = '0.1.0';
 
 function App() {
   return (
