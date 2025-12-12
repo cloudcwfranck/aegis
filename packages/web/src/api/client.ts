@@ -52,11 +52,29 @@ class ApiClient {
 
     this.client = axios.create({
       baseURL: API_BASE_URL,
+      timeout: 60000, // 60 second timeout
       headers: {
         'Content-Type': 'application/json',
         'X-Tenant-ID': this.tenantId,
       },
     });
+
+    // Add response interceptor for better error handling
+    this.client.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if (error.code === 'ECONNABORTED') {
+          throw new Error('Request timeout - API took too long to respond');
+        }
+        if (error.response) {
+          throw new Error(`API Error: ${error.response.status} - ${error.response.data?.message || error.message}`);
+        }
+        if (error.request) {
+          throw new Error('No response from API - please check if the API is running');
+        }
+        throw error;
+      }
+    );
   }
 
   setTenantId(tenantId: string): void {
