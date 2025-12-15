@@ -49,7 +49,40 @@ export async function initializeDatabase(): Promise<DataSource> {
       } else {
         console.log('✅ Database schema is up to date');
       }
+
+      // Seed default tenant for development
+      await seedDefaultTenant();
     }
   }
   return AppDataSource;
+}
+
+/**
+ * Seeds a default tenant if one doesn't exist
+ * This is needed for development and testing
+ */
+async function seedDefaultTenant(): Promise<void> {
+  const tenantRepo = AppDataSource.getRepository('TenantEntity');
+  const defaultTenantId = '00000000-0000-0000-0000-000000000000';
+
+  try {
+    const existingTenant = await tenantRepo.findOne({
+      where: { id: defaultTenantId },
+    });
+
+    if (!existingTenant) {
+      await tenantRepo.save({
+        id: defaultTenantId,
+        name: 'Default Organization',
+        slug: 'default',
+        tier: 'FREE',
+        status: 'ACTIVE',
+        settings: {},
+        metadata: {},
+      });
+      console.log('✅ Created default tenant for development');
+    }
+  } catch (error) {
+    console.warn('⚠️  Could not seed default tenant:', error);
+  }
 }
