@@ -11,12 +11,13 @@ const AEGIS_VERSION = '0.1.0';
 
 function Navigation() {
   const location = useLocation();
-  const isActive = (path: string) => location.pathname === path;
 
   // Don't show navigation on landing page
   if (location.pathname === '/') {
     return null;
   }
+
+  const isActive = (path: string) => location.pathname === path;
 
   const linkStyle = (path: string) => ({
     padding: '0.75rem 1.5rem',

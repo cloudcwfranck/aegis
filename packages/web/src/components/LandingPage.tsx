@@ -1,354 +1,277 @@
 /**
- * Aegis Landing Page - Modern marketing-style homepage
+ * Aegis Landing Page - BeeAI-inspired design
+ * Clean, minimal black and white design
  */
 
 import { Link } from 'react-router-dom';
 
 export function LandingPage() {
   return (
-    <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>
-      {/* Hero Section */}
-      <section style={{ padding: '6rem 2rem', color: 'white', textAlign: 'center' }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-          <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>🛡️</div>
-          <h1 style={{ fontSize: '3.5rem', fontWeight: 'bold', marginBottom: '1.5rem', lineHeight: 1.2 }}>
-            Aegis DevSecOps Platform
-          </h1>
-          <p style={{ fontSize: '1.5rem', marginBottom: '1rem', opacity: 0.95, maxWidth: '800px', margin: '0 auto 2rem' }}>
-            FedRAMP ATO-Ready Vulnerability Management for Azure Government Cloud
-          </p>
-          <p style={{ fontSize: '1.2rem', marginBottom: '3rem', opacity: 0.85, maxWidth: '700px', margin: '0 auto 3rem' }}>
-            Continuous compliance monitoring, automated POA&M generation, and real-time vulnerability tracking
-            aligned with NIST 800-53 Rev 5 controls
-          </p>
-          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link
-              to="/upload"
-              style={{
-                padding: '1rem 2.5rem',
-                background: 'white',
-                color: '#667eea',
-                textDecoration: 'none',
-                borderRadius: '8px',
-                fontWeight: 'bold',
-                fontSize: '1.1rem',
-                boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
-                transition: 'transform 0.2s',
-              }}
-              onMouseOver={(e) => (e.currentTarget.style.transform = 'translateY(-2px)')}
-              onMouseOut={(e) => (e.currentTarget.style.transform = 'translateY(0)')}
-            >
-              📤 Upload Scan Results
-            </Link>
-            <Link
-              to="/dashboard"
-              style={{
-                padding: '1rem 2.5rem',
-                background: 'rgba(255,255,255,0.2)',
-                color: 'white',
-                textDecoration: 'none',
-                borderRadius: '8px',
-                fontWeight: 'bold',
-                fontSize: '1.1rem',
-                border: '2px solid white',
-                transition: 'background 0.2s',
-              }}
-              onMouseOver={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.3)')}
-              onMouseOut={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.2)')}
-            >
-              🏠 View Dashboard
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section style={{ padding: '5rem 2rem', background: 'white' }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-          <h2 style={{ fontSize: '2.5rem', textAlign: 'center', marginBottom: '3rem', color: '#2d3748' }}>
-            Key Features
-          </h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
-            {/* Feature 1 */}
-            <div style={{ padding: '2rem', borderRadius: '12px', background: '#f7fafc', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
-              <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📊</div>
-              <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: '#2d3748' }}>Evidence Ingestion</h3>
-              <p style={{ color: '#718096', lineHeight: 1.6 }}>
-                Automated ingestion of SBOM (SPDX 2.3) and vulnerability scans (Grype) from your CI/CD pipeline.
-                Supports both REST and GraphQL APIs.
-              </p>
-            </div>
-
-            {/* Feature 2 */}
-            <div style={{ padding: '2rem', borderRadius: '12px', background: '#f7fafc', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
-              <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🔍</div>
-              <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: '#2d3748' }}>Vulnerability Tracking</h3>
-              <p style={{ color: '#718096', lineHeight: 1.6 }}>
-                Real-time tracking of CVEs with severity scoring (CVSS), affected packages, and remediation guidance.
-                Automatic POA&M generation for Critical/High findings.
-              </p>
-            </div>
-
-            {/* Feature 3 */}
-            <div style={{ padding: '2rem', borderRadius: '12px', background: '#f7fafc', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
-              <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📝</div>
-              <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: '#2d3748' }}>POA&M Automation</h3>
-              <p style={{ color: '#718096', lineHeight: 1.6 }}>
-                Automated Plan of Action & Milestones generation aligned with FedRAMP timelines:
-                30 days for Critical, 90 days for High vulnerabilities.
-              </p>
-            </div>
-
-            {/* Feature 4 */}
-            <div style={{ padding: '2rem', borderRadius: '12px', background: '#f7fafc', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
-              <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>☁️</div>
-              <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: '#2d3748' }}>Azure Gov Cloud</h3>
-              <p style={{ color: '#718096', lineHeight: 1.6 }}>
-                Native support for Azure Government Cloud with secure blob storage, managed PostgreSQL,
-                and Redis cache. FedRAMP Moderate ready.
-              </p>
-            </div>
-
-            {/* Feature 5 */}
-            <div style={{ padding: '2rem', borderRadius: '12px', background: '#f7fafc', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
-              <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🔐</div>
-              <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: '#2d3748' }}>Policy Enforcement</h3>
-              <p style={{ color: '#718096', lineHeight: 1.6 }}>
-                Open Policy Agent (OPA) integration for custom security policies. Enforce vulnerability thresholds,
-                license compliance, and supply chain security.
-              </p>
-            </div>
-
-            {/* Feature 6 */}
-            <div style={{ padding: '2rem', borderRadius: '12px', background: '#f7fafc', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
-              <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📈</div>
-              <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: '#2d3748' }}>Compliance Dashboard</h3>
-              <p style={{ color: '#718096', lineHeight: 1.6 }}>
-                Real-time visibility into compliance posture with NIST 800-53 Rev 5 controls mapping.
-                Export reports in OSCAL format.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* How It Works Section */}
-      <section style={{ padding: '5rem 2rem', background: '#f7fafc' }}>
-        <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
-          <h2 style={{ fontSize: '2.5rem', textAlign: 'center', marginBottom: '3rem', color: '#2d3748' }}>
-            How It Works
-          </h2>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-            {/* Step 1 */}
-            <div style={{ display: 'flex', gap: '2rem', alignItems: 'flex-start' }}>
-              <div style={{
-                minWidth: '60px',
-                height: '60px',
-                borderRadius: '50%',
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                color: 'white',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '1.5rem',
-                fontWeight: 'bold',
-              }}>
-                1
-              </div>
-              <div>
-                <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem', color: '#2d3748' }}>Generate SBOM & Scan</h3>
-                <p style={{ color: '#718096', lineHeight: 1.6 }}>
-                  In your CI/CD pipeline, generate an SBOM using Syft and scan for vulnerabilities using Grype:
-                </p>
-                <pre style={{
-                  background: '#2d3748',
-                  color: '#68d391',
-                  padding: '1rem',
-                  borderRadius: '8px',
-                  marginTop: '1rem',
-                  overflow: 'auto',
-                  fontSize: '0.9rem',
-                }}>
-{`syft image:tag -o spdx-json > sbom.json
-grype sbom:sbom.json -o json > vulnerabilities.json`}
-                </pre>
-              </div>
-            </div>
-
-            {/* Step 2 */}
-            <div style={{ display: 'flex', gap: '2rem', alignItems: 'flex-start' }}>
-              <div style={{
-                minWidth: '60px',
-                height: '60px',
-                borderRadius: '50%',
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                color: 'white',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '1.5rem',
-                fontWeight: 'bold',
-              }}>
-                2
-              </div>
-              <div>
-                <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem', color: '#2d3748' }}>Upload to Aegis</h3>
-                <p style={{ color: '#718096', lineHeight: 1.6 }}>
-                  Upload scan results to Aegis via REST API or GraphQL. Evidence is securely stored in Azure Blob Storage:
-                </p>
-                <pre style={{
-                  background: '#2d3748',
-                  color: '#68d391',
-                  padding: '1rem',
-                  borderRadius: '8px',
-                  marginTop: '1rem',
-                  overflow: 'auto',
-                  fontSize: '0.9rem',
-                }}>
-{`curl -X POST https://aegis-api.usgovcloudapi.net/api/v1/scans/upload \\
-  -H "X-Tenant-ID: your-tenant-id" \\
-  -F "sbom=@sbom.json" \\
-  -F "vulnerabilities=@vulnerabilities.json"`}
-                </pre>
-              </div>
-            </div>
-
-            {/* Step 3 */}
-            <div style={{ display: 'flex', gap: '2rem', alignItems: 'flex-start' }}>
-              <div style={{
-                minWidth: '60px',
-                height: '60px',
-                borderRadius: '50%',
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                color: 'white',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '1.5rem',
-                fontWeight: 'bold',
-              }}>
-                3
-              </div>
-              <div>
-                <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem', color: '#2d3748' }}>Automated Analysis</h3>
-                <p style={{ color: '#718096', lineHeight: 1.6 }}>
-                  Aegis automatically:
-                </p>
-                <ul style={{ color: '#718096', lineHeight: 1.8, marginTop: '0.5rem' }}>
-                  <li>Indexes all vulnerabilities with CVE details and CVSS scores</li>
-                  <li>Maps packages to vulnerabilities with fix versions</li>
-                  <li>Generates POA&M items for Critical (30-day deadline) and High (90-day deadline) findings</li>
-                  <li>Evaluates custom security policies using OPA</li>
-                </ul>
-              </div>
-            </div>
-
-            {/* Step 4 */}
-            <div style={{ display: 'flex', gap: '2rem', alignItems: 'flex-start' }}>
-              <div style={{
-                minWidth: '60px',
-                height: '60px',
-                borderRadius: '50%',
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                color: 'white',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '1.5rem',
-                fontWeight: 'bold',
-              }}>
-                4
-              </div>
-              <div>
-                <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem', color: '#2d3748' }}>Monitor & Report</h3>
-                <p style={{ color: '#718096', lineHeight: 1.6 }}>
-                  View real-time compliance dashboards, track remediation progress, and export POA&M reports
-                  in formats required for FedRAMP continuous monitoring.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Compliance Section */}
-      <section style={{ padding: '5rem 2rem', background: 'white' }}>
-        <div style={{ maxWidth: '1000px', margin: '0 auto', textAlign: 'center' }}>
-          <h2 style={{ fontSize: '2.5rem', marginBottom: '1.5rem', color: '#2d3748' }}>
-            Built for FedRAMP Compliance
-          </h2>
-          <p style={{ fontSize: '1.2rem', color: '#718096', marginBottom: '3rem', maxWidth: '800px', margin: '0 auto 3rem' }}>
-            Aegis is designed to help federal agencies and contractors achieve and maintain FedRAMP Moderate authorization
-            through continuous vulnerability management and automated compliance reporting.
-          </p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '2rem', marginTop: '3rem' }}>
-            <div style={{ padding: '2rem', background: '#f7fafc', borderRadius: '12px' }}>
-              <div style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>📋</div>
-              <h3 style={{ fontSize: '1.2rem', color: '#2d3748', marginBottom: '0.5rem' }}>NIST 800-53 Rev 5</h3>
-              <p style={{ color: '#718096', fontSize: '0.9rem' }}>Aligned with RA-5, SI-2, and CM-8 controls</p>
-            </div>
-            <div style={{ padding: '2rem', background: '#f7fafc', borderRadius: '12px' }}>
-              <div style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>⏱️</div>
-              <h3 style={{ fontSize: '1.2rem', color: '#2d3748', marginBottom: '0.5rem' }}>POA&M Timelines</h3>
-              <p style={{ color: '#718096', fontSize: '0.9rem' }}>Automatic 30/90 day deadlines per FedRAMP requirements</p>
-            </div>
-            <div style={{ padding: '2rem', background: '#f7fafc', borderRadius: '12px' }}>
-              <div style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>☁️</div>
-              <h3 style={{ fontSize: '1.2rem', color: '#2d3748', marginBottom: '0.5rem' }}>Azure Gov Cloud</h3>
-              <p style={{ color: '#718096', fontSize: '0.9rem' }}>Deployed in FedRAMP High authorized environment</p>
-            </div>
-            <div style={{ padding: '2rem', background: '#f7fafc', borderRadius: '12px' }}>
-              <div style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>📊</div>
-              <h3 style={{ fontSize: '1.2rem', color: '#2d3748', marginBottom: '0.5rem' }}>OSCAL Export</h3>
-              <p style={{ color: '#718096', fontSize: '0.9rem' }}>Generate reports in NIST OSCAL format</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section style={{
-        padding: '5rem 2rem',
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        color: 'white',
-        textAlign: 'center',
+    <div style={{ minHeight: '100vh', background: 'white' }}>
+      {/* Navigation */}
+      <nav style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: '1.5rem 3rem',
+        borderBottom: '1px solid #e5e5e5'
       }}>
-        <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-          <h2 style={{ fontSize: '2.5rem', marginBottom: '1.5rem' }}>
-            Ready to Get Started?
+        <div style={{ fontSize: '1.25rem', fontWeight: '600' }}>Aegis</div>
+        <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
+          <Link to="/dashboard" style={{ color: '#171717', textDecoration: 'none', fontSize: '0.95rem' }}>
+            Documentation →
+          </Link>
+          <a href="#" style={{ color: '#171717', textDecoration: 'none', fontSize: '0.95rem' }}>
+            GitHub →
+          </a>
+        </div>
+      </nav>
+
+      {/* Hero Section */}
+      <section style={{
+        padding: '8rem 3rem 6rem',
+        maxWidth: '1200px',
+        margin: '0 auto'
+      }}>
+        <div style={{ maxWidth: '800px' }}>
+          <div style={{ marginBottom: '1.5rem' }}>
+            <h1 style={{
+              fontSize: '4.5rem',
+              fontWeight: '700',
+              marginBottom: '0.5rem',
+              lineHeight: 1.1,
+              color: '#171717'
+            }}>
+              Aegis
+            </h1>
+            <h2 style={{
+              fontSize: '4.5rem',
+              fontWeight: '200',
+              color: '#171717',
+              lineHeight: 1.1
+            }}>
+              Ecosystem
+            </h2>
+          </div>
+          <p style={{
+            fontSize: '1.25rem',
+            color: '#525252',
+            marginBottom: '3rem',
+            lineHeight: 1.6
+          }}>
+            A series of open-source tools for FedRAMP vulnerability management
+          </p>
+          <Link
+            to="/dashboard"
+            style={{
+              display: 'inline-block',
+              padding: '0.875rem 1.75rem',
+              background: '#171717',
+              color: 'white',
+              textDecoration: 'none',
+              borderRadius: '6px',
+              fontWeight: '500',
+              fontSize: '1rem'
+            }}
+          >
+            Get started →
+          </Link>
+        </div>
+      </section>
+
+      {/* Features Section - Dark Background */}
+      <section style={{
+        background: '#171717',
+        color: 'white',
+        padding: '6rem 3rem'
+      }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          <div style={{ marginBottom: '4rem' }}>
+            <h2 style={{ fontSize: '2.5rem', fontWeight: '600', marginBottom: '1rem' }}>
+              Aegis Platform
+            </h2>
+            <p style={{ fontSize: '1.125rem', color: '#a3a3a3', maxWidth: '700px', lineHeight: 1.6 }}>
+              Build FedRAMP-ready vulnerability management with our lightweight
+              platform that goes beyond simple scanning by providing automated POA&M
+              generation and continuous compliance monitoring.
+            </p>
+          </div>
+
+          {/* Feature Grid */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+            gap: '2.5rem',
+            marginTop: '3rem'
+          }}>
+            <div>
+              <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>🔄</div>
+              <h3 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '0.75rem' }}>
+                Automated evidence ingestion
+              </h3>
+              <p style={{ color: '#a3a3a3', lineHeight: 1.7, fontSize: '0.95rem' }}>
+                Upload SBOM and vulnerability scans from your CI/CD pipeline.
+                Focus on remediation, not evidence management.
+              </p>
+            </div>
+
+            <div>
+              <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>⚡</div>
+              <h3 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '0.75rem' }}>
+                POA&M timelines
+              </h3>
+              <p style={{ color: '#a3a3a3', lineHeight: 1.7, fontSize: '0.95rem' }}>
+                Automatic 30-day deadlines for Critical and 90-day for High
+                vulnerabilities per FedRAMP requirements.
+              </p>
+            </div>
+
+            <div>
+              <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>📊</div>
+              <h3 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '0.75rem' }}>
+                NIST 800-53 mapping
+              </h3>
+              <p style={{ color: '#a3a3a3', lineHeight: 1.7, fontSize: '0.95rem' }}>
+                Track vulnerabilities with CVE details, CVSS scores, and control
+                mappings to RA-5, SI-2, and CM-8.
+              </p>
+            </div>
+
+            <div>
+              <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>☁️</div>
+              <h3 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '0.75rem' }}>
+                Azure Government ready
+              </h3>
+              <p style={{ color: '#a3a3a3', lineHeight: 1.7, fontSize: '0.95rem' }}>
+                Deployed in FedRAMP High authorized Azure Government Cloud with
+                native Blob Storage and PostgreSQL integration.
+              </p>
+            </div>
+
+            <div>
+              <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>🔓</div>
+              <h3 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '0.75rem' }}>
+                Standards-based integration
+              </h3>
+              <p style={{ color: '#a3a3a3', lineHeight: 1.7, fontSize: '0.95rem' }}>
+                Work with Syft, Grype, and any SPDX-compatible tools. Export
+                to OSCAL for continuous monitoring reporting.
+              </p>
+            </div>
+
+            <div>
+              <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>🔌</div>
+              <h3 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '0.75rem' }}>
+                REST and GraphQL APIs
+              </h3>
+              <p style={{ color: '#a3a3a3', lineHeight: 1.7, fontSize: '0.95rem' }}>
+                Flexible APIs for evidence ingestion with both REST endpoints
+                and GraphQL queries supporting multi-tenant isolation.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Getting Started Section */}
+      <section style={{
+        padding: '6rem 3rem',
+        maxWidth: '1200px',
+        margin: '0 auto'
+      }}>
+        <div style={{ marginBottom: '3rem' }}>
+          <h2 style={{ fontSize: '2.5rem', fontWeight: '600', marginBottom: '1rem', color: '#171717' }}>
+            Compliance Tools
           </h2>
-          <p style={{ fontSize: '1.2rem', marginBottom: '2rem', opacity: 0.9 }}>
-            Start tracking vulnerabilities and maintaining continuous compliance today.
+          <p style={{ fontSize: '1.125rem', color: '#525252', maxWidth: '700px', lineHeight: 1.6 }}>
+            Deploy and monitor compliance with open infrastructure,
+            free from vendor lock-in
           </p>
           <Link
             to="/upload"
             style={{
               display: 'inline-block',
-              padding: '1rem 3rem',
+              marginTop: '1.5rem',
+              padding: '0.75rem 1.5rem',
               background: 'white',
-              color: '#667eea',
+              color: '#171717',
               textDecoration: 'none',
-              borderRadius: '8px',
-              fontWeight: 'bold',
-              fontSize: '1.2rem',
-              boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
-              transition: 'transform 0.2s',
+              borderRadius: '6px',
+              fontWeight: '500',
+              fontSize: '0.95rem',
+              border: '1px solid #e5e5e5'
             }}
-            onMouseOver={(e) => (e.currentTarget.style.transform = 'scale(1.05)')}
-            onMouseOut={(e) => (e.currentTarget.style.transform = 'scale(1)')}
           >
-            Upload Your First Scan 🚀
+            Upload scans →
           </Link>
+        </div>
+
+        {/* Feature boxes */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+          gap: '2.5rem',
+          marginTop: '3rem'
+        }}>
+          <div>
+            <div style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>📱</div>
+            <h3 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '0.75rem', color: '#171717' }}>
+              Real-time dashboard
+            </h3>
+            <p style={{ color: '#737373', lineHeight: 1.7, fontSize: '0.95rem' }}>
+              Generate compliance dashboards from your scan results.
+              Focus on remediation, not UI frameworks.
+            </p>
+          </div>
+
+          <div>
+            <div style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>🚀</div>
+            <h3 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '0.75rem', color: '#171717' }}>
+              Production deployment
+            </h3>
+            <p style={{ color: '#737373', lineHeight: 1.7, fontSize: '0.95rem' }}>
+              Go from container to production-ready. We handle database,
+              storage, and scaling for Azure Government Cloud.
+            </p>
+          </div>
+
+          <div>
+            <div style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>🔍</div>
+            <h3 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '0.75rem', color: '#171717' }}>
+              Multi-scanner support
+            </h3>
+            <p style={{ color: '#737373', lineHeight: 1.7, fontSize: '0.95rem' }}>
+              Test across Grype, Trivy, and other scanners. Compare results
+              and find optimal scanning strategy.
+            </p>
+          </div>
+
+          <div>
+            <div style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>⚙️</div>
+            <h3 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '0.75rem', color: '#171717' }}>
+              Framework-agnostic
+            </h3>
+            <p style={{ color: '#737373', lineHeight: 1.7, fontSize: '0.95rem' }}>
+              Work with any SBOM generator or scanner on a single platform.
+              Enable cross-tool workflows without vendor lock-in.
+            </p>
+          </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer style={{ padding: '2rem', background: '#2d3748', color: 'white', textAlign: 'center' }}>
-        <p style={{ opacity: 0.8, marginBottom: '0.5rem' }}>
-          Aegis DevSecOps Platform v0.1.0
+      <footer style={{
+        borderTop: '1px solid #e5e5e5',
+        padding: '2.5rem 3rem',
+        textAlign: 'center',
+        color: '#737373',
+        fontSize: '0.875rem'
+      }}>
+        <p>
+          Copyright © Aegis | Part of the open-source DevSecOps community
         </p>
-        <p style={{ opacity: 0.6, fontSize: '0.9rem' }}>
-          Built for Azure Government Cloud | FedRAMP Moderate Ready
+        <p style={{ marginTop: '0.5rem', fontSize: '0.8rem' }}>
+          Not affiliated with or endorsed by any government entity. Built for federal agencies and contractors.
         </p>
       </footer>
     </div>
