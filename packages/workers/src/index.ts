@@ -5,11 +5,12 @@
  */
 
 import dotenv from 'dotenv';
+
 import { logger } from './utils/logger';
 
 dotenv.config();
 
-async function start() {
+function start() {
   logger.info('🔧 Aegis Workers starting...');
   logger.info('Workers will be implemented in M1: Evidence processing');
   logger.info('Planned workers:');
@@ -22,4 +23,4 @@ async function start() {
   // Will implement in M1
 }
 
-void start();
+start();
