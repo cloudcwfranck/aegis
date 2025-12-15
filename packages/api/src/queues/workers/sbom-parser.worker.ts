@@ -6,8 +6,8 @@
 
 import { Worker, Job } from 'bullmq';
 
-import { createRedisConnection, QueueName } from '../config';
 import { logger } from '../../utils/logger';
+import { createRedisConnection, QueueName } from '../config';
 
 /**
  * Job data for SBOM parsing
@@ -45,7 +45,7 @@ function parseSPDX(sbom: Record<string, unknown>): ParsedPackage[] {
     return packages;
   }
 
-  for (const pkg of sbom['packages'] as any[]) {
+  for (const pkg of sbom['packages']) {
     const parsedPkg: ParsedPackage = {
       name: pkg['name'] ?? 'unknown',
       version: pkg['versionInfo'] ?? 'unknown',
@@ -92,7 +92,7 @@ function parseCycloneDX(sbom: Record<string, unknown>): ParsedPackage[] {
     return packages;
   }
 
-  for (const component of sbom['components'] as any[]) {
+  for (const component of sbom['components']) {
     const parsedPkg: ParsedPackage = {
       name: component['name'] ?? 'unknown',
       version: component['version'] ?? 'unknown',

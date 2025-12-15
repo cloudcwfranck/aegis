@@ -2,12 +2,13 @@
  * Apollo GraphQL Server Configuration
  */
 
+import { Server } from 'http';
+
 import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
-import { buildSchema } from 'type-graphql';
 import { Express } from 'express';
-import { Server } from 'http';
+import { buildSchema } from 'type-graphql';
 
 import { EvidenceResolver } from './resolvers/evidence.resolver';
 import { GraphQLContext } from './types/context.types';
