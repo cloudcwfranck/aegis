@@ -1,5 +1,6 @@
-import { DataSource } from 'typeorm';
 import { join } from 'path';
+
+import { DataSource } from 'typeorm';
 
 import * as entities from './entities';
 
