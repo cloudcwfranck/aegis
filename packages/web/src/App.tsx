@@ -3,6 +3,7 @@
  */
 
 import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
+import { LandingPage } from './components/LandingPage';
 import { Dashboard } from './components/Dashboard';
 import { UploadForm } from './components/UploadForm';
 
@@ -10,8 +11,12 @@ const AEGIS_VERSION = '0.1.0';
 
 function Navigation() {
   const location = useLocation();
-
   const isActive = (path: string) => location.pathname === path;
+
+  // Don't show navigation on landing page
+  if (location.pathname === '/') {
+    return null;
+  }
 
   const linkStyle = (path: string) => ({
     padding: '0.75rem 1.5rem',
@@ -34,11 +39,11 @@ function Navigation() {
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
-        <div style={{ padding: '1rem 0', fontWeight: 'bold', fontSize: '1.2rem' }}>
+        <Link to="/" style={{ padding: '1rem 0', fontWeight: 'bold', fontSize: '1.2rem', textDecoration: 'none', color: '#495057' }}>
           🛡️ Aegis <span style={{ color: '#6c757d', fontSize: '0.9rem' }}>v{AEGIS_VERSION}</span>
-        </div>
+        </Link>
         <div style={{ display: 'flex', gap: '0.5rem', flex: 1 }}>
-          <Link to="/" style={linkStyle('/')}>
+          <Link to="/dashboard" style={linkStyle('/dashboard')}>
             🏠 Dashboard
           </Link>
           <Link to="/upload" style={linkStyle('/upload')}>
@@ -94,10 +99,11 @@ function EvidenceListPlaceholder() {
 
 function AppContent() {
   return (
-    <div style={{ minHeight: '100vh', background: '#f8f9fa' }}>
+    <div style={{ minHeight: '100vh' }}>
       <Navigation />
       <Routes>
-        <Route path="/" element={<Dashboard />} />
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/upload" element={<UploadForm />} />
         <Route path="/evidence" element={<EvidenceListPlaceholder />} />
       </Routes>
