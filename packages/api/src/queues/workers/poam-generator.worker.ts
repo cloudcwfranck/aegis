@@ -6,8 +6,8 @@
 
 import { Worker, Job } from 'bullmq';
 
-import { createRedisConnection, QueueName } from '../config';
 import { logger } from '../../utils/logger';
+import { createRedisConnection, QueueName } from '../config';
 
 /**
  * Job data for POA&M generation

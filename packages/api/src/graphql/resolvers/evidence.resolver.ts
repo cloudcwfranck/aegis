@@ -7,13 +7,13 @@ import { Resolver, Mutation, Query, Arg, Ctx } from 'type-graphql';
 
 import { EvidenceService } from '../../services/evidence.service';
 import { createStorageService } from '../../services/storage.service';
+import { logger } from '../../utils/logger';
+import { GraphQLContext } from '../types/context.types';
 import {
   UploadScanInput,
   UploadScanResult,
   EvidenceListResult,
 } from '../types/evidence.types';
-import { GraphQLContext } from '../types/context.types';
-import { logger } from '../../utils/logger';
 
 @Resolver()
 export class EvidenceResolver {

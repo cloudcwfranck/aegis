@@ -7,11 +7,6 @@ import { createHash } from 'crypto';
 import { Readable } from 'stream';
 
 import {
-  BlobServiceClient,
-  StorageSharedKeyCredential,
-  ContainerClient,
-} from '@azure/storage-blob';
-import {
   S3Client,
   PutObjectCommand,
   GetObjectCommand,
@@ -19,6 +14,11 @@ import {
   DeleteObjectCommand,
   PutObjectCommandInput,
 } from '@aws-sdk/client-s3';
+import {
+  BlobServiceClient,
+  StorageSharedKeyCredential,
+  ContainerClient,
+} from '@azure/storage-blob';
 
 import { logger } from '../utils/logger';
 

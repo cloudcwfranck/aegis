@@ -2,13 +2,13 @@
  * Evidence Controller - REST API endpoints for evidence ingestion
  */
 
-import { Request, Response, NextFunction } from 'express';
-import { validate } from 'class-validator';
 import { plainToClass } from 'class-transformer';
+import { validate } from 'class-validator';
+import { Request, Response, NextFunction } from 'express';
 
+import { UploadScanInputDto } from '../dto/upload-scan.dto';
 import { EvidenceService } from '../services/evidence.service';
 import { createStorageService } from '../services/storage.service';
-import { UploadScanInputDto } from '../dto/upload-scan.dto';
 import { logger } from '../utils/logger';
 
 /**
