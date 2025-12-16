@@ -74,21 +74,12 @@ extra:
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/cloudcwfranck/aegis
-  analytics:
-    feedback:
-      title: Was this page helpful?
-      ratings:
-        - icon: material/thumb-up-outline
-          name: This page was helpful
-          data: 1
-          note: >
-            Thank you for your feedback! Your response helps us improve the documentation.
-        - icon: material/thumb-down-outline
-          name: This page could be improved
-          data: 0
-          note: >
-            Thanks for your feedback! Help us improve this page by
-            <a href="https://github.com/cloudcwfranck/aegis/issues/new?title=[Docs Feedback] {title}&labels=documentation,feedback&body=**Page**: {url}%0A**Feedback**: This page could be improved%0A%0A**Additional comments**:%0A" target="_blank" rel="noopener">opening an issue</a>.
+
+extra_css:
+  - stylesheets/feedback.css
+
+extra_javascript:
+  - javascripts/feedback.js
 
 nav:
   - Introduction:
