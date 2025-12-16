@@ -15,7 +15,6 @@ import evidenceRoutes from './routes/evidence.routes';
 import policyRoutes from './routes/policy.routes';
 import { logger } from './utils/logger';
 
-
 dotenv.config();
 
 const PORT = process.env['PORT'] ?? 4000;

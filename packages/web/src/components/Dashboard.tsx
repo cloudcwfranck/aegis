@@ -92,8 +92,11 @@ export function Dashboard() {
               borderRadius: '4px',
             }}
           />
-          <small style={{ display: 'block', marginTop: '0.5rem', color: '#6c757d' }}>
-            Used for multi-tenant isolation. Change this to test different tenants.
+          <small
+            style={{ display: 'block', marginTop: '0.5rem', color: '#6c757d' }}
+          >
+            Used for multi-tenant isolation. Change this to test different
+            tenants.
           </small>
         </div>
       </div>
@@ -177,10 +180,12 @@ export function Dashboard() {
           >
             <h3>📦 SBOM Ingestion</h3>
             <p style={{ color: '#6c757d' }}>
-              Upload SPDX 2.3 Software Bill of Materials with automatic validation
-              and storage in Azure Blob
+              Upload SPDX 2.3 Software Bill of Materials with automatic
+              validation and storage in Azure Blob
             </p>
-            <span style={{ color: '#28a745', fontWeight: 'bold' }}>✓ Active</span>
+            <span style={{ color: '#28a745', fontWeight: 'bold' }}>
+              ✓ Active
+            </span>
           </div>
 
           <div
@@ -193,10 +198,12 @@ export function Dashboard() {
           >
             <h3>🔍 Vulnerability Scanning</h3>
             <p style={{ color: '#6c757d' }}>
-              Grype scan result processing with severity-based classification and
-              real-time statistics
+              Grype scan result processing with severity-based classification
+              and real-time statistics
             </p>
-            <span style={{ color: '#28a745', fontWeight: 'bold' }}>✓ Active</span>
+            <span style={{ color: '#28a745', fontWeight: 'bold' }}>
+              ✓ Active
+            </span>
           </div>
 
           <div
@@ -211,7 +218,9 @@ export function Dashboard() {
             <p style={{ color: '#6c757d' }}>
               Type-safe GraphQL API with Apollo Server for programmatic access
             </p>
-            <span style={{ color: '#28a745', fontWeight: 'bold' }}>✓ Active</span>
+            <span style={{ color: '#28a745', fontWeight: 'bold' }}>
+              ✓ Active
+            </span>
           </div>
 
           <div
@@ -226,7 +235,9 @@ export function Dashboard() {
             <p style={{ color: '#6c757d' }}>
               Async processing for SBOM parsing and vulnerability indexing
             </p>
-            <span style={{ color: '#ffc107', fontWeight: 'bold' }}>⏳ Week 5</span>
+            <span style={{ color: '#ffc107', fontWeight: 'bold' }}>
+              ⏳ Week 5
+            </span>
           </div>
 
           <div

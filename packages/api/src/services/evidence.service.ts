@@ -2,7 +2,8 @@
  * Evidence Service - Business logic for evidence ingestion
  */
 
-import { AppDataSource ,
+import {
+  AppDataSource,
   EvidenceEntity,
   BuildEntity,
   ProjectEntity,
@@ -240,7 +241,13 @@ export class EvidenceService {
     imageDigest: string,
     type: EvidenceType,
     format: SBOMFormat | undefined,
-    upload: UploadResult
+    upload: {
+      s3Uri: string;
+      s3Bucket: string;
+      s3Key: string;
+      sha256: string;
+      sizeBytes: number;
+    }
   ): Promise<EvidenceEntity> {
     const evidence = this.evidenceRepo.create({
       tenantId,

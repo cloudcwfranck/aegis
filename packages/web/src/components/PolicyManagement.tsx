@@ -121,7 +121,14 @@ export function PolicyManagement() {
   return (
     <div style={{ padding: '2rem', maxWidth: '1200px', margin: '0 auto' }}>
       {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: '2rem',
+        }}
+      >
         <div>
           <h1 style={{ marginBottom: '0.5rem' }}>🛡️ Policy Management</h1>
           <p style={{ color: '#6c757d', margin: 0 }}>
@@ -146,25 +153,70 @@ export function PolicyManagement() {
       </div>
 
       {/* Statistics */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem', marginBottom: '2rem' }}>
-        <div style={{ padding: '1.5rem', background: '#f8f9fa', borderRadius: '8px', border: '1px solid #dee2e6' }}>
-          <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#495057' }}>{policies.length}</div>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(4, 1fr)',
+          gap: '1rem',
+          marginBottom: '2rem',
+        }}
+      >
+        <div
+          style={{
+            padding: '1.5rem',
+            background: '#f8f9fa',
+            borderRadius: '8px',
+            border: '1px solid #dee2e6',
+          }}
+        >
+          <div
+            style={{ fontSize: '2rem', fontWeight: 'bold', color: '#495057' }}
+          >
+            {policies.length}
+          </div>
           <div style={{ color: '#6c757d' }}>Total Policies</div>
         </div>
-        <div style={{ padding: '1.5rem', background: '#f8f9fa', borderRadius: '8px', border: '1px solid #dee2e6' }}>
-          <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#28a745' }}>
+        <div
+          style={{
+            padding: '1.5rem',
+            background: '#f8f9fa',
+            borderRadius: '8px',
+            border: '1px solid #dee2e6',
+          }}
+        >
+          <div
+            style={{ fontSize: '2rem', fontWeight: 'bold', color: '#28a745' }}
+          >
             {policies.filter((p) => p.enabled).length}
           </div>
           <div style={{ color: '#6c757d' }}>Enabled</div>
         </div>
-        <div style={{ padding: '1.5rem', background: '#f8f9fa', borderRadius: '8px', border: '1px solid #dee2e6' }}>
-          <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#dc3545' }}>
+        <div
+          style={{
+            padding: '1.5rem',
+            background: '#f8f9fa',
+            borderRadius: '8px',
+            border: '1px solid #dee2e6',
+          }}
+        >
+          <div
+            style={{ fontSize: '2rem', fontWeight: 'bold', color: '#dc3545' }}
+          >
             {policies.filter((p) => p.enforcementLevel === 'BLOCKING').length}
           </div>
           <div style={{ color: '#6c757d' }}>Blocking</div>
         </div>
-        <div style={{ padding: '1.5rem', background: '#f8f9fa', borderRadius: '8px', border: '1px solid #dee2e6' }}>
-          <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#ffc107' }}>
+        <div
+          style={{
+            padding: '1.5rem',
+            background: '#f8f9fa',
+            borderRadius: '8px',
+            border: '1px solid #dee2e6',
+          }}
+        >
+          <div
+            style={{ fontSize: '2rem', fontWeight: 'bold', color: '#ffc107' }}
+          >
             {policies.filter((p) => p.enforcementLevel === 'WARNING').length}
           </div>
           <div style={{ color: '#6c757d' }}>Warning</div>
@@ -173,7 +225,14 @@ export function PolicyManagement() {
 
       {/* Policy List */}
       {policies.length === 0 ? (
-        <div style={{ padding: '3rem', textAlign: 'center', background: '#f8f9fa', borderRadius: '8px' }}>
+        <div
+          style={{
+            padding: '3rem',
+            textAlign: 'center',
+            background: '#f8f9fa',
+            borderRadius: '8px',
+          }}
+        >
           <h3>No policies created yet</h3>
           <p style={{ color: '#6c757d', marginBottom: '1.5rem' }}>
             Create your first policy to start enforcing security standards
@@ -206,14 +265,29 @@ export function PolicyManagement() {
                 opacity: policy.enabled ? 1 : 0.6,
               }}
             >
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'start',
+                }}
+              >
                 <div style={{ flex: 1 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem' }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.75rem',
+                      marginBottom: '0.5rem',
+                    }}
+                  >
                     <h3 style={{ margin: 0 }}>{policy.name}</h3>
                     <span
                       style={{
                         padding: '0.25rem 0.75rem',
-                        background: getEnforcementBadgeColor(policy.enforcementLevel),
+                        background: getEnforcementBadgeColor(
+                          policy.enforcementLevel
+                        ),
                         color: 'white',
                         borderRadius: '12px',
                         fontSize: '0.75rem',
@@ -247,15 +321,39 @@ export function PolicyManagement() {
                       </span>
                     )}
                   </div>
-                  <p style={{ color: '#6c757d', margin: '0.5rem 0' }}>{policy.description}</p>
-                  <div style={{ display: 'flex', gap: '1rem', fontSize: '0.875rem', color: '#6c757d' }}>
+                  <p style={{ color: '#6c757d', margin: '0.5rem 0' }}>
+                    {policy.description}
+                  </p>
+                  <div
+                    style={{
+                      display: 'flex',
+                      gap: '1rem',
+                      fontSize: '0.875rem',
+                      color: '#6c757d',
+                    }}
+                  >
                     <span>Priority: {policy.priority}</span>
-                    <span>Created: {new Date(policy.createdAt).toLocaleDateString()}</span>
+                    <span>
+                      Created: {new Date(policy.createdAt).toLocaleDateString()}
+                    </span>
                   </div>
                   {/* Display parameters */}
                   {Object.keys(policy.parameters).length > 0 && (
-                    <div style={{ marginTop: '0.75rem', padding: '0.75rem', background: '#f8f9fa', borderRadius: '4px' }}>
-                      <div style={{ fontSize: '0.875rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>
+                    <div
+                      style={{
+                        marginTop: '0.75rem',
+                        padding: '0.75rem',
+                        background: '#f8f9fa',
+                        borderRadius: '4px',
+                      }}
+                    >
+                      <div
+                        style={{
+                          fontSize: '0.875rem',
+                          fontWeight: 'bold',
+                          marginBottom: '0.5rem',
+                        }}
+                      >
                         Parameters:
                       </div>
                       <div style={{ fontSize: '0.875rem', color: '#495057' }}>
@@ -346,11 +444,9 @@ function PolicyForm({
     try {
       if (policy) {
         // Update existing policy
-        await axios.put(
-          `${API_URL}/api/v1/policies/${policy.id}`,
-          formData,
-          { headers: { 'x-tenant-id': TENANT_ID } }
-        );
+        await axios.put(`${API_URL}/api/v1/policies/${policy.id}`, formData, {
+          headers: { 'x-tenant-id': TENANT_ID },
+        });
       } else {
         // Create new policy
         await axios.post(`${API_URL}/api/v1/policies`, formData, {
@@ -381,7 +477,13 @@ function PolicyForm({
       <h1>{policy ? 'Edit Policy' : 'Create New Policy'}</h1>
       <form onSubmit={handleSubmit}>
         <div style={{ marginBottom: '1.5rem' }}>
-          <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>
+          <label
+            style={{
+              display: 'block',
+              marginBottom: '0.5rem',
+              fontWeight: 'bold',
+            }}
+          >
             Policy Name *
           </label>
           <input
@@ -400,12 +502,20 @@ function PolicyForm({
         </div>
 
         <div style={{ marginBottom: '1.5rem' }}>
-          <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>
+          <label
+            style={{
+              display: 'block',
+              marginBottom: '0.5rem',
+              fontWeight: 'bold',
+            }}
+          >
             Description *
           </label>
           <textarea
             value={formData.description}
-            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, description: e.target.value })
+            }
             required
             rows={3}
             style={{
@@ -419,14 +529,29 @@ function PolicyForm({
           />
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.5rem' }}>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            gap: '1rem',
+            marginBottom: '1.5rem',
+          }}
+        >
           <div>
-            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>
+            <label
+              style={{
+                display: 'block',
+                marginBottom: '0.5rem',
+                fontWeight: 'bold',
+              }}
+            >
               Policy Type *
             </label>
             <select
               value={formData.type}
-              onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, type: e.target.value })
+              }
               style={{
                 width: '100%',
                 padding: '0.75rem',
@@ -443,12 +568,20 @@ function PolicyForm({
           </div>
 
           <div>
-            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>
+            <label
+              style={{
+                display: 'block',
+                marginBottom: '0.5rem',
+                fontWeight: 'bold',
+              }}
+            >
               Enforcement Level *
             </label>
             <select
               value={formData.enforcementLevel}
-              onChange={(e) => setFormData({ ...formData, enforcementLevel: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, enforcementLevel: e.target.value })
+              }
               style={{
                 width: '100%',
                 padding: '0.75rem',
@@ -464,13 +597,30 @@ function PolicyForm({
           </div>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.5rem' }}>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            gap: '1rem',
+            marginBottom: '1.5rem',
+          }}
+        >
           <div>
-            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>Priority</label>
+            <label
+              style={{
+                display: 'block',
+                marginBottom: '0.5rem',
+                fontWeight: 'bold',
+              }}
+            >
+              Priority
+            </label>
             <input
               type="number"
               value={formData.priority}
-              onChange={(e) => setFormData({ ...formData, priority: parseInt(e.target.value) })}
+              onChange={(e) =>
+                setFormData({ ...formData, priority: parseInt(e.target.value) })
+              }
               style={{
                 width: '100%',
                 padding: '0.75rem',
@@ -482,12 +632,24 @@ function PolicyForm({
           </div>
 
           <div>
-            <label style={{ display: 'flex', alignItems: 'center', marginTop: '2rem' }}>
+            <label
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                marginTop: '2rem',
+              }}
+            >
               <input
                 type="checkbox"
                 checked={formData.enabled}
-                onChange={(e) => setFormData({ ...formData, enabled: e.target.checked })}
-                style={{ marginRight: '0.5rem', width: '1.2rem', height: '1.2rem' }}
+                onChange={(e) =>
+                  setFormData({ ...formData, enabled: e.target.checked })
+                }
+                style={{
+                  marginRight: '0.5rem',
+                  width: '1.2rem',
+                  height: '1.2rem',
+                }}
               />
               <span style={{ fontWeight: 'bold' }}>Enabled</span>
             </label>
@@ -496,43 +658,92 @@ function PolicyForm({
 
         {/* Policy-specific parameters */}
         {formData.type === 'CVE_SEVERITY' && (
-          <div style={{ marginBottom: '1.5rem', padding: '1rem', background: '#f8f9fa', borderRadius: '4px' }}>
+          <div
+            style={{
+              marginBottom: '1.5rem',
+              padding: '1rem',
+              background: '#f8f9fa',
+              borderRadius: '4px',
+            }}
+          >
             <h3>CVE Severity Thresholds</h3>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: '1fr 1fr',
+                gap: '1rem',
+              }}
+            >
               <div>
-                <label style={{ display: 'block', marginBottom: '0.25rem' }}>Max Critical</label>
+                <label style={{ display: 'block', marginBottom: '0.25rem' }}>
+                  Max Critical
+                </label>
                 <input
                   type="number"
                   value={(formData.parameters as any).maxCritical || 0}
-                  onChange={(e) => updateParameter('maxCritical', parseInt(e.target.value))}
-                  style={{ width: '100%', padding: '0.5rem', border: '1px solid #dee2e6', borderRadius: '4px' }}
+                  onChange={(e) =>
+                    updateParameter('maxCritical', parseInt(e.target.value))
+                  }
+                  style={{
+                    width: '100%',
+                    padding: '0.5rem',
+                    border: '1px solid #dee2e6',
+                    borderRadius: '4px',
+                  }}
                 />
               </div>
               <div>
-                <label style={{ display: 'block', marginBottom: '0.25rem' }}>Max High</label>
+                <label style={{ display: 'block', marginBottom: '0.25rem' }}>
+                  Max High
+                </label>
                 <input
                   type="number"
                   value={(formData.parameters as any).maxHigh || 0}
-                  onChange={(e) => updateParameter('maxHigh', parseInt(e.target.value))}
-                  style={{ width: '100%', padding: '0.5rem', border: '1px solid #dee2e6', borderRadius: '4px' }}
+                  onChange={(e) =>
+                    updateParameter('maxHigh', parseInt(e.target.value))
+                  }
+                  style={{
+                    width: '100%',
+                    padding: '0.5rem',
+                    border: '1px solid #dee2e6',
+                    borderRadius: '4px',
+                  }}
                 />
               </div>
               <div>
-                <label style={{ display: 'block', marginBottom: '0.25rem' }}>Max Medium</label>
+                <label style={{ display: 'block', marginBottom: '0.25rem' }}>
+                  Max Medium
+                </label>
                 <input
                   type="number"
                   value={(formData.parameters as any).maxMedium || 0}
-                  onChange={(e) => updateParameter('maxMedium', parseInt(e.target.value))}
-                  style={{ width: '100%', padding: '0.5rem', border: '1px solid #dee2e6', borderRadius: '4px' }}
+                  onChange={(e) =>
+                    updateParameter('maxMedium', parseInt(e.target.value))
+                  }
+                  style={{
+                    width: '100%',
+                    padding: '0.5rem',
+                    border: '1px solid #dee2e6',
+                    borderRadius: '4px',
+                  }}
                 />
               </div>
               <div>
-                <label style={{ display: 'block', marginBottom: '0.25rem' }}>Max Low</label>
+                <label style={{ display: 'block', marginBottom: '0.25rem' }}>
+                  Max Low
+                </label>
                 <input
                   type="number"
                   value={(formData.parameters as any).maxLow || 0}
-                  onChange={(e) => updateParameter('maxLow', parseInt(e.target.value))}
-                  style={{ width: '100%', padding: '0.5rem', border: '1px solid #dee2e6', borderRadius: '4px' }}
+                  onChange={(e) =>
+                    updateParameter('maxLow', parseInt(e.target.value))
+                  }
+                  style={{
+                    width: '100%',
+                    padding: '0.5rem',
+                    border: '1px solid #dee2e6',
+                    borderRadius: '4px',
+                  }}
                 />
               </div>
             </div>
@@ -540,22 +751,47 @@ function PolicyForm({
         )}
 
         {formData.type === 'SBOM_COMPLETENESS' && (
-          <div style={{ marginBottom: '1.5rem', padding: '1rem', background: '#f8f9fa', borderRadius: '4px' }}>
+          <div
+            style={{
+              marginBottom: '1.5rem',
+              padding: '1rem',
+              background: '#f8f9fa',
+              borderRadius: '4px',
+            }}
+          >
             <h3>SBOM Completeness Requirements</h3>
             <div>
-              <label style={{ display: 'block', marginBottom: '0.25rem' }}>Minimum Packages</label>
+              <label style={{ display: 'block', marginBottom: '0.25rem' }}>
+                Minimum Packages
+              </label>
               <input
                 type="number"
                 value={(formData.parameters as any).minPackages || 1}
-                onChange={(e) => updateParameter('minPackages', parseInt(e.target.value))}
-                style={{ width: '100%', padding: '0.5rem', border: '1px solid #dee2e6', borderRadius: '4px', marginBottom: '0.75rem' }}
+                onChange={(e) =>
+                  updateParameter('minPackages', parseInt(e.target.value))
+                }
+                style={{
+                  width: '100%',
+                  padding: '0.5rem',
+                  border: '1px solid #dee2e6',
+                  borderRadius: '4px',
+                  marginBottom: '0.75rem',
+                }}
               />
             </div>
-            <label style={{ display: 'flex', alignItems: 'center', marginBottom: '0.5rem' }}>
+            <label
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                marginBottom: '0.5rem',
+              }}
+            >
               <input
                 type="checkbox"
                 checked={(formData.parameters as any).requireLicenses || false}
-                onChange={(e) => updateParameter('requireLicenses', e.target.checked)}
+                onChange={(e) =>
+                  updateParameter('requireLicenses', e.target.checked)
+                }
                 style={{ marginRight: '0.5rem' }}
               />
               Require License Information
@@ -564,7 +800,9 @@ function PolicyForm({
               <input
                 type="checkbox"
                 checked={(formData.parameters as any).requirePurls || false}
-                onChange={(e) => updateParameter('requirePurls', e.target.checked)}
+                onChange={(e) =>
+                  updateParameter('requirePurls', e.target.checked)
+                }
                 style={{ marginRight: '0.5rem' }}
               />
               Require Package URLs (purl)
