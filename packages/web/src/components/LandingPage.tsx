@@ -346,134 +346,108 @@ export function LandingPage() {
               </Link>
             </div>
 
-            {/* Right side - Document/Research Paper Style */}
+            {/* Right side - Actual Vulnerability Scan Report */}
             <div style={{
               background: '#ffffff',
               border: '1px solid #e0e0e0',
               borderRadius: '8px',
               padding: '2.5rem',
-              boxShadow: '0 4px 12px rgba(0,0,0,0.08)'
+              boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
+              fontFamily: '"IBM Plex Sans", monospace'
             }}>
-              {/* Document Header */}
-              <div style={{ marginBottom: '2rem', paddingBottom: '1.5rem', borderBottom: '1px solid #e0e0e0' }}>
-                <div style={{ fontSize: '0.875rem', color: '#888888', marginBottom: '0.5rem' }}>AEGIS COMPLIANCE REPORT</div>
-                <h3 style={{ fontSize: '1.5rem', fontWeight: '600', color: '#000000', marginBottom: '0.75rem' }}>
-                  FedRAMP Vulnerability Management Overview
-                </h3>
-                <p style={{ fontSize: '0.95rem', color: '#525252', lineHeight: 1.6 }}>
-                  Automated compliance monitoring and POA&M generation for federal systems
-                </p>
-              </div>
-
-              {/* Feature List in Document Style */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
-                  <div style={{
-                    minWidth: '24px',
-                    height: '24px',
-                    borderRadius: '50%',
-                    background: '#000000',
-                    color: '#ffffff',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '0.75rem',
-                    fontWeight: '600'
-                  }}>1</div>
+              {/* Report Header */}
+              <div style={{ marginBottom: '2rem', paddingBottom: '1.5rem', borderBottom: '2px solid #000000' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
                   <div>
-                    <h4 style={{ fontSize: '1rem', fontWeight: '600', color: '#000000', marginBottom: '0.25rem' }}>
-                      Real-time dashboard
-                    </h4>
-                    <p style={{ fontSize: '0.875rem', color: '#525252', lineHeight: 1.6 }}>
-                      Generate compliance dashboards from scan results. Focus on remediation, not UI frameworks.
-                    </p>
+                    <div style={{ fontSize: '0.75rem', color: '#888888', marginBottom: '0.25rem', letterSpacing: '0.05em' }}>VULNERABILITY ASSESSMENT REPORT</div>
+                    <h3 style={{ fontSize: '1.5rem', fontWeight: '600', color: '#000000', marginBottom: '0.5rem' }}>
+                      Container Scan Results
+                    </h3>
+                    <div style={{ fontSize: '0.875rem', color: '#525252' }}>aegis-api:v0.1.0</div>
                   </div>
-                </div>
-
-                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
-                  <div style={{
-                    minWidth: '24px',
-                    height: '24px',
-                    borderRadius: '50%',
-                    background: '#000000',
-                    color: '#ffffff',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '0.75rem',
-                    fontWeight: '600'
-                  }}>2</div>
-                  <div>
-                    <h4 style={{ fontSize: '1rem', fontWeight: '600', color: '#000000', marginBottom: '0.25rem' }}>
-                      Production deployment
-                    </h4>
-                    <p style={{ fontSize: '0.875rem', color: '#525252', lineHeight: 1.6 }}>
-                      Container to production-ready. Database, storage, and scaling for Azure Government Cloud.
-                    </p>
-                  </div>
-                </div>
-
-                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
-                  <div style={{
-                    minWidth: '24px',
-                    height: '24px',
-                    borderRadius: '50%',
-                    background: '#000000',
-                    color: '#ffffff',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '0.75rem',
-                    fontWeight: '600'
-                  }}>3</div>
-                  <div>
-                    <h4 style={{ fontSize: '1rem', fontWeight: '600', color: '#000000', marginBottom: '0.25rem' }}>
-                      Multi-scanner support
-                    </h4>
-                    <p style={{ fontSize: '0.875rem', color: '#525252', lineHeight: 1.6 }}>
-                      Test across Grype, Trivy, and other scanners. Compare results and find optimal strategy.
-                    </p>
-                  </div>
-                </div>
-
-                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
-                  <div style={{
-                    minWidth: '24px',
-                    height: '24px',
-                    borderRadius: '50%',
-                    background: '#000000',
-                    color: '#ffffff',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '0.75rem',
-                    fontWeight: '600'
-                  }}>4</div>
-                  <div>
-                    <h4 style={{ fontSize: '1rem', fontWeight: '600', color: '#000000', marginBottom: '0.25rem' }}>
-                      Framework-agnostic
-                    </h4>
-                    <p style={{ fontSize: '0.875rem', color: '#525252', lineHeight: 1.6 }}>
-                      Work with any SBOM generator or scanner. Enable cross-tool workflows without vendor lock-in.
-                    </p>
+                  <div style={{ textAlign: 'right', fontSize: '0.75rem', color: '#888888' }}>
+                    <div>Report ID: VSR-2025-1216</div>
+                    <div>December 16, 2025</div>
                   </div>
                 </div>
               </div>
 
-              {/* Document Footer */}
+              {/* Severity Summary */}
+              <div style={{ marginBottom: '2rem' }}>
+                <div style={{ fontSize: '0.875rem', fontWeight: '600', color: '#000000', marginBottom: '1rem' }}>SEVERITY DISTRIBUTION</div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '0.75rem' }}>
+                  <div style={{ textAlign: 'center', padding: '0.75rem', background: '#FEE2E2', borderRadius: '4px' }}>
+                    <div style={{ fontSize: '1.5rem', fontWeight: '700', color: '#991B1B' }}>2</div>
+                    <div style={{ fontSize: '0.75rem', color: '#991B1B', fontWeight: '600' }}>CRITICAL</div>
+                  </div>
+                  <div style={{ textAlign: 'center', padding: '0.75rem', background: '#FED7AA', borderRadius: '4px' }}>
+                    <div style={{ fontSize: '1.5rem', fontWeight: '700', color: '#9A3412' }}>5</div>
+                    <div style={{ fontSize: '0.75rem', color: '#9A3412', fontWeight: '600' }}>HIGH</div>
+                  </div>
+                  <div style={{ textAlign: 'center', padding: '0.75rem', background: '#FEF3C7', borderRadius: '4px' }}>
+                    <div style={{ fontSize: '1.5rem', fontWeight: '700', color: '#92400E' }}>12</div>
+                    <div style={{ fontSize: '0.75rem', color: '#92400E', fontWeight: '600' }}>MEDIUM</div>
+                  </div>
+                  <div style={{ textAlign: 'center', padding: '0.75rem', background: '#F3F4F6', borderRadius: '4px' }}>
+                    <div style={{ fontSize: '1.5rem', fontWeight: '700', color: '#374151' }}>8</div>
+                    <div style={{ fontSize: '0.75rem', color: '#374151', fontWeight: '600' }}>LOW</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Critical Vulnerabilities */}
+              <div style={{ marginBottom: '2rem' }}>
+                <div style={{ fontSize: '0.875rem', fontWeight: '600', color: '#000000', marginBottom: '1rem' }}>CRITICAL FINDINGS</div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                  <div style={{ padding: '0.75rem', background: '#FEF2F2', border: '1px solid #FEE2E2', borderRadius: '4px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
+                      <span style={{ fontSize: '0.8rem', fontWeight: '600', color: '#991B1B', fontFamily: 'monospace' }}>CVE-2024-47076</span>
+                      <span style={{ fontSize: '0.75rem', color: '#991B1B', fontWeight: '600' }}>CVSS 9.8</span>
+                    </div>
+                    <div style={{ fontSize: '0.8rem', color: '#7C2D12', lineHeight: 1.4 }}>
+                      curl: CURLOPT_PROTOCOLS bypass via redirect
+                    </div>
+                    <div style={{ fontSize: '0.7rem', color: '#A16207', marginTop: '0.5rem' }}>
+                      POA&M Deadline: Jan 15, 2026 (30 days)
+                    </div>
+                  </div>
+                  <div style={{ padding: '0.75rem', background: '#FEF2F2', border: '1px solid #FEE2E2', borderRadius: '4px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
+                      <span style={{ fontSize: '0.8rem', fontWeight: '600', color: '#991B1B', fontFamily: 'monospace' }}>CVE-2024-45321</span>
+                      <span style={{ fontSize: '0.75rem', color: '#991B1B', fontWeight: '600' }}>CVSS 9.1</span>
+                    </div>
+                    <div style={{ fontSize: '0.8rem', color: '#7C2D12', lineHeight: 1.4 }}>
+                      OpenSSL: Remote code execution in TLS handshake
+                    </div>
+                    <div style={{ fontSize: '0.7rem', color: '#A16207', marginTop: '0.5rem' }}>
+                      POA&M Deadline: Jan 15, 2026 (30 days)
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Compliance Mapping */}
+              <div style={{ marginBottom: '2rem', padding: '1rem', background: '#F9FAFB', borderRadius: '4px' }}>
+                <div style={{ fontSize: '0.75rem', fontWeight: '600', color: '#374151', marginBottom: '0.5rem' }}>NIST 800-53 REV 5 CONTROLS</div>
+                <div style={{ fontSize: '0.75rem', color: '#6B7280', lineHeight: 1.6 }}>
+                  RA-5 (Vulnerability Monitoring) • SI-2 (Flaw Remediation) • CM-8 (System Component Inventory)
+                </div>
+              </div>
+
+              {/* Report Footer */}
               <div style={{
-                marginTop: '2rem',
                 paddingTop: '1.5rem',
                 borderTop: '1px solid #e0e0e0',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center'
+                fontSize: '0.7rem',
+                color: '#6B7280'
               }}>
-                <div style={{ fontSize: '0.75rem', color: '#888888' }}>
-                  Last updated: December 2025
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+                  <div style={{ fontWeight: '600', color: '#000000' }}>Generated by Aegis DevSecOps Platform</div>
+                  <div>v0.1.0</div>
                 </div>
-                <div style={{ fontSize: '0.75rem', color: '#000000', fontWeight: '600' }}>
-                  4 capabilities
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.65rem' }}>
+                  <div>Scan Tool: Grype v0.75.0 | SBOM: Syft (SPDX 2.3)</div>
+                  <div>FedRAMP Moderate Compliant</div>
                 </div>
               </div>
             </div>
