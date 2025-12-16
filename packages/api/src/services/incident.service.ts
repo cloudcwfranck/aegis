@@ -13,7 +13,8 @@ import {
   PolicyEvaluationEntity,
   EvidenceEntity,
 } from '@aegis/db';
-import { Repository, Between, In } from 'typeorm';
+import { VulnerabilitySeverity } from '@aegis/shared';
+import { Repository, In } from 'typeorm';
 
 import { logger } from '../utils/logger';
 
@@ -116,8 +117,12 @@ export class IncidentService {
     }
 
     // Group vulnerabilities by severity
-    const criticalVulns = vulnerabilities.filter((v) => v.severity === 'Critical');
-    const highVulns = vulnerabilities.filter((v) => v.severity === 'High');
+    const criticalVulns = vulnerabilities.filter(
+      (v) => v.severity === VulnerabilitySeverity.CRITICAL
+    );
+    const highVulns = vulnerabilities.filter(
+      (v) => v.severity === VulnerabilitySeverity.HIGH
+    );
 
     const incidents: IncidentEntity[] = [];
 
@@ -237,9 +242,9 @@ export class IncidentService {
     const result: IncidentCluster[] = [];
     let clusterIndex = 0;
 
-    for (const [key, incidentList] of clusters.entries()) {
+    for (const [_key, incidentList] of clusters.entries()) {
       if (incidentList.length > 0) {
-        const firstIncident = incidentList[0];
+        const firstIncident = incidentList[0]!;
         const affectedServices = [
           ...new Set(incidentList.map((i) => i.impactedService).filter(Boolean)),
         ] as string[];

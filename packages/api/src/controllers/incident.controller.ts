@@ -3,9 +3,8 @@
  * API endpoints for incident management and monitoring dashboard
  */
 
-import { Request, Response } from 'express';
-
 import { IncidentStatus, IncidentSeverity, IncidentType } from '@aegis/db';
+import { Request, Response } from 'express';
 
 import { IncidentService } from '../services/incident.service';
 import { logger } from '../utils/logger';
