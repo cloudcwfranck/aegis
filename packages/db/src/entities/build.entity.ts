@@ -10,8 +10,8 @@ import {
   OneToMany,
 } from 'typeorm';
 
-import { ProjectEntity } from './project.entity';
 import { EvidenceEntity } from './evidence.entity';
+import { ProjectEntity } from './project.entity';
 
 @Entity('builds')
 @Index(['projectId', 'buildNumber'])

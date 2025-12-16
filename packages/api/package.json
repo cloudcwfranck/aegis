@@ -11,7 +11,7 @@
     "clean": "rm -rf dist *.tsbuildinfo",
     "lint": "eslint . --ext .ts",
     "typecheck": "tsc --noEmit",
-    "test": "jest",
+    "test": "jest --passWithNoTests",
     "test:ci": "jest --ci --coverage"
   },
   "dependencies": {

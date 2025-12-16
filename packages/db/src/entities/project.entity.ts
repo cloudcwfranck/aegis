@@ -10,8 +10,8 @@ import {
   OneToMany,
 } from 'typeorm';
 
-import { TenantEntity } from './tenant.entity';
 import { BuildEntity } from './build.entity';
+import { TenantEntity } from './tenant.entity';
 
 @Entity('projects')
 @Index(['tenantId', 'name'], { unique: true })

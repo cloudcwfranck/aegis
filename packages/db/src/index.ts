@@ -5,4 +5,4 @@
 
 export * from './entities';
 export * from './data-source';
-export * from './repositories';
+// export * from './repositories'; // No repositories yet

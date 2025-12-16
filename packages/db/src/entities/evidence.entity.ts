@@ -1,3 +1,4 @@
+import { EvidenceType, SBOMFormat } from '@aegis/shared';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -9,10 +10,9 @@ import {
   Index,
   OneToMany,
 } from 'typeorm';
-import { EvidenceType, SBOMFormat } from '@aegis/shared';
 
-import { TenantEntity } from './tenant.entity';
 import { BuildEntity } from './build.entity';
+import { TenantEntity } from './tenant.entity';
 import { VulnerabilityEntity } from './vulnerability.entity';
 
 @Entity('evidence')
