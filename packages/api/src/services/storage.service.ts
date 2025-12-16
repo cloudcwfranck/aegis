@@ -14,6 +14,11 @@ import {
   DeleteObjectCommand,
   PutObjectCommandInput,
 } from '@aws-sdk/client-s3';
+import {
+  BlobServiceClient,
+  ContainerClient,
+  StorageSharedKeyCredential,
+} from '@azure/storage-blob';
 
 import { logger } from '../utils/logger';
 

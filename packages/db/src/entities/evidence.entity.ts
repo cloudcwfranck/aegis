@@ -12,9 +12,9 @@ import {
 } from 'typeorm';
 
 import { BuildEntity } from './build.entity';
+import { PackageEntity } from './package.entity';
 import { TenantEntity } from './tenant.entity';
 import { VulnerabilityEntity } from './vulnerability.entity';
-import { PackageEntity } from './package.entity';
 
 @Entity('evidence')
 @Index(['tenantId', 'projectName', 'buildId'])

@@ -4,7 +4,6 @@
  * Supports CVE severity thresholds, SBOM completeness, image provenance
  */
 
-import { Repository } from 'typeorm';
 
 import { AppDataSource } from '@aegis/db/src/data-source';
 import {
@@ -15,6 +14,8 @@ import {
   PolicyEvaluationEntity,
 } from '@aegis/db/src/entities';
 import { PolicyType, VulnerabilitySeverity } from '@aegis/shared';
+import { Repository } from 'typeorm';
+
 import { logger } from '../utils/logger';
 
 /**
@@ -112,7 +113,7 @@ export class PolicyService {
 
     for (const policy of policies) {
       try {
-        const result = await this.evaluatePolicy(policy, evidenceData);
+        const result = this.evaluatePolicy(policy, evidenceData);
         results.push(result);
 
         // Store evaluation result in database
@@ -210,10 +211,10 @@ export class PolicyService {
   /**
    * Evaluate a single policy against evidence data
    */
-  private async evaluatePolicy(
+  private evaluatePolicy(
     policy: PolicyEntity,
     evidenceData: EvidenceData
-  ): Promise<PolicyEvaluationResult> {
+  ): PolicyEvaluationResult {
     const { vulnerabilityCounts, packages, evidence } = evidenceData;
 
     const violations: PolicyViolation[] = [];

@@ -62,4 +62,4 @@ async function runMigrations() {
 }
 
 // Run migrations
-runMigrations();
+void runMigrations();

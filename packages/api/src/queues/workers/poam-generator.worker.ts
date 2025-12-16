@@ -4,12 +4,13 @@
  * Creates remediation plans for Critical and High severity findings
  */
 
-import { Worker, Job } from 'bullmq';
-import { In } from 'typeorm';
 
 import { AppDataSource } from '@aegis/db/src/data-source';
 import { POAMEntity, VulnerabilityEntity } from '@aegis/db/src/entities';
 import { VulnerabilitySeverity, POAMStatus } from '@aegis/shared';
+import { Worker, Job } from 'bullmq';
+import { In } from 'typeorm';
+
 import { logger } from '../../utils/logger';
 import { createRedisConnection, QueueName } from '../config';
 

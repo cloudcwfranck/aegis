@@ -3,6 +3,8 @@
  * GraphQL + REST API for evidence ingestion, policy enforcement, and compliance management
  */
 
+import { createServer } from 'http';
+
 import { initializeDatabase } from '@aegis/db';
 import cors from 'cors';
 import dotenv from 'dotenv';
