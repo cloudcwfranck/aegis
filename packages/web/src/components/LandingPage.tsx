@@ -97,7 +97,84 @@ export function LandingPage() {
             </p>
           </div>
 
-          {/* Feature Grid */}
+          {/* Flow Diagram */}
+          <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: '2rem',
+            marginTop: '4rem',
+            marginBottom: '5rem',
+            flexWrap: 'wrap'
+          }}>
+            {/* Step 1: CI/CD Upload */}
+            <div style={{
+              border: '1px solid #404040',
+              borderRadius: '4px',
+              padding: '2rem 1.5rem',
+              minWidth: '180px',
+              textAlign: 'center'
+            }}>
+              <div style={{ fontSize: '1.5rem', marginBottom: '0.75rem' }}>📤</div>
+              <div style={{ fontSize: '0.9rem', fontWeight: '600', marginBottom: '0.5rem' }}>CI/CD Upload</div>
+              <div style={{ fontSize: '0.75rem', color: '#737373' }}>
+                SBOM + Scans
+              </div>
+            </div>
+
+            <div style={{ fontSize: '1.5rem', color: '#404040' }}>→</div>
+
+            {/* Step 2: Processing Engine */}
+            <div style={{
+              border: '1px solid #404040',
+              borderRadius: '4px',
+              padding: '2rem 1.5rem',
+              minWidth: '180px',
+              textAlign: 'center'
+            }}>
+              <div style={{ fontSize: '1.5rem', marginBottom: '0.75rem' }}>⚙️</div>
+              <div style={{ fontSize: '0.9rem', fontWeight: '600', marginBottom: '0.5rem' }}>Processing</div>
+              <div style={{ fontSize: '0.75rem', color: '#737373' }}>
+                CVE Analysis
+              </div>
+            </div>
+
+            <div style={{ fontSize: '1.5rem', color: '#404040' }}>→</div>
+
+            {/* Step 3: POA&M Generation */}
+            <div style={{
+              border: '1px solid #404040',
+              borderRadius: '4px',
+              padding: '2rem 1.5rem',
+              minWidth: '180px',
+              textAlign: 'center'
+            }}>
+              <div style={{ fontSize: '1.5rem', marginBottom: '0.75rem' }}>📋</div>
+              <div style={{ fontSize: '0.9rem', fontWeight: '600', marginBottom: '0.5rem' }}>POA&M Gen</div>
+              <div style={{ fontSize: '0.75rem', color: '#737373' }}>
+                Auto Deadlines
+              </div>
+            </div>
+
+            <div style={{ fontSize: '1.5rem', color: '#404040' }}>→</div>
+
+            {/* Step 4: Dashboard */}
+            <div style={{
+              border: '1px solid #404040',
+              borderRadius: '4px',
+              padding: '2rem 1.5rem',
+              minWidth: '180px',
+              textAlign: 'center'
+            }}>
+              <div style={{ fontSize: '1.5rem', marginBottom: '0.75rem' }}>📊</div>
+              <div style={{ fontSize: '0.9rem', fontWeight: '600', marginBottom: '0.5rem' }}>Dashboard</div>
+              <div style={{ fontSize: '0.75rem', color: '#737373' }}>
+                Real-time View
+              </div>
+            </div>
+          </div>
+
+          {/* Feature Grid - Simplified, no icons */}
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
@@ -105,7 +182,6 @@ export function LandingPage() {
             marginTop: '3rem'
           }}>
             <div>
-              <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>🔄</div>
               <h3 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '0.75rem' }}>
                 Automated evidence ingestion
               </h3>
@@ -116,7 +192,6 @@ export function LandingPage() {
             </div>
 
             <div>
-              <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>⚡</div>
               <h3 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '0.75rem' }}>
                 POA&M timelines
               </h3>
@@ -127,7 +202,6 @@ export function LandingPage() {
             </div>
 
             <div>
-              <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>📊</div>
               <h3 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '0.75rem' }}>
                 NIST 800-53 mapping
               </h3>
@@ -138,7 +212,6 @@ export function LandingPage() {
             </div>
 
             <div>
-              <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>☁️</div>
               <h3 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '0.75rem' }}>
                 Azure Government ready
               </h3>
@@ -149,7 +222,6 @@ export function LandingPage() {
             </div>
 
             <div>
-              <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>🔓</div>
               <h3 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '0.75rem' }}>
                 Standards-based integration
               </h3>
@@ -160,7 +232,6 @@ export function LandingPage() {
             </div>
 
             <div>
-              <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>🔌</div>
               <h3 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '0.75rem' }}>
                 REST and GraphQL APIs
               </h3>
@@ -206,7 +277,7 @@ export function LandingPage() {
           </Link>
         </div>
 
-        {/* Feature boxes */}
+        {/* Feature boxes - No icons */}
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
@@ -214,7 +285,6 @@ export function LandingPage() {
           marginTop: '3rem'
         }}>
           <div>
-            <div style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>📱</div>
             <h3 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '0.75rem', color: '#171717' }}>
               Real-time dashboard
             </h3>
@@ -225,7 +295,6 @@ export function LandingPage() {
           </div>
 
           <div>
-            <div style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>🚀</div>
             <h3 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '0.75rem', color: '#171717' }}>
               Production deployment
             </h3>
@@ -236,7 +305,6 @@ export function LandingPage() {
           </div>
 
           <div>
-            <div style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>🔍</div>
             <h3 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '0.75rem', color: '#171717' }}>
               Multi-scanner support
             </h3>
@@ -247,7 +315,6 @@ export function LandingPage() {
           </div>
 
           <div>
-            <div style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>⚙️</div>
             <h3 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '0.75rem', color: '#171717' }}>
               Framework-agnostic
             </h3>
