@@ -41,6 +41,9 @@ export class PolicyEntity {
   @Column({ type: 'boolean', default: true })
   enabled!: boolean;
 
+  @Column({ type: 'integer', default: 100 })
+  priority!: number;
+
   @Column({ type: 'text' })
   regoCode!: string;
 
