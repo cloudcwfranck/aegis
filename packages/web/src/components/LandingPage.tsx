@@ -115,14 +115,20 @@ export function LandingPage() {
               minWidth: '180px',
               textAlign: 'center'
             }}>
-              <div style={{ fontSize: '1.5rem', marginBottom: '0.75rem' }}>📤</div>
+              <svg width="40" height="40" viewBox="0 0 40 40" style={{ marginBottom: '0.75rem', display: 'inline-block' }}>
+                <path d="M20 5 L20 25 M12 17 L20 25 L28 17" stroke="white" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+                <rect x="8" y="28" width="24" height="3" fill="white"/>
+              </svg>
               <div style={{ fontSize: '0.9rem', fontWeight: '600', marginBottom: '0.5rem' }}>CI/CD Upload</div>
               <div style={{ fontSize: '0.75rem', color: '#737373' }}>
                 SBOM + Scans
               </div>
             </div>
 
-            <div style={{ fontSize: '1.5rem', color: '#404040' }}>→</div>
+            <svg width="30" height="30" viewBox="0 0 30 30" style={{ opacity: 0.3 }}>
+              <path d="M5 15 L25 15" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+              <path d="M18 8 L25 15 L18 22" stroke="white" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
 
             {/* Step 2: Processing Engine */}
             <div style={{
@@ -132,14 +138,23 @@ export function LandingPage() {
               minWidth: '180px',
               textAlign: 'center'
             }}>
-              <div style={{ fontSize: '1.5rem', marginBottom: '0.75rem' }}>⚙️</div>
+              <svg width="40" height="40" viewBox="0 0 40 40" style={{ marginBottom: '0.75rem', display: 'inline-block' }}>
+                <circle cx="20" cy="20" r="8" stroke="white" strokeWidth="2" fill="none"/>
+                <circle cx="20" cy="8" r="3" fill="white"/>
+                <circle cx="32" cy="20" r="3" fill="white"/>
+                <circle cx="20" cy="32" r="3" fill="white"/>
+                <circle cx="8" cy="20" r="3" fill="white"/>
+              </svg>
               <div style={{ fontSize: '0.9rem', fontWeight: '600', marginBottom: '0.5rem' }}>Processing</div>
               <div style={{ fontSize: '0.75rem', color: '#737373' }}>
                 CVE Analysis
               </div>
             </div>
 
-            <div style={{ fontSize: '1.5rem', color: '#404040' }}>→</div>
+            <svg width="30" height="30" viewBox="0 0 30 30" style={{ opacity: 0.3 }}>
+              <path d="M5 15 L25 15" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+              <path d="M18 8 L25 15 L18 22" stroke="white" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
 
             {/* Step 3: POA&M Generation */}
             <div style={{
@@ -149,14 +164,22 @@ export function LandingPage() {
               minWidth: '180px',
               textAlign: 'center'
             }}>
-              <div style={{ fontSize: '1.5rem', marginBottom: '0.75rem' }}>📋</div>
+              <svg width="40" height="40" viewBox="0 0 40 40" style={{ marginBottom: '0.75rem', display: 'inline-block' }}>
+                <rect x="10" y="6" width="20" height="28" stroke="white" strokeWidth="2" fill="none" rx="2"/>
+                <path d="M15 14 L18 17 L25 12" stroke="white" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+                <line x1="15" y1="22" x2="25" y2="22" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+                <line x1="15" y1="27" x2="22" y2="27" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+              </svg>
               <div style={{ fontSize: '0.9rem', fontWeight: '600', marginBottom: '0.5rem' }}>POA&M Gen</div>
               <div style={{ fontSize: '0.75rem', color: '#737373' }}>
                 Auto Deadlines
               </div>
             </div>
 
-            <div style={{ fontSize: '1.5rem', color: '#404040' }}>→</div>
+            <svg width="30" height="30" viewBox="0 0 30 30" style={{ opacity: 0.3 }}>
+              <path d="M5 15 L25 15" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+              <path d="M18 8 L25 15 L18 22" stroke="white" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
 
             {/* Step 4: Dashboard */}
             <div style={{
@@ -166,7 +189,12 @@ export function LandingPage() {
               minWidth: '180px',
               textAlign: 'center'
             }}>
-              <div style={{ fontSize: '1.5rem', marginBottom: '0.75rem' }}>📊</div>
+              <svg width="40" height="40" viewBox="0 0 40 40" style={{ marginBottom: '0.75rem', display: 'inline-block' }}>
+                <rect x="6" y="20" width="6" height="14" fill="white"/>
+                <rect x="15" y="12" width="6" height="22" fill="white"/>
+                <rect x="24" y="16" width="6" height="18" fill="white"/>
+                <path d="M5 10 L12 15 L20 8 L28 12 L35 6" stroke="white" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
               <div style={{ fontSize: '0.9rem', fontWeight: '600', marginBottom: '0.5rem' }}>Dashboard</div>
               <div style={{ fontSize: '0.75rem', color: '#737373' }}>
                 Real-time View
