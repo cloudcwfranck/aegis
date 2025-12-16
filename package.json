@@ -25,7 +25,10 @@
     "db:migrate": "npm run migrate --workspace=@aegis/db",
     "db:generate": "npm run generate --workspace=@aegis/db",
     "docker:dev": "docker-compose up -d",
-    "docker:down": "docker-compose down"
+    "docker:down": "docker-compose down",
+    "docs:build": "mkdocs build && cp -r site packages/web/public/docs",
+    "docs:serve": "mkdocs serve",
+    "docs:deploy": "mkdocs build && cp -r site packages/web/public/docs"
   },
   "devDependencies": {
     "@types/node": "^20.10.0",
