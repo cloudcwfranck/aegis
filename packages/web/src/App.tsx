@@ -12,6 +12,7 @@ import {
 
 import { Dashboard } from './components/Dashboard';
 import { LandingPage } from './components/LandingPage';
+import { MonitoringDashboard } from './components/MonitoringDashboard';
 import { PolicyManagement } from './components/PolicyManagement';
 import { UploadForm } from './components/UploadForm';
 
@@ -68,6 +69,9 @@ function Navigation() {
         <div style={{ display: 'flex', gap: '0.5rem', flex: 1 }}>
           <Link to="/dashboard" style={linkStyle('/dashboard')}>
             🏠 Dashboard
+          </Link>
+          <Link to="/monitoring" style={linkStyle('/monitoring')}>
+            📊 Monitoring
           </Link>
           <Link to="/upload" style={linkStyle('/upload')}>
             📤 Upload Scan
@@ -127,6 +131,7 @@ function AppContent() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/monitoring" element={<MonitoringDashboard />} />
         <Route path="/upload" element={<UploadForm />} />
         <Route path="/policies" element={<PolicyManagement />} />
         <Route path="/evidence" element={<EvidenceListPlaceholder />} />
