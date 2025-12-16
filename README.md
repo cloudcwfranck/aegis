@@ -4,6 +4,10 @@
 
 Aegis is a multi-tenant SaaS platform for automated DevSecOps compliance, vulnerability management, and continuous ATO (Authority to Operate). Built for government agencies and contractors to achieve FedRAMP authorization faster.
 
+## Documentation
+
+📚 **[View Full Documentation](https://aegis.dev/docs)** | [Build Locally](#building-documentation)
+
 ## Features
 
 - **SBOM Generation** - Syft integration for SPDX 2.3 software bill of materials
@@ -18,6 +22,7 @@ Aegis is a multi-tenant SaaS platform for automated DevSecOps compliance, vulner
 ## Technology Stack
 
 ### Application Layer
+
 - **Backend**: Node.js 18+, TypeScript, GraphQL (Apollo Server), TypeORM
 - **Frontend**: React 18, Vite, TypeScript
 - **Database**: PostgreSQL 15 with row-level security (RLS)
@@ -25,6 +30,7 @@ Aegis is a multi-tenant SaaS platform for automated DevSecOps compliance, vulner
 - **Storage**: S3-Gov (AWS) / Azure Blob Storage (Azure Gov)
 
 ### Infrastructure Layer
+
 - **Kubernetes**: AKS-Gov (Azure) / EKS-Gov (AWS)
 - **Service Mesh**: Istio with mTLS
 - **GitOps**: FluxCD for continuous deployment
@@ -33,6 +39,7 @@ Aegis is a multi-tenant SaaS platform for automated DevSecOps compliance, vulner
 - **Monitoring**: Prometheus + Grafana + Jaeger
 
 ### Security & Compliance
+
 - **Base Images**: Chainguard (zero-CVE containers)
 - **SBOM Tools**: Syft (SPDX 2.3 generation)
 - **Scanners**: Grype (vulnerability detection)
@@ -123,6 +130,7 @@ aegis/
 ### ⏳ M1: Evidence Ingestion + SBOM/Scanning (Weeks 3-6)
 
 **Objectives**:
+
 - Build evidence collection pipeline (GraphQL + REST API)
 - Integrate Syft for SBOM generation (SPDX 2.3 format)
 - Integrate Grype for vulnerability scanning
@@ -130,6 +138,7 @@ aegis/
 - S3-Gov blob storage with encryption at rest
 
 **Key Deliverables**:
+
 - Evidence upload API: `POST /api/v1/scans/upload`
 - TypeORM entities: Evidence, Artifact, Build, Vulnerability
 - Worker queue processing 100+ concurrent uploads
@@ -138,6 +147,7 @@ aegis/
 ### ⏳ M2: Signing/Attestation + Policy Gates + POA&M Export (Weeks 7-11)
 
 **Objectives**:
+
 - Integrate cosign attestation with Sigstore
 - Implement OPA/Conftest policy enforcement
 - Generate OSCAL-compliant POA&M documents
@@ -146,6 +156,7 @@ aegis/
 ### ⏳ M3: UI v2 + RBAC + Vulnerability Heatmap (Weeks 12-16)
 
 **Objectives**:
+
 - Platform One Keycloak OIDC integration
 - Multi-tenant RBAC (5 roles: OrgAdmin, ISSO, DevSecOps, Developer, Auditor)
 - Vulnerability heatmap visualization (D3.js/Recharts)
@@ -154,6 +165,7 @@ aegis/
 ### ⏳ M4: Gatekeeper Enforcement + Admission Control (Weeks 18-22)
 
 **Objectives**:
+
 - Deploy OPA Gatekeeper to Kubernetes clusters
 - Implement constraint templates (SignedImagesOnly, NoLatestTag, etc.)
 - Dynamic policy sync from Aegis API to Gatekeeper
@@ -161,6 +173,7 @@ aegis/
 ### ⏳ M5: Big Bang Baseline on AKS-Gov/EKS-Gov (Weeks 23-28)
 
 **Objectives**:
+
 - Deploy Platform One Big Bang with FluxCD
 - Istio service mesh with mTLS enforcement
 - Harbor registry integration
@@ -169,6 +182,7 @@ aegis/
 ### ⏳ M6: Production Readiness + ATO Package (Weeks 30-34)
 
 **Objectives**:
+
 - Prometheus + Grafana dashboards
 - Security hardening (DISA STIGs, CIS Benchmark)
 - OSCAL System Security Plan (SSP) generation
@@ -177,6 +191,7 @@ aegis/
 ### ⏳ M7: Automated Code Remediation (Weeks 35-42)
 
 **Objectives**:
+
 - AI-assisted code remediation engine
 - Automated Dockerfile generation (Chainguard base images)
 - Dependency upgrade with CVE resolution
@@ -209,11 +224,13 @@ These activities have 8-12 week lead times and must start immediately:
 ### Deployment Regions
 
 **Azure Government**:
+
 - Primary: `usgovvirginia`
 - Secondary: `usgovtexas`
 - DoD IL4/IL5: `usdodeast`, `usdodcentral`
 
 **AWS GovCloud**:
+
 - Primary: `us-gov-west-1`
 - Secondary: `us-gov-east-1`
 
@@ -330,6 +347,25 @@ npm run db:generate
 npm run docker:dev
 npm run docker:down
 ```
+
+## Building Documentation
+
+Build the MkDocs documentation locally:
+
+```bash
+# Install MkDocs and Material theme
+pip install mkdocs mkdocs-material mkdocs-material-extensions
+
+# Serve documentation with live reload
+mkdocs serve
+
+# Build static site
+mkdocs build
+```
+
+The documentation will be available at http://localhost:8000 with built-in search functionality.
+
+See [docs/README.md](docs/README.md) for more information.
 
 ## Contributing
 

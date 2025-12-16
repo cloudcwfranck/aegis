@@ -3,8 +3,7 @@
  */
 
 import { useState } from 'react';
-import { apiClient, UploadScanResponse, PolicyEvaluationResponse } from '../api/client';
-import { PolicyEvaluationResults } from './PolicyEvaluationResults';
+import { apiClient, UploadScanResponse } from '../api/client';
 
 export function UploadForm() {
   const [projectName, setProjectName] = useState('');
@@ -15,15 +14,12 @@ export function UploadForm() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<UploadScanResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [policyResults, setPolicyResults] = useState<PolicyEvaluationResponse | null>(null);
-  const [evaluatingPolicies, setEvaluatingPolicies] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
     setResult(null);
-    setPolicyResults(null);
 
     try {
       if (!sbomFile || !vulnFile) {
@@ -45,20 +41,6 @@ export function UploadForm() {
       });
 
       setResult(response);
-
-      // Automatically evaluate policies after successful upload
-      if (response.success && response.evidenceId) {
-        setEvaluatingPolicies(true);
-        try {
-          const policyResponse = await apiClient.evaluatePolicies(response.evidenceId);
-          setPolicyResults(policyResponse);
-        } catch (policyError) {
-          console.error('Policy evaluation failed:', policyError);
-          // Don't show error to user - policy evaluation is optional
-        } finally {
-          setEvaluatingPolicies(false);
-        }
-      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Upload failed');
     } finally {
@@ -296,25 +278,6 @@ export function UploadForm() {
             </div>
           )}
         </div>
-      )}
-
-      {evaluatingPolicies && (
-        <div
-          style={{
-            background: '#fff3cd',
-            color: '#856404',
-            padding: '1rem',
-            borderRadius: '4px',
-            border: '1px solid #ffc107',
-            marginTop: '1rem',
-          }}
-        >
-          <strong>⏳ Evaluating Policies...</strong>
-        </div>
-      )}
-
-      {policyResults && (
-        <PolicyEvaluationResults results={policyResults} />
       )}
 
       <div

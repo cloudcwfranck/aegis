@@ -6,7 +6,6 @@ import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-do
 import { LandingPage } from './components/LandingPage';
 import { Dashboard } from './components/Dashboard';
 import { UploadForm } from './components/UploadForm';
-import { PolicyManagement } from './components/PolicyManagement';
 
 const AEGIS_VERSION = '0.1.0';
 
@@ -50,9 +49,6 @@ function Navigation() {
           </Link>
           <Link to="/upload" style={linkStyle('/upload')}>
             📤 Upload Scan
-          </Link>
-          <Link to="/policies" style={linkStyle('/policies')}>
-            🛡️ Policies
           </Link>
           <Link to="/evidence" style={linkStyle('/evidence')}>
             📋 Evidence List
@@ -110,7 +106,6 @@ function AppContent() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/upload" element={<UploadForm />} />
-        <Route path="/policies" element={<PolicyManagement />} />
         <Route path="/evidence" element={<EvidenceListPlaceholder />} />
       </Routes>
     </div>

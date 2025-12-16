@@ -1,3 +1,4 @@
+import { EvidenceType, SBOMFormat } from '@aegis/shared';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -9,11 +10,11 @@ import {
   Index,
   OneToMany,
 } from 'typeorm';
-import { EvidenceType, SBOMFormat } from '@aegis/shared';
 
-import { TenantEntity } from './tenant.entity';
 import { BuildEntity } from './build.entity';
+import { TenantEntity } from './tenant.entity';
 import { VulnerabilityEntity } from './vulnerability.entity';
+import { PackageEntity } from './package.entity';
 
 @Entity('evidence')
 @Index(['tenantId', 'projectName', 'buildId'])
@@ -65,13 +66,13 @@ export class EvidenceEntity {
   format?: SBOMFormat;
 
   @Column({ type: 'varchar', length: 512 })
-  s3Uri!: string;
+  storageUri!: string;
 
   @Column({ type: 'varchar', length: 255 })
-  s3Bucket!: string;
+  storageContainer!: string;
 
   @Column({ type: 'varchar', length: 512 })
-  s3Key!: string;
+  storageKey!: string;
 
   @Column({ type: 'bigint', nullable: true })
   fileSizeBytes?: number;
@@ -84,6 +85,9 @@ export class EvidenceEntity {
 
   @OneToMany(() => VulnerabilityEntity, (vuln) => vuln.evidence)
   vulnerabilities!: VulnerabilityEntity[];
+
+  @OneToMany(() => PackageEntity, (pkg) => pkg.evidence)
+  packages!: PackageEntity[];
 
   @CreateDateColumn({ type: 'timestamptz' })
   createdAt!: Date;

@@ -19,8 +19,12 @@ export class InitialSchema1702310000000 implements MigrationInterface {
       )
     `);
 
-    await queryRunner.query(`CREATE INDEX "idx_tenants_slug" ON "tenants" ("slug")`);
-    await queryRunner.query(`CREATE INDEX "idx_tenants_status" ON "tenants" ("status")`);
+    await queryRunner.query(
+      `CREATE INDEX "idx_tenants_slug" ON "tenants" ("slug")`
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_tenants_status" ON "tenants" ("status")`
+    );
 
     // Create users table
     await queryRunner.query(`
@@ -40,8 +44,12 @@ export class InitialSchema1702310000000 implements MigrationInterface {
       )
     `);
 
-    await queryRunner.query(`CREATE INDEX "idx_users_email" ON "users" ("email")`);
-    await queryRunner.query(`CREATE INDEX "idx_users_tenant" ON "users" ("tenantId")`);
+    await queryRunner.query(
+      `CREATE INDEX "idx_users_email" ON "users" ("email")`
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_users_tenant" ON "users" ("tenantId")`
+    );
 
     // Create projects table
     await queryRunner.query(`
@@ -58,7 +66,9 @@ export class InitialSchema1702310000000 implements MigrationInterface {
       )
     `);
 
-    await queryRunner.query(`CREATE INDEX "idx_projects_tenant" ON "projects" ("tenantId")`);
+    await queryRunner.query(
+      `CREATE INDEX "idx_projects_tenant" ON "projects" ("tenantId")`
+    );
 
     // Create builds table
     await queryRunner.query(`
@@ -76,8 +86,12 @@ export class InitialSchema1702310000000 implements MigrationInterface {
       )
     `);
 
-    await queryRunner.query(`CREATE INDEX "idx_builds_project" ON "builds" ("projectId", "buildNumber")`);
-    await queryRunner.query(`CREATE INDEX "idx_builds_commit" ON "builds" ("gitCommitSha")`);
+    await queryRunner.query(
+      `CREATE INDEX "idx_builds_project" ON "builds" ("projectId", "buildNumber")`
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_builds_commit" ON "builds" ("gitCommitSha")`
+    );
 
     // Create evidence table
     await queryRunner.query(`
@@ -90,9 +104,9 @@ export class InitialSchema1702310000000 implements MigrationInterface {
         "imageDigest" varchar(255) NOT NULL,
         "type" varchar(50) NOT NULL,
         "format" varchar(50),
-        "s3Uri" varchar(512) NOT NULL,
-        "s3Bucket" varchar(255) NOT NULL,
-        "s3Key" varchar(512) NOT NULL,
+        "storageUri" varchar(512) NOT NULL,
+        "storageContainer" varchar(255) NOT NULL,
+        "storageKey" varchar(512) NOT NULL,
         "fileSizeBytes" bigint,
         "sha256Checksum" varchar(64),
         "metadata" jsonb NOT NULL DEFAULT '{}',
@@ -101,9 +115,15 @@ export class InitialSchema1702310000000 implements MigrationInterface {
       )
     `);
 
-    await queryRunner.query(`CREATE INDEX "idx_evidence_tenant_project" ON "evidence" ("tenantId", "projectName")`);
-    await queryRunner.query(`CREATE INDEX "idx_evidence_image" ON "evidence" ("imageDigest")`);
-    await queryRunner.query(`CREATE INDEX "idx_evidence_created" ON "evidence" ("createdAt")`);
+    await queryRunner.query(
+      `CREATE INDEX "idx_evidence_tenant_project" ON "evidence" ("tenantId", "projectName")`
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_evidence_image" ON "evidence" ("imageDigest")`
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_evidence_created" ON "evidence" ("createdAt")`
+    );
 
     // Create artifacts table
     await queryRunner.query(`
@@ -122,8 +142,12 @@ export class InitialSchema1702310000000 implements MigrationInterface {
       )
     `);
 
-    await queryRunner.query(`CREATE INDEX "idx_artifacts_digest" ON "artifacts" ("imageDigest")`);
-    await queryRunner.query(`CREATE INDEX "idx_artifacts_registry" ON "artifacts" ("registry", "repository", "tag")`);
+    await queryRunner.query(
+      `CREATE INDEX "idx_artifacts_digest" ON "artifacts" ("imageDigest")`
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_artifacts_registry" ON "artifacts" ("registry", "repository", "tag")`
+    );
 
     // Create vulnerabilities table
     await queryRunner.query(`
@@ -146,10 +170,18 @@ export class InitialSchema1702310000000 implements MigrationInterface {
       )
     `);
 
-    await queryRunner.query(`CREATE INDEX "idx_vulnerabilities_cve" ON "vulnerabilities" ("cveId")`);
-    await queryRunner.query(`CREATE INDEX "idx_vulnerabilities_evidence" ON "vulnerabilities" ("evidenceId", "cveId")`);
-    await queryRunner.query(`CREATE INDEX "idx_vulnerabilities_severity" ON "vulnerabilities" ("severity")`);
-    await queryRunner.query(`CREATE INDEX "idx_vulnerabilities_package" ON "vulnerabilities" ("packageName")`);
+    await queryRunner.query(
+      `CREATE INDEX "idx_vulnerabilities_cve" ON "vulnerabilities" ("cveId")`
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_vulnerabilities_evidence" ON "vulnerabilities" ("evidenceId", "cveId")`
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_vulnerabilities_severity" ON "vulnerabilities" ("severity")`
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_vulnerabilities_package" ON "vulnerabilities" ("packageName")`
+    );
 
     // Create poam_items table
     await queryRunner.query(`
@@ -171,9 +203,15 @@ export class InitialSchema1702310000000 implements MigrationInterface {
       )
     `);
 
-    await queryRunner.query(`CREATE INDEX "idx_poam_tenant_status" ON "poam_items" ("tenantId", "status")`);
-    await queryRunner.query(`CREATE INDEX "idx_poam_vulnerability" ON "poam_items" ("vulnerabilityId")`);
-    await queryRunner.query(`CREATE INDEX "idx_poam_due_date" ON "poam_items" ("dueDate")`);
+    await queryRunner.query(
+      `CREATE INDEX "idx_poam_tenant_status" ON "poam_items" ("tenantId", "status")`
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_poam_vulnerability" ON "poam_items" ("vulnerabilityId")`
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_poam_due_date" ON "poam_items" ("dueDate")`
+    );
 
     // Create policies table
     await queryRunner.query(`
@@ -193,9 +231,15 @@ export class InitialSchema1702310000000 implements MigrationInterface {
       )
     `);
 
-    await queryRunner.query(`CREATE INDEX "idx_policies_tenant" ON "policies" ("tenantId")`);
-    await queryRunner.query(`CREATE INDEX "idx_policies_type" ON "policies" ("type")`);
-    await queryRunner.query(`CREATE INDEX "idx_policies_enabled" ON "policies" ("enabled")`);
+    await queryRunner.query(
+      `CREATE INDEX "idx_policies_tenant" ON "policies" ("tenantId")`
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_policies_type" ON "policies" ("type")`
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_policies_enabled" ON "policies" ("enabled")`
+    );
 
     // Create policy_evaluations table
     await queryRunner.query(`
@@ -210,8 +254,12 @@ export class InitialSchema1702310000000 implements MigrationInterface {
       )
     `);
 
-    await queryRunner.query(`CREATE INDEX "idx_policy_evaluations_policy" ON "policy_evaluations" ("policyId", "evaluatedAt")`);
-    await queryRunner.query(`CREATE INDEX "idx_policy_evaluations_evidence" ON "policy_evaluations" ("evidenceId")`);
+    await queryRunner.query(
+      `CREATE INDEX "idx_policy_evaluations_policy" ON "policy_evaluations" ("policyId", "evaluatedAt")`
+    );
+    await queryRunner.query(
+      `CREATE INDEX "idx_policy_evaluations_evidence" ON "policy_evaluations" ("evidenceId")`
+    );
 
     // Enable UUID extension
     await queryRunner.query(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`);

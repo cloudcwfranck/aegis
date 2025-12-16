@@ -1,3 +1,4 @@
+import { PolicyType, PolicyEnforcementLevel } from '@aegis/shared';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -6,7 +7,6 @@ import {
   UpdateDateColumn,
   Index,
 } from 'typeorm';
-import { PolicyType, PolicyEnforcementLevel } from '@aegis/shared';
 
 @Entity('policies')
 @Index(['tenantId', 'name'], { unique: true })
@@ -40,6 +40,9 @@ export class PolicyEntity {
 
   @Column({ type: 'boolean', default: true })
   enabled!: boolean;
+
+  @Column({ type: 'integer', default: 100 })
+  priority!: number;
 
   @Column({ type: 'text' })
   regoCode!: string;
