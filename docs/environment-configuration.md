@@ -28,6 +28,7 @@ docker-compose up -d postgres redis minio
 ```
 
 This starts:
+
 - PostgreSQL 15 on port 5432
 - Redis 7 on port 6379
 - MinIO on ports 9000 (API) and 9001 (Console)
@@ -196,30 +197,30 @@ metadata:
 type: Opaque
 stringData:
   # Database Configuration
-  DATABASE_HOST: "aegis-db-prod.postgres.database.usgovcloudapi.net"
-  DATABASE_PORT: "5432"
-  DATABASE_NAME: "aegis_production"
-  DATABASE_USER: "aegis_admin"
-  DATABASE_PASSWORD: "<postgres-password>"
-  DATABASE_SSL: "true"
+  DATABASE_HOST: 'aegis-db-prod.postgres.database.usgovcloudapi.net'
+  DATABASE_PORT: '5432'
+  DATABASE_NAME: 'aegis_production'
+  DATABASE_USER: 'aegis_admin'
+  DATABASE_PASSWORD: '<postgres-password>'
+  DATABASE_SSL: 'true'
 
   # Storage Configuration (Azure Blob)
-  STORAGE_PROVIDER: "azure"
-  AZURE_STORAGE_ACCOUNT_NAME: "aegisblobprod"
-  AZURE_STORAGE_ACCOUNT_KEY: "<storage-account-key>"
-  AZURE_STORAGE_CONTAINER: "evidence"
-  AZURE_STORAGE_ENDPOINT: "https://aegisblobprod.blob.core.usgovcloudapi.net"
+  STORAGE_PROVIDER: 'azure'
+  AZURE_STORAGE_ACCOUNT_NAME: 'aegisblobprod'
+  AZURE_STORAGE_ACCOUNT_KEY: '<storage-account-key>'
+  AZURE_STORAGE_CONTAINER: 'evidence'
+  AZURE_STORAGE_ENDPOINT: 'https://aegisblobprod.blob.core.usgovcloudapi.net'
 
   # Redis Configuration
-  REDIS_HOST: "aegis-redis-prod.redis.cache.usgovcloudapi.net"
-  REDIS_PORT: "6380"
-  REDIS_PASSWORD: "<redis-access-key>"
-  REDIS_TLS: "true"
+  REDIS_HOST: 'aegis-redis-prod.redis.cache.usgovcloudapi.net'
+  REDIS_PORT: '6380'
+  REDIS_PASSWORD: '<redis-access-key>'
+  REDIS_TLS: 'true'
 
   # API Configuration
-  PORT: "4000"
-  NODE_ENV: "production"
-  LOG_LEVEL: "info"
+  PORT: '4000'
+  NODE_ENV: 'production'
+  LOG_LEVEL: 'info'
 ```
 
 Apply the secret:
@@ -300,32 +301,32 @@ spec:
         app: aegis-api
     spec:
       containers:
-      - name: api
-        image: aegis-api:latest
-        ports:
-        - containerPort: 4000
-        envFrom:
-        - secretRef:
-            name: aegis-api-secrets
-        resources:
-          requests:
-            memory: "512Mi"
-            cpu: "500m"
-          limits:
-            memory: "1Gi"
-            cpu: "1000m"
-        livenessProbe:
-          httpGet:
-            path: /health
-            port: 4000
-          initialDelaySeconds: 30
-          periodSeconds: 10
-        readinessProbe:
-          httpGet:
-            path: /health
-            port: 4000
-          initialDelaySeconds: 10
-          periodSeconds: 5
+        - name: api
+          image: aegis-api:latest
+          ports:
+            - containerPort: 4000
+          envFrom:
+            - secretRef:
+                name: aegis-api-secrets
+          resources:
+            requests:
+              memory: '512Mi'
+              cpu: '500m'
+            limits:
+              memory: '1Gi'
+              cpu: '1000m'
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 4000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 4000
+            initialDelaySeconds: 10
+            periodSeconds: 5
 ---
 apiVersion: v1
 kind: Service
@@ -336,9 +337,9 @@ spec:
   selector:
     app: aegis-api
   ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 4000
+    - protocol: TCP
+      port: 80
+      targetPort: 4000
   type: ClusterIP
 ```
 
@@ -364,19 +365,19 @@ spec:
         app: aegis-workers
     spec:
       containers:
-      - name: workers
-        image: aegis-api:latest
-        command: ["node", "dist/queues/worker-manager.js"]
-        envFrom:
-        - secretRef:
-            name: aegis-api-secrets
-        resources:
-          requests:
-            memory: "256Mi"
-            cpu: "250m"
-          limits:
-            memory: "512Mi"
-            cpu: "500m"
+        - name: workers
+          image: aegis-api:latest
+          command: ['node', 'dist/queues/worker-manager.js']
+          envFrom:
+            - secretRef:
+                name: aegis-api-secrets
+          resources:
+            requests:
+              memory: '256Mi'
+              cpu: '250m'
+            limits:
+              memory: '512Mi'
+              cpu: '500m'
 ```
 
 ---
@@ -403,16 +404,16 @@ Add in Vercel Project Settings → Environment Variables:
 
 #### Production
 
-| Name | Value | Environment |
-|------|-------|-------------|
-| `VITE_API_URL` | `https://api.aegis.yourdomain.gov` | Production |
+| Name           | Value                              | Environment |
+| -------------- | ---------------------------------- | ----------- |
+| `VITE_API_URL` | `https://api.aegis.yourdomain.gov` | Production  |
 
 #### Preview/Development
 
-| Name | Value | Environment |
-|------|-------|-------------|
-| `VITE_API_URL` | `https://api-dev.aegis.yourdomain.gov` | Preview |
-| `VITE_API_URL` | `http://localhost:4000` | Development |
+| Name           | Value                                  | Environment |
+| -------------- | -------------------------------------- | ----------- |
+| `VITE_API_URL` | `https://api-dev.aegis.yourdomain.gov` | Preview     |
+| `VITE_API_URL` | `http://localhost:4000`                | Development |
 
 ### 4. Custom Domain (Optional)
 
@@ -425,6 +426,7 @@ Configure custom domain in Vercel:
 ### 5. Deploy
 
 Vercel will automatically deploy on:
+
 - **Main branch**: Production deployment
 - **Feature branches**: Preview deployments
 - **Pull requests**: Preview deployments
@@ -435,38 +437,38 @@ Vercel will automatically deploy on:
 
 ### API Server
 
-| Variable | Required | Default | Description |
-|----------|----------|---------|-------------|
-| `DATABASE_HOST` | Yes | - | PostgreSQL host |
-| `DATABASE_PORT` | Yes | 5432 | PostgreSQL port |
-| `DATABASE_NAME` | Yes | - | Database name |
-| `DATABASE_USER` | Yes | - | Database user |
-| `DATABASE_PASSWORD` | Yes | - | Database password |
-| `DATABASE_SSL` | No | false | Enable SSL for database |
-| `STORAGE_PROVIDER` | Yes | s3 | Storage provider: `s3` or `azure` |
-| `S3_ENDPOINT` | If S3 | - | S3 endpoint (MinIO: http://localhost:9000) |
-| `S3_ACCESS_KEY_ID` | If S3 | - | S3 access key |
-| `S3_SECRET_ACCESS_KEY` | If S3 | - | S3 secret key |
-| `S3_BUCKET` | If S3 | - | S3 bucket name |
-| `S3_REGION` | If S3 | us-east-1 | S3 region |
-| `AZURE_STORAGE_ACCOUNT_NAME` | If Azure | - | Azure storage account name |
-| `AZURE_STORAGE_ACCOUNT_KEY` | If Azure | - | Azure storage account key |
-| `AZURE_STORAGE_CONTAINER` | If Azure | - | Azure blob container name |
-| `AZURE_STORAGE_ENDPOINT` | If Azure | - | Azure blob endpoint (Gov: core.usgovcloudapi.net) |
-| `AZURE_USE_MANAGED_IDENTITY` | No | false | Use Azure Managed Identity |
-| `REDIS_HOST` | Yes | localhost | Redis host |
-| `REDIS_PORT` | Yes | 6379 | Redis port |
-| `REDIS_PASSWORD` | No | - | Redis password |
-| `REDIS_TLS` | No | false | Enable TLS for Redis |
-| `PORT` | No | 4000 | API server port |
-| `NODE_ENV` | No | development | Environment: development/production |
-| `LOG_LEVEL` | No | info | Log level: debug/info/warn/error |
+| Variable                     | Required | Default     | Description                                       |
+| ---------------------------- | -------- | ----------- | ------------------------------------------------- |
+| `DATABASE_HOST`              | Yes      | -           | PostgreSQL host                                   |
+| `DATABASE_PORT`              | Yes      | 5432        | PostgreSQL port                                   |
+| `DATABASE_NAME`              | Yes      | -           | Database name                                     |
+| `DATABASE_USER`              | Yes      | -           | Database user                                     |
+| `DATABASE_PASSWORD`          | Yes      | -           | Database password                                 |
+| `DATABASE_SSL`               | No       | false       | Enable SSL for database                           |
+| `STORAGE_PROVIDER`           | Yes      | s3          | Storage provider: `s3` or `azure`                 |
+| `S3_ENDPOINT`                | If S3    | -           | S3 endpoint (MinIO: http://localhost:9000)        |
+| `S3_ACCESS_KEY_ID`           | If S3    | -           | S3 access key                                     |
+| `S3_SECRET_ACCESS_KEY`       | If S3    | -           | S3 secret key                                     |
+| `S3_BUCKET`                  | If S3    | -           | S3 bucket name                                    |
+| `S3_REGION`                  | If S3    | us-east-1   | S3 region                                         |
+| `AZURE_STORAGE_ACCOUNT_NAME` | If Azure | -           | Azure storage account name                        |
+| `AZURE_STORAGE_ACCOUNT_KEY`  | If Azure | -           | Azure storage account key                         |
+| `AZURE_STORAGE_CONTAINER`    | If Azure | -           | Azure blob container name                         |
+| `AZURE_STORAGE_ENDPOINT`     | If Azure | -           | Azure blob endpoint (Gov: core.usgovcloudapi.net) |
+| `AZURE_USE_MANAGED_IDENTITY` | No       | false       | Use Azure Managed Identity                        |
+| `REDIS_HOST`                 | Yes      | localhost   | Redis host                                        |
+| `REDIS_PORT`                 | Yes      | 6379        | Redis port                                        |
+| `REDIS_PASSWORD`             | No       | -           | Redis password                                    |
+| `REDIS_TLS`                  | No       | false       | Enable TLS for Redis                              |
+| `PORT`                       | No       | 4000        | API server port                                   |
+| `NODE_ENV`                   | No       | development | Environment: development/production               |
+| `LOG_LEVEL`                  | No       | info        | Log level: debug/info/warn/error                  |
 
 ### Web Frontend
 
-| Variable | Required | Default | Description |
-|----------|----------|---------|-------------|
-| `VITE_API_URL` | Yes | - | API base URL |
+| Variable       | Required | Default | Description  |
+| -------------- | -------- | ------- | ------------ |
+| `VITE_API_URL` | Yes      | -       | API base URL |
 
 ---
 

@@ -37,11 +37,7 @@ Aegis implements the following security controls:
     "coverage": "100% of components",
     "lastScan": "2025-12-16T15:30:00Z"
   },
-  "artifacts": [
-    "SBOM files",
-    "Vulnerability scan reports",
-    "Audit logs"
-  ]
+  "artifacts": ["SBOM files", "Vulnerability scan reports", "Audit logs"]
 }
 ```
 
@@ -68,11 +64,7 @@ Aegis implements the following security controls:
     "trackingMechanism": "OSCAL POA&Ms",
     "verificationProcess": "Automated re-scanning"
   },
-  "artifacts": [
-    "POA&M documents",
-    "Remediation reports",
-    "Completion evidence"
-  ]
+  "artifacts": ["POA&M documents", "Remediation reports", "Completion evidence"]
 }
 ```
 
@@ -98,11 +90,7 @@ Aegis implements the following security controls:
     "coverage": "All software components",
     "accessibility": "API and dashboard"
   },
-  "artifacts": [
-    "SBOM files",
-    "Component database",
-    "Dependency graphs"
-  ]
+  "artifacts": ["SBOM files", "Component database", "Dependency graphs"]
 }
 ```
 
@@ -128,11 +116,7 @@ Aegis implements the following security controls:
     "logging": "All security events",
     "retention": "7 years"
   },
-  "artifacts": [
-    "Monitoring logs",
-    "Alert history",
-    "Incident reports"
-  ]
+  "artifacts": ["Monitoring logs", "Alert history", "Incident reports"]
 }
 ```
 
@@ -188,17 +172,20 @@ async function generateMonthlyReport(tenantId: string, month: Date) {
     tenant: tenantId,
     vulnerabilitySummary: {
       newVulnerabilities: await getNewVulnerabilities(tenantId, month),
-      remediatedVulnerabilities: await getRemediatedVulnerabilities(tenantId, month),
+      remediatedVulnerabilities: await getRemediatedVulnerabilities(
+        tenantId,
+        month
+      ),
       openPOAMs: await getOpenPOAMs(tenantId),
-      overduePOAMs: await getOverduePOAMs(tenantId)
+      overduePOAMs: await getOverduePOAMs(tenantId),
     },
     nist80053Controls: {
       'RA-5': await getRA5Evidence(tenantId, month),
       'SI-2': await getSI2Evidence(tenantId, month),
       'CM-8': await getCM8Evidence(tenantId, month),
-      'SI-4': await getSI4Evidence(tenantId, month)
+      'SI-4': await getSI4Evidence(tenantId, month),
     },
-    oscalDocuments: await generateOSCALReport(tenantId, month)
+    oscalDocuments: await generateOSCALReport(tenantId, month),
   };
 
   return report;
@@ -209,19 +196,22 @@ async function generateMonthlyReport(tenantId: string, month: Date) {
 
 FedRAMP specifies remediation timelines:
 
-| Severity | Deadline | Aegis Enforcement |
-|----------|----------|-------------------|
-| Critical | 30 days | Automated POA&M with 30-day deadline |
-| High | 90 days | Automated POA&M with 90-day deadline |
-| Medium | 180 days | Automated POA&M with 180-day deadline |
-| Low | No deadline | Tracked but no mandatory deadline |
+| Severity | Deadline    | Aegis Enforcement                     |
+| -------- | ----------- | ------------------------------------- |
+| Critical | 30 days     | Automated POA&M with 30-day deadline  |
+| High     | 90 days     | Automated POA&M with 90-day deadline  |
+| Medium   | 180 days    | Automated POA&M with 180-day deadline |
+| Low      | No deadline | Tracked but no mandatory deadline     |
 
 ### Deviation Requests
 
 When deadlines cannot be met, submit deviation requests:
 
 ```graphql
-mutation RequestDeadlineExtension($poamId: ID!, $input: DeviationRequestInput!) {
+mutation RequestDeadlineExtension(
+  $poamId: ID!
+  $input: DeviationRequestInput!
+) {
   requestDeadlineExtension(poamId: $poamId, input: $input) {
     id
     originalDeadline
@@ -409,7 +399,7 @@ const oscalPackage = {
   systemSecurityPlan: oscalSSP,
   securityAssessmentPlan: oscalSAP,
   securityAssessmentResults: oscalSAR,
-  planOfActionAndMilestones: oscalPOAM
+  planOfActionAndMilestones: oscalPOAM,
 };
 
 // Generate OSCAL JSON
@@ -444,7 +434,7 @@ Set up alerts for upcoming deadlines:
 await scheduleAlert({
   type: 'DEADLINE_APPROACHING',
   daysBeforeDeadline: 7,
-  recipients: ['security-team@example.com']
+  recipients: ['security-team@example.com'],
 });
 ```
 
@@ -459,8 +449,8 @@ await updatePOAM(poamId, {
     reason: 'Detailed technical justification',
     mitigatingControls: ['Control 1', 'Control 2'],
     approvedBy: 'CISO',
-    approvalDate: new Date()
-  }
+    approvalDate: new Date(),
+  },
 });
 ```
 
@@ -475,7 +465,7 @@ cron.schedule('0 0 1 * *', async () => {
   await sendNotification({
     type: 'MONTHLY_COMPLIANCE_REPORT',
     recipients: ['compliance-team@example.com'],
-    report
+    report,
   });
 });
 ```

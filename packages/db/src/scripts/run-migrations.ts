@@ -10,7 +10,9 @@ import { AppDataSource } from '../data-source';
 async function runMigrations() {
   console.log('🔄 Starting migration process...');
   console.log(`Environment: ${process.env['NODE_ENV'] || 'development'}`);
-  console.log(`Database: ${process.env['DB_HOST']}:${process.env['DB_PORT']}/${process.env['DB_NAME']}`);
+  console.log(
+    `Database: ${process.env['DB_HOST']}:${process.env['DB_PORT']}/${process.env['DB_NAME']}`
+  );
 
   try {
     // Initialize data source

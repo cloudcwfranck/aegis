@@ -170,7 +170,7 @@ export class Component {
   @Column({ type: 'jsonb', nullable: true })
   metadata: Record<string, any>;
 
-  @OneToMany(() => Vulnerability, vuln => vuln.component)
+  @OneToMany(() => Vulnerability, (vuln) => vuln.component)
   vulnerabilities: Vulnerability[];
 }
 ```

@@ -26,7 +26,6 @@ export interface POAMGeneratorJobData {
   lowCount: number;
 }
 
-
 /**
  * Calculate scheduled completion date based on severity
  * FedRAMP requirements:
@@ -35,9 +34,7 @@ export interface POAMGeneratorJobData {
  * - Medium: 180 days
  * - Low: 365 days
  */
-function calculateScheduledCompletion(
-  severity: VulnerabilitySeverity
-): Date {
+function calculateScheduledCompletion(severity: VulnerabilitySeverity): Date {
   const now = new Date();
   const daysMap: Record<VulnerabilitySeverity, number> = {
     [VulnerabilitySeverity.CRITICAL]: 30,
@@ -66,7 +63,10 @@ function generateRemediationSteps(
 ): string {
   const steps: string[] = [];
 
-  if (severity === VulnerabilitySeverity.CRITICAL || severity === VulnerabilitySeverity.HIGH) {
+  if (
+    severity === VulnerabilitySeverity.CRITICAL ||
+    severity === VulnerabilitySeverity.HIGH
+  ) {
     steps.push(`1. Analyze ${cveId} in ${packageName}`);
     if (fixedVersion) {
       steps.push(`2. Upgrade ${packageName} to version ${fixedVersion}`);
@@ -125,7 +125,9 @@ async function processPOAMGenerator(
     });
 
     if (vulnerabilities.length === 0) {
-      logger.info('No Critical or High vulnerabilities found, skipping POA&M generation');
+      logger.info(
+        'No Critical or High vulnerabilities found, skipping POA&M generation'
+      );
       await job.updateProgress(100);
       return;
     }
@@ -169,8 +171,12 @@ async function processPOAMGenerator(
 
     logger.info(`Created ${poamEntities.length} POA&M items in database`, {
       evidenceId,
-      critical: poamEntities.filter((p) => p.riskLevel === VulnerabilitySeverity.CRITICAL).length,
-      high: poamEntities.filter((p) => p.riskLevel === VulnerabilitySeverity.HIGH).length,
+      critical: poamEntities.filter(
+        (p) => p.riskLevel === VulnerabilitySeverity.CRITICAL
+      ).length,
+      high: poamEntities.filter(
+        (p) => p.riskLevel === VulnerabilitySeverity.HIGH
+      ).length,
     });
 
     await job.updateProgress(100);

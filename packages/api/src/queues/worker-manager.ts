@@ -23,7 +23,11 @@ export async function startWorkers(): Promise<void> {
     const vulnerabilityIndexerWorker = createVulnerabilityIndexerWorker();
     const poamGeneratorWorker = createPOAMGeneratorWorker();
 
-    workers = [sbomParserWorker, vulnerabilityIndexerWorker, poamGeneratorWorker];
+    workers = [
+      sbomParserWorker,
+      vulnerabilityIndexerWorker,
+      poamGeneratorWorker,
+    ];
 
     logger.info('All BullMQ workers started successfully', {
       workerCount: workers.length,

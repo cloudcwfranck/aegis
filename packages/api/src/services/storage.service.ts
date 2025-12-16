@@ -245,7 +245,8 @@ export class AzureBlobStorageService implements IStorageService {
       };
     } catch (error) {
       // Azure SDK errors don't serialize well, so extract key details
-      const errorMessage = error instanceof Error ? error.message : String(error);
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
       const errorName = error instanceof Error ? error.name : 'Unknown';
 
       logger.error('Failed to upload file to Azure Blob Storage', {
@@ -253,7 +254,10 @@ export class AzureBlobStorageService implements IStorageService {
         container: this.containerName,
         errorMessage,
         errorName,
-        error: error instanceof Error ? { ...error, message: error.message, name: error.name } : error,
+        error:
+          error instanceof Error
+            ? { ...error, message: error.message, name: error.name }
+            : error,
       });
       throw new Error(`Failed to upload file: ${key}. Error: ${errorMessage}`);
     }

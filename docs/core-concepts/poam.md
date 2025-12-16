@@ -67,12 +67,12 @@ Aegis generates POA&Ms in **OSCAL** (Open Security Controls Assessment Language)
 
 POA&Ms are assigned deadlines based on FedRAMP requirements:
 
-| Severity | Deadline | Days from Discovery |
-|----------|----------|---------------------|
-| **CRITICAL** | 30 days | 30 |
-| **HIGH** | 90 days | 90 |
-| **MEDIUM** | 180 days | 180 |
-| **LOW** | No deadline | N/A |
+| Severity     | Deadline    | Days from Discovery |
+| ------------ | ----------- | ------------------- |
+| **CRITICAL** | 30 days     | 30                  |
+| **HIGH**     | 90 days     | 90                  |
+| **MEDIUM**   | 180 days    | 180                 |
+| **LOW**      | No deadline | N/A                 |
 
 Example:
 
@@ -134,7 +134,7 @@ export class POAM {
   @Column({ type: 'jsonb', nullable: true })
   oscalDocument: Record<string, any>;
 
-  @OneToOne(() => Vulnerability, vuln => vuln.poam)
+  @OneToOne(() => Vulnerability, (vuln) => vuln.poam)
   vulnerability: Vulnerability;
 }
 ```
@@ -247,7 +247,7 @@ export class POAMGeneratorWorker {
         vulnerability: vuln,
         deadline,
         nistControls,
-        remediationPlan
+        remediationPlan,
       });
 
       // Create POA&M
@@ -261,7 +261,7 @@ export class POAMGeneratorWorker {
         scheduledCompletionDate: deadline,
         remediationPlan,
         nistControls,
-        oscalDocument
+        oscalDocument,
       });
 
       poams.push(poam);
@@ -305,13 +305,13 @@ export class POAMGeneratorWorker {
 
 POA&Ms are mapped to NIST 800-53 Rev 5 controls:
 
-| Control | Name | Description |
-|---------|------|-------------|
-| **RA-5** | Vulnerability Monitoring and Scanning | Continuous vulnerability scanning |
-| **SI-2** | Flaw Remediation | Timely patching of vulnerabilities |
-| **CM-8** | System Component Inventory | SBOM maintenance |
-| **SI-4** | System Monitoring | Detection of exploitation attempts |
-| **CM-7** | Least Functionality | Disable vulnerable features |
+| Control  | Name                                  | Description                        |
+| -------- | ------------------------------------- | ---------------------------------- |
+| **RA-5** | Vulnerability Monitoring and Scanning | Continuous vulnerability scanning  |
+| **SI-2** | Flaw Remediation                      | Timely patching of vulnerabilities |
+| **CM-8** | System Component Inventory            | SBOM maintenance                   |
+| **SI-4** | System Monitoring                     | Detection of exploitation attempts |
+| **CM-7** | Least Functionality                   | Disable vulnerable features        |
 
 Example mapping:
 
@@ -461,8 +461,8 @@ Assign POA&Ms to specific teams:
 await updatePOAM(poamId, {
   remediationPlan: {
     assignedTo: 'platform-team',
-    estimatedEffort: 'MEDIUM'
-  }
+    estimatedEffort: 'MEDIUM',
+  },
 });
 ```
 
@@ -477,7 +477,7 @@ await updatePOAM(poamId, { status: 'IN_PROGRESS' });
 // Complete remediation
 await updatePOAM(poamId, {
   status: 'COMPLETED',
-  actualCompletionDate: new Date()
+  actualCompletionDate: new Date(),
 });
 ```
 
@@ -494,7 +494,7 @@ cron.schedule('0 9 * * *', async () => {
     await sendNotification({
       type: 'DEADLINE_APPROACHING',
       poam,
-      daysRemaining: getDaysUntilDeadline(poam)
+      daysRemaining: getDaysUntilDeadline(poam),
     });
   }
 });
@@ -512,12 +512,12 @@ await updatePOAM(poamId, {
     mitigatingControls: [
       'Network segmentation',
       'Access control lists',
-      'Monitoring and alerting'
+      'Monitoring and alerting',
     ],
     approvedBy: 'CISO',
     approvalDate: new Date(),
-    expirationDate: addMonths(new Date(), 6)
-  }
+    expirationDate: addMonths(new Date(), 6),
+  },
 });
 ```
 
