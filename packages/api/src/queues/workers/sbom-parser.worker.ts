@@ -6,6 +6,8 @@
 
 import { Worker, Job } from 'bullmq';
 
+import { AppDataSource } from '@aegis/db/src/data-source';
+import { PackageEntity } from '@aegis/db/src/entities';
 import { logger } from '../../utils/logger';
 import { createRedisConnection, QueueName } from '../config';
 
@@ -144,9 +146,36 @@ async function processSBOMParser(job: Job<SBOMParserJobData>): Promise<void> {
       packageCount: packages.length,
     });
 
-    // TODO: Store parsed packages in database
-    // This would involve creating a Package entity and repository
-    // For now, we just log the results
+    // Store parsed packages in database
+    if (packages.length > 0) {
+      const packageRepo = AppDataSource.getRepository(PackageEntity);
+
+      // Prepare package entities for batch insert
+      const packageEntities = packages.map((pkg) => ({
+        evidenceId,
+        name: pkg.name,
+        version: pkg.version,
+        supplier: pkg.supplier,
+        downloadLocation: pkg.downloadLocation,
+        licenseConcluded: pkg.licenseConcluded,
+        licenseDeclared: pkg.licenseDeclared,
+        copyrightText: pkg.copyrightText,
+        purl: pkg.purl,
+        cpe: pkg.cpe,
+      }));
+
+      // Batch insert all packages for performance
+      await packageRepo
+        .createQueryBuilder()
+        .insert()
+        .into(PackageEntity)
+        .values(packageEntities)
+        .execute();
+
+      logger.info(`Stored ${packages.length} packages in database`, {
+        evidenceId,
+      });
+    }
 
     await job.updateProgress(100);
 

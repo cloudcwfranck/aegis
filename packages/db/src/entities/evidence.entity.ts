@@ -14,6 +14,7 @@ import {
 import { BuildEntity } from './build.entity';
 import { TenantEntity } from './tenant.entity';
 import { VulnerabilityEntity } from './vulnerability.entity';
+import { PackageEntity } from './package.entity';
 
 @Entity('evidence')
 @Index(['tenantId', 'projectName', 'buildId'])
@@ -84,6 +85,9 @@ export class EvidenceEntity {
 
   @OneToMany(() => VulnerabilityEntity, (vuln) => vuln.evidence)
   vulnerabilities!: VulnerabilityEntity[];
+
+  @OneToMany(() => PackageEntity, (pkg) => pkg.evidence)
+  packages!: PackageEntity[];
 
   @CreateDateColumn({ type: 'timestamptz' })
   createdAt!: Date;
