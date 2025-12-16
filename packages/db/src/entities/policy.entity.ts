@@ -44,7 +44,7 @@ export class PolicyEntity {
   @Column({ type: 'integer', default: 100 })
   priority!: number;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', default: '' })
   regoCode!: string;
 
   @Column({ type: 'jsonb', default: {} })
