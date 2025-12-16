@@ -7,32 +7,33 @@ import { Link } from 'react-router-dom';
 
 export function LandingPage() {
   return (
-    <div style={{ minHeight: '100vh', background: '#000000', fontFamily: '"IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: '#ffffff', fontFamily: '"IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
       {/* Navigation */}
       <nav style={{
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
         padding: '1.5rem 3rem',
-        borderBottom: '1px solid #222222'
+        background: '#ffffff',
+        borderBottom: '1px solid #e0e0e0'
       }}>
-        <div style={{ fontSize: '1.25rem', fontWeight: '600', color: '#ffffff' }}>Aegis</div>
+        <div style={{ fontSize: '1.25rem', fontWeight: '600', color: '#000000' }}>Aegis</div>
         <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
-          <Link to="/dashboard" style={{ color: '#ffffff', textDecoration: 'none', fontSize: '0.95rem' }}>
+          <Link to="/dashboard" style={{ color: '#000000', textDecoration: 'none', fontSize: '0.95rem' }}>
             Documentation →
           </Link>
-          <a href="https://github.com/cloudcwfranck/aegis" style={{ color: '#ffffff', textDecoration: 'none', fontSize: '0.95rem' }}>
+          <a href="https://github.com/cloudcwfranck/aegis" style={{ color: '#000000', textDecoration: 'none', fontSize: '0.95rem' }}>
             GitHub →
           </a>
         </div>
       </nav>
 
-      {/* Hero Section */}
+      {/* Hero Section - WHITE BACKGROUND */}
       <section style={{
         padding: '8rem 3rem 6rem',
         maxWidth: '1200px',
         margin: '0 auto',
-        color: '#ffffff'
+        background: '#ffffff'
       }}>
         <div style={{ maxWidth: '800px' }}>
           <div style={{ marginBottom: '1.5rem' }}>
@@ -41,14 +42,14 @@ export function LandingPage() {
               fontWeight: '700',
               marginBottom: '0.5rem',
               lineHeight: 1.1,
-              color: '#ffffff'
+              color: '#000000'
             }}>
               Aegis
             </h1>
             <h2 style={{
               fontSize: '4.5rem',
               fontWeight: '200',
-              color: '#ffffff',
+              color: '#000000',
               lineHeight: 1.1
             }}>
               Ecosystem
@@ -56,7 +57,7 @@ export function LandingPage() {
           </div>
           <p style={{
             fontSize: '1.25rem',
-            color: '#dddddd',
+            color: '#525252',
             marginBottom: '3rem',
             lineHeight: 1.6
           }}>
@@ -67,8 +68,8 @@ export function LandingPage() {
             style={{
               display: 'inline-block',
               padding: '0.875rem 1.75rem',
-              background: '#ffffff',
-              color: '#000000',
+              background: '#000000',
+              color: '#ffffff',
               textDecoration: 'none',
               borderRadius: '6px',
               fontWeight: '500',
@@ -309,19 +310,18 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* Getting Started Section */}
+      {/* Getting Started Section - WHITE BACKGROUND */}
       <section style={{
         padding: '6rem 3rem',
         maxWidth: '1200px',
         margin: '0 auto',
-        background: '#000000',
-        color: '#ffffff'
+        background: '#ffffff'
       }}>
         <div style={{ marginBottom: '3rem' }}>
-          <h2 style={{ fontSize: '2.5rem', fontWeight: '600', marginBottom: '1rem', color: '#ffffff' }}>
+          <h2 style={{ fontSize: '2.5rem', fontWeight: '600', marginBottom: '1rem', color: '#000000' }}>
             Compliance Tools
           </h2>
-          <p style={{ fontSize: '1.125rem', color: '#dddddd', maxWidth: '700px', lineHeight: 1.6 }}>
+          <p style={{ fontSize: '1.125rem', color: '#525252', maxWidth: '700px', lineHeight: 1.6 }}>
             Deploy and monitor compliance with open infrastructure,
             free from vendor lock-in
           </p>
@@ -331,8 +331,8 @@ export function LandingPage() {
               display: 'inline-block',
               marginTop: '1.5rem',
               padding: '0.75rem 1.5rem',
-              background: '#ffffff',
-              color: '#000000',
+              background: '#000000',
+              color: '#ffffff',
               textDecoration: 'none',
               borderRadius: '6px',
               fontWeight: '500',
@@ -351,40 +351,40 @@ export function LandingPage() {
           marginTop: '3rem'
         }}>
           <div>
-            <h3 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '0.75rem', color: '#ffffff' }}>
+            <h3 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '0.75rem', color: '#000000' }}>
               Real-time dashboard
             </h3>
-            <p style={{ color: '#cccccc', lineHeight: 1.7, fontSize: '0.95rem' }}>
+            <p style={{ color: '#525252', lineHeight: 1.7, fontSize: '0.95rem' }}>
               Generate compliance dashboards from your scan results.
               Focus on remediation, not UI frameworks.
             </p>
           </div>
 
           <div>
-            <h3 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '0.75rem', color: '#ffffff' }}>
+            <h3 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '0.75rem', color: '#000000' }}>
               Production deployment
             </h3>
-            <p style={{ color: '#cccccc', lineHeight: 1.7, fontSize: '0.95rem' }}>
+            <p style={{ color: '#525252', lineHeight: 1.7, fontSize: '0.95rem' }}>
               Go from container to production-ready. We handle database,
               storage, and scaling for Azure Government Cloud.
             </p>
           </div>
 
           <div>
-            <h3 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '0.75rem', color: '#ffffff' }}>
+            <h3 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '0.75rem', color: '#000000' }}>
               Multi-scanner support
             </h3>
-            <p style={{ color: '#cccccc', lineHeight: 1.7, fontSize: '0.95rem' }}>
+            <p style={{ color: '#525252', lineHeight: 1.7, fontSize: '0.95rem' }}>
               Test across Grype, Trivy, and other scanners. Compare results
               and find optimal scanning strategy.
             </p>
           </div>
 
           <div>
-            <h3 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '0.75rem', color: '#ffffff' }}>
+            <h3 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '0.75rem', color: '#000000' }}>
               Framework-agnostic
             </h3>
-            <p style={{ color: '#cccccc', lineHeight: 1.7, fontSize: '0.95rem' }}>
+            <p style={{ color: '#525252', lineHeight: 1.7, fontSize: '0.95rem' }}>
               Work with any SBOM generator or scanner on a single platform.
               Enable cross-tool workflows without vendor lock-in.
             </p>
@@ -392,12 +392,11 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* Footer */}
+      {/* Footer - BLACK BACKGROUND */}
       <footer style={{
-        borderTop: '1px solid #222222',
+        borderTop: '1px solid #e0e0e0',
         padding: '2.5rem 3rem',
         textAlign: 'center',
-        color: '#aaaaaa',
         fontSize: '0.875rem',
         background: '#000000'
       }}>
