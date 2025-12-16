@@ -10,6 +10,7 @@ export { EvidenceEntity } from './evidence.entity';
 export { ArtifactEntity } from './artifact.entity';
 export { BuildEntity } from './build.entity';
 export { VulnerabilityEntity } from './vulnerability.entity';
+export { PackageEntity } from './package.entity';
 export { POAMEntity } from './poam.entity';
 export { PolicyEntity } from './policy.entity';
 export { PolicyEvaluationEntity } from './policy-evaluation.entity';

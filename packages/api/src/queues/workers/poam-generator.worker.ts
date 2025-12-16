@@ -5,7 +5,11 @@
  */
 
 import { Worker, Job } from 'bullmq';
+import { In } from 'typeorm';
 
+import { AppDataSource } from '@aegis/db/src/data-source';
+import { POAMEntity, VulnerabilityEntity } from '@aegis/db/src/entities';
+import { VulnerabilitySeverity, POAMStatus } from '@aegis/shared';
 import { logger } from '../../utils/logger';
 import { createRedisConnection, QueueName } from '../config';
 
@@ -22,32 +26,6 @@ export interface POAMGeneratorJobData {
   lowCount: number;
 }
 
-/**
- * POA&M item status
- */
-enum POAMStatus {
-  OPEN = 'Open',
-  IN_PROGRESS = 'In Progress',
-  RISK_ACCEPTED = 'Risk Accepted',
-  COMPLETED = 'Completed',
-  CANCELLED = 'Cancelled',
-}
-
-/**
- * POA&M item
- */
-interface POAMItem {
-  title: string;
-  description: string;
-  severity: 'Critical' | 'High' | 'Medium' | 'Low';
-  status: POAMStatus;
-  projectName: string;
-  evidenceId: string;
-  scheduledCompletionDate?: Date;
-  milestones?: string[];
-  resources?: string[];
-  pointOfContact?: string;
-}
 
 /**
  * Calculate scheduled completion date based on severity
@@ -58,14 +36,16 @@ interface POAMItem {
  * - Low: 365 days
  */
 function calculateScheduledCompletion(
-  severity: 'Critical' | 'High' | 'Medium' | 'Low'
+  severity: VulnerabilitySeverity
 ): Date {
   const now = new Date();
-  const daysMap = {
-    Critical: 30,
-    High: 90,
-    Medium: 180,
-    Low: 365,
+  const daysMap: Record<VulnerabilitySeverity, number> = {
+    [VulnerabilitySeverity.CRITICAL]: 30,
+    [VulnerabilitySeverity.HIGH]: 90,
+    [VulnerabilitySeverity.MEDIUM]: 180,
+    [VulnerabilitySeverity.LOW]: 365,
+    [VulnerabilitySeverity.NEGLIGIBLE]: 365,
+    [VulnerabilitySeverity.UNKNOWN]: 365,
   };
 
   const days = daysMap[severity];
@@ -76,84 +56,37 @@ function calculateScheduledCompletion(
 }
 
 /**
- * Generate POA&M items from vulnerability counts
+ * Generate remediation steps based on vulnerability severity
  */
-function generatePOAMItems(
-  jobData: POAMGeneratorJobData
-): POAMItem[] {
-  const { evidenceId, projectName, criticalCount, highCount, mediumCount } =
-    jobData;
-  const items: POAMItem[] = [];
+function generateRemediationSteps(
+  cveId: string,
+  packageName: string,
+  fixedVersion: string | undefined,
+  severity: VulnerabilitySeverity
+): string {
+  const steps: string[] = [];
 
-  // Generate POA&M for Critical vulnerabilities
-  if (criticalCount > 0) {
-    items.push({
-      title: `Remediate ${criticalCount} Critical Vulnerabilities in ${projectName}`,
-      description: `${criticalCount} critical severity vulnerabilities were identified in ${projectName}. These vulnerabilities pose significant risk and must be remediated within 30 days per FedRAMP requirements.`,
-      severity: 'Critical',
-      status: POAMStatus.OPEN,
-      projectName,
-      evidenceId,
-      scheduledCompletionDate: calculateScheduledCompletion('Critical'),
-      milestones: [
-        'Analyze all critical vulnerabilities',
-        'Develop remediation plan',
-        'Apply patches or mitigations',
-        'Verify remediation with re-scan',
-        'Update security documentation',
-      ],
-      resources: [
-        'DevSecOps Team',
-        'Application Security Team',
-        'Development Team',
-      ],
-      pointOfContact: 'Security Operations Manager',
-    });
+  if (severity === VulnerabilitySeverity.CRITICAL || severity === VulnerabilitySeverity.HIGH) {
+    steps.push(`1. Analyze ${cveId} in ${packageName}`);
+    if (fixedVersion) {
+      steps.push(`2. Upgrade ${packageName} to version ${fixedVersion}`);
+    } else {
+      steps.push(`2. Investigate mitigations or workarounds`);
+    }
+    steps.push(`3. Test application functionality`);
+    steps.push(`4. Re-scan to verify remediation`);
+    steps.push(`5. Update security documentation`);
+  } else {
+    steps.push(`1. Review ${cveId} impact`);
+    if (fixedVersion) {
+      steps.push(`2. Schedule upgrade to ${fixedVersion} in sprint`);
+    } else {
+      steps.push(`2. Determine remediation approach`);
+    }
+    steps.push(`3. Apply fix during regular release cycle`);
   }
 
-  // Generate POA&M for High vulnerabilities
-  if (highCount > 0) {
-    items.push({
-      title: `Remediate ${highCount} High Vulnerabilities in ${projectName}`,
-      description: `${highCount} high severity vulnerabilities were identified in ${projectName}. These vulnerabilities must be remediated within 90 days per FedRAMP requirements.`,
-      severity: 'High',
-      status: POAMStatus.OPEN,
-      projectName,
-      evidenceId,
-      scheduledCompletionDate: calculateScheduledCompletion('High'),
-      milestones: [
-        'Review all high vulnerabilities',
-        'Prioritize remediation efforts',
-        'Implement fixes or compensating controls',
-        'Conduct validation testing',
-      ],
-      resources: ['DevSecOps Team', 'Development Team'],
-      pointOfContact: 'Security Operations Manager',
-    });
-  }
-
-  // Generate POA&M for Medium vulnerabilities (if count is significant)
-  if (mediumCount >= 10) {
-    items.push({
-      title: `Remediate ${mediumCount} Medium Vulnerabilities in ${projectName}`,
-      description: `${mediumCount} medium severity vulnerabilities were identified in ${projectName}. These vulnerabilities should be addressed within 180 days.`,
-      severity: 'Medium',
-      status: POAMStatus.OPEN,
-      projectName,
-      evidenceId,
-      scheduledCompletionDate: calculateScheduledCompletion('Medium'),
-      milestones: [
-        'Review medium vulnerabilities',
-        'Determine remediation approach',
-        'Schedule updates in sprint planning',
-        'Apply fixes during regular release cycle',
-      ],
-      resources: ['Development Team'],
-      pointOfContact: 'Development Lead',
-    });
-  }
-
-  return items;
+  return steps.join('\n');
 }
 
 /**
@@ -172,32 +105,80 @@ async function processPOAMGenerator(
   });
 
   try {
-    // Generate POA&M items based on vulnerability counts
-    const poamItems = generatePOAMItems(job.data);
+    // Query Critical and High vulnerabilities from the database
+    const vulnRepo = AppDataSource.getRepository(VulnerabilityEntity);
+    const poamRepo = AppDataSource.getRepository(POAMEntity);
 
-    logger.info('POA&M items generated', {
-      evidenceId,
-      poamCount: poamItems.length,
+    const vulnerabilities = await vulnRepo.find({
+      where: {
+        evidenceId,
+        severity: In([
+          VulnerabilitySeverity.CRITICAL,
+          VulnerabilitySeverity.HIGH,
+        ]),
+      },
     });
 
-    // TODO: Store POA&M items in database
-    // This would involve creating a POAMItem entity and repository
-    // For now, we just log the results
+    logger.info('Found vulnerabilities requiring POA&M', {
+      evidenceId,
+      vulnerabilityCount: vulnerabilities.length,
+    });
 
-    for (const item of poamItems) {
-      logger.info('POA&M item created', {
-        title: item.title,
-        severity: item.severity,
-        scheduledCompletion: item.scheduledCompletionDate,
-      });
+    if (vulnerabilities.length === 0) {
+      logger.info('No Critical or High vulnerabilities found, skipping POA&M generation');
+      await job.updateProgress(100);
+      return;
     }
+
+    // Create individual POA&M items for each Critical/High vulnerability
+    const poamEntities = vulnerabilities.map((vuln) => {
+      const dueDate = calculateScheduledCompletion(vuln.severity);
+      const remediationSteps = generateRemediationSteps(
+        vuln.cveId,
+        vuln.packageName,
+        vuln.fixedVersion,
+        vuln.severity
+      );
+
+      return {
+        tenantId,
+        vulnerabilityId: vuln.id,
+        title: `${vuln.cveId} in ${vuln.packageName}@${vuln.packageVersion}`,
+        description: vuln.description,
+        riskLevel: vuln.severity,
+        status: POAMStatus.OPEN,
+        dueDate,
+        remediationSteps,
+        affectedSystems: [projectName],
+        metadata: {
+          evidenceId,
+          cvssScore: vuln.cvssScore,
+          cvssVector: vuln.cvssVector,
+          fixedVersion: vuln.fixedVersion,
+        },
+      };
+    });
+
+    // Batch insert all POA&M items
+    await poamRepo
+      .createQueryBuilder()
+      .insert()
+      .into(POAMEntity)
+      .values(poamEntities)
+      .execute();
+
+    logger.info(`Created ${poamEntities.length} POA&M items in database`, {
+      evidenceId,
+      critical: poamEntities.filter((p) => p.riskLevel === VulnerabilitySeverity.CRITICAL).length,
+      high: poamEntities.filter((p) => p.riskLevel === VulnerabilitySeverity.HIGH).length,
+    });
 
     await job.updateProgress(100);
 
     logger.info('POA&M generation completed successfully', {
       jobId: job.id,
       evidenceId,
-      poamCount: poamItems.length,
+      poamCount: poamEntities.length,
     });
   } catch (error) {
     logger.error('POA&M generation failed', {
