@@ -4,6 +4,10 @@
 
 Aegis is a multi-tenant SaaS platform for automated DevSecOps compliance, vulnerability management, and continuous ATO (Authority to Operate). Built for government agencies and contractors to achieve FedRAMP authorization faster.
 
+## Documentation
+
+📚 **[View Full Documentation](https://aegis.dev/docs)** | [Build Locally](#building-documentation)
+
 ## Features
 
 - **SBOM Generation** - Syft integration for SPDX 2.3 software bill of materials
@@ -343,6 +347,25 @@ npm run db:generate
 npm run docker:dev
 npm run docker:down
 ```
+
+## Building Documentation
+
+Build the MkDocs documentation locally:
+
+```bash
+# Install MkDocs and Material theme
+pip install mkdocs mkdocs-material mkdocs-material-extensions
+
+# Serve documentation with live reload
+mkdocs serve
+
+# Build static site
+mkdocs build
+```
+
+The documentation will be available at http://localhost:8000 with built-in search functionality.
+
+See [docs/README.md](docs/README.md) for more information.
 
 ## Contributing
 

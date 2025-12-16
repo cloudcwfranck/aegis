@@ -5,9 +5,9 @@
 
 import { Worker } from 'bullmq';
 
+import { createPOAMGeneratorWorker } from './workers/poam-generator.worker';
 import { createSBOMParserWorker } from './workers/sbom-parser.worker';
 import { createVulnerabilityIndexerWorker } from './workers/vulnerability-indexer.worker';
-import { createPOAMGeneratorWorker } from './workers/poam-generator.worker';
 import { logger } from '../utils/logger';
 
 let workers: Worker[] = [];

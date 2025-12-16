@@ -3,14 +3,16 @@
  * Supports Azure Blob Storage (Azure Gov) and S3-compatible (MinIO local dev)
  */
 
-import { createHash } from 'crypto';
+import { createHash, webcrypto } from 'crypto';
 import { Readable } from 'stream';
 
-import {
-  BlobServiceClient,
-  StorageSharedKeyCredential,
-  ContainerClient,
-} from '@azure/storage-blob';
+// Ensure crypto is available globally for Azure SDK
+// Azure SDK sometimes looks for global.crypto or globalThis.crypto
+if (typeof globalThis.crypto === 'undefined') {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (globalThis as any).crypto = webcrypto;
+}
+
 import {
   S3Client,
   PutObjectCommand,
@@ -19,6 +21,11 @@ import {
   DeleteObjectCommand,
   PutObjectCommandInput,
 } from '@aws-sdk/client-s3';
+import {
+  BlobServiceClient,
+  StorageSharedKeyCredential,
+  ContainerClient,
+} from '@azure/storage-blob';
 
 import { logger } from '../utils/logger';
 
@@ -249,11 +256,18 @@ export class AzureBlobStorageService implements IStorageService {
         sizeBytes: buffer.length,
       };
     } catch (error) {
+      // Azure SDK errors don't serialize well, so extract key details
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      const errorName = error instanceof Error ? error.name : 'Unknown';
+
       logger.error('Failed to upload file to Azure Blob Storage', {
         key,
-        error,
+        container: this.containerName,
+        errorMessage,
+        errorName,
+        error: error instanceof Error ? { ...error, message: error.message, name: error.name } : error,
       });
-      throw new Error(`Failed to upload file: ${key}`);
+      throw new Error(`Failed to upload file: ${key}. Error: ${errorMessage}`);
     }
   }
 

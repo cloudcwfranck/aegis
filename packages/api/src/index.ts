@@ -4,17 +4,18 @@
  */
 
 import 'reflect-metadata'; // Required for type-graphql
+import { createServer } from 'http';
+
 import { initializeDatabase } from '@aegis/db';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
-import { createServer } from 'http';
 
-import { logger } from './utils/logger';
-import evidenceRoutes from './routes/evidence.routes';
-import { errorHandler, notFoundHandler } from './middleware/error-handler';
 import { createApolloServer } from './graphql/server';
+import { errorHandler, notFoundHandler } from './middleware/error-handler';
 import { startWorkers, stopWorkers } from './queues/worker-manager';
+import evidenceRoutes from './routes/evidence.routes';
+import { logger } from './utils/logger';
 
 dotenv.config();
 
