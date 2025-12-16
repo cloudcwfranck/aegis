@@ -9,3 +9,11 @@ export * from './entities';
 
 // Export incident enums separately
 export { IncidentStatus, IncidentSeverity, IncidentType } from './entities/incident.entity';
+
+// Export POAM enums separately
+export {
+  POAMStatus,
+  RiskLevel,
+  Likelihood,
+  Impact,
+} from './entities/poam.entity';

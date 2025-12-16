@@ -15,6 +15,7 @@ import { errorHandler, notFoundHandler } from './middleware/error-handler';
 import { startWorkers, stopWorkers } from './queues/worker-manager';
 import evidenceRoutes from './routes/evidence.routes';
 import incidentRoutes from './routes/incident.routes';
+import poamRoutes from './routes/poam.routes';
 import policyRoutes from './routes/policy.routes';
 import { logger } from './utils/logger';
 
@@ -45,7 +46,10 @@ app.get('/api/v1', (_req, res) => {
       incidents: '/api/v1/incidents',
       incidentStats: '/api/v1/incidents/stats',
       incidentClusters: '/api/v1/incidents/clusters',
-      poam: '/api/v1/poam (coming in M2)',
+      poam: '/api/v1/poam',
+      poamStats: '/api/v1/poam/stats',
+      poamExportOSCAL: '/api/v1/poam/export/oscal',
+      poamExportCSV: '/api/v1/poam/export/csv',
     },
   });
 });
@@ -54,6 +58,7 @@ app.get('/api/v1', (_req, res) => {
 app.use('/api/v1/scans', evidenceRoutes);
 app.use('/api/v1/policies', policyRoutes);
 app.use('/api/v1/incidents', incidentRoutes);
+app.use('/api/v1/poam', poamRoutes);
 
 async function start() {
   try {
