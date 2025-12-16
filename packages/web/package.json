@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "clean": "rm -rf dist *.tsbuildinfo",
     "lint": "eslint . --ext .ts,.tsx",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "jest --passWithNoTests"
   },
   "dependencies": {
     "@aegis/shared": "*",

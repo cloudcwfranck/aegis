@@ -4,10 +4,13 @@
  * Supports SPDX 2.3 and CycloneDX formats
  */
 
+
+import { AppDataSource } from '@aegis/db/src/data-source';
+import { PackageEntity } from '@aegis/db/src/entities';
 import { Worker, Job } from 'bullmq';
 
-import { createRedisConnection, QueueName } from '../config';
 import { logger } from '../../utils/logger';
+import { createRedisConnection, QueueName } from '../config';
 
 /**
  * Job data for SBOM parsing
@@ -45,7 +48,7 @@ function parseSPDX(sbom: Record<string, unknown>): ParsedPackage[] {
     return packages;
   }
 
-  for (const pkg of sbom['packages'] as any[]) {
+  for (const pkg of sbom['packages']) {
     const parsedPkg: ParsedPackage = {
       name: pkg['name'] ?? 'unknown',
       version: pkg['versionInfo'] ?? 'unknown',
@@ -92,7 +95,7 @@ function parseCycloneDX(sbom: Record<string, unknown>): ParsedPackage[] {
     return packages;
   }
 
-  for (const component of sbom['components'] as any[]) {
+  for (const component of sbom['components']) {
     const parsedPkg: ParsedPackage = {
       name: component['name'] ?? 'unknown',
       version: component['version'] ?? 'unknown',
@@ -144,9 +147,36 @@ async function processSBOMParser(job: Job<SBOMParserJobData>): Promise<void> {
       packageCount: packages.length,
     });
 
-    // TODO: Store parsed packages in database
-    // This would involve creating a Package entity and repository
-    // For now, we just log the results
+    // Store parsed packages in database
+    if (packages.length > 0) {
+      const packageRepo = AppDataSource.getRepository(PackageEntity);
+
+      // Prepare package entities for batch insert
+      const packageEntities = packages.map((pkg) => ({
+        evidenceId,
+        name: pkg.name,
+        version: pkg.version,
+        supplier: pkg.supplier,
+        downloadLocation: pkg.downloadLocation,
+        licenseConcluded: pkg.licenseConcluded,
+        licenseDeclared: pkg.licenseDeclared,
+        copyrightText: pkg.copyrightText,
+        purl: pkg.purl,
+        cpe: pkg.cpe,
+      }));
+
+      // Batch insert all packages for performance
+      await packageRepo
+        .createQueryBuilder()
+        .insert()
+        .into(PackageEntity)
+        .values(packageEntities)
+        .execute();
+
+      logger.info(`Stored ${packages.length} packages in database`, {
+        evidenceId,
+      });
+    }
 
     await job.updateProgress(100);
 

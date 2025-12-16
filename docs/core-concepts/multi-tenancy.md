@@ -41,10 +41,10 @@ export class Tenant {
   @CreateDateColumn()
   createdAt: Date;
 
-  @OneToMany(() => User, user => user.tenant)
+  @OneToMany(() => User, (user) => user.tenant)
   users: User[];
 
-  @OneToMany(() => Project, project => project.tenant)
+  @OneToMany(() => Project, (project) => project.tenant)
   projects: Project[];
 }
 ```
@@ -87,7 +87,11 @@ Before executing queries, set the tenant context:
 
 ```typescript
 // Middleware to set tenant context
-export async function setTenantContext(req: Request, res: Response, next: NextFunction) {
+export async function setTenantContext(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   const tenantId = req.user.tenantId; // From JWT token
 
   // Set tenant ID in PostgreSQL session
@@ -174,17 +178,23 @@ azure-blob-storage/
 Shared Access Signatures are scoped to tenant containers:
 
 ```typescript
-export async function generateSASToken(tenantId: string, blobPath: string): Promise<string> {
+export async function generateSASToken(
+  tenantId: string,
+  blobPath: string
+): Promise<string> {
   const containerName = `tenant-${tenantId}`;
 
   const sasOptions: BlobSASSignatureValues = {
     containerName,
     blobName: blobPath,
     permissions: BlobSASPermissions.parse('r'), // Read-only
-    expiresOn: new Date(Date.now() + 3600 * 1000) // 1 hour
+    expiresOn: new Date(Date.now() + 3600 * 1000), // 1 hour
   };
 
-  const sasToken = generateBlobSASQueryParameters(sasOptions, credential).toString();
+  const sasToken = generateBlobSASQueryParameters(
+    sasOptions,
+    credential
+  ).toString();
 
   return `${blobServiceClient.url}/${containerName}/${blobPath}?${sasToken}`;
 }
@@ -209,17 +219,14 @@ await updateTenant(tenantId, {
   settings: {
     fedrampLevel: 'Moderate',
     retentionPolicy: 1095, // 3 years
-    notificationEmails: [
-      'security@acme-corp.com',
-      'compliance@acme-corp.com'
-    ],
+    notificationEmails: ['security@acme-corp.com', 'compliance@acme-corp.com'],
     customDomain: 'aegis.acme-corp.com',
     sso: {
       enabled: true,
       provider: 'SAML',
-      idpMetadataUrl: 'https://idp.acme-corp.com/metadata.xml'
-    }
-  }
+      idpMetadataUrl: 'https://idp.acme-corp.com/metadata.xml',
+    },
+  },
 });
 ```
 
@@ -297,7 +304,10 @@ export class TenantQuota {
 Check quota before upload:
 
 ```typescript
-export async function checkQuota(tenantId: string, fileSize: number): Promise<boolean> {
+export async function checkQuota(
+  tenantId: string,
+  fileSize: number
+): Promise<boolean> {
   const quota = await getTenantQuota(tenantId);
 
   if (quota.storageUsed + fileSize > quota.storageLimit) {
@@ -385,7 +395,7 @@ describe('Tenant Isolation', () => {
     // Create evidence for tenant A
     const evidenceA = await createEvidence({
       tenantId: 'tenant-a',
-      fileName: 'sbom-a.json'
+      fileName: 'sbom-a.json',
     });
 
     // Query as tenant B

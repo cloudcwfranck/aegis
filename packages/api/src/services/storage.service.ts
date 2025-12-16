@@ -7,11 +7,6 @@ import { createHash } from 'crypto';
 import { Readable } from 'stream';
 
 import {
-  BlobServiceClient,
-  StorageSharedKeyCredential,
-  ContainerClient,
-} from '@azure/storage-blob';
-import {
   S3Client,
   PutObjectCommand,
   GetObjectCommand,
@@ -19,6 +14,11 @@ import {
   DeleteObjectCommand,
   PutObjectCommandInput,
 } from '@aws-sdk/client-s3';
+import {
+  BlobServiceClient,
+  ContainerClient,
+  StorageSharedKeyCredential,
+} from '@azure/storage-blob';
 
 import { logger } from '../utils/logger';
 
@@ -249,11 +249,22 @@ export class AzureBlobStorageService implements IStorageService {
         sizeBytes: buffer.length,
       };
     } catch (error) {
+      // Azure SDK errors don't serialize well, so extract key details
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+      const errorName = error instanceof Error ? error.name : 'Unknown';
+
       logger.error('Failed to upload file to Azure Blob Storage', {
         key,
-        error,
+        container: this.containerName,
+        errorMessage,
+        errorName,
+        error:
+          error instanceof Error
+            ? { ...error, message: error.message, name: error.name }
+            : error,
       });
-      throw new Error(`Failed to upload file: ${key}`);
+      throw new Error(`Failed to upload file: ${key}. Error: ${errorMessage}`);
     }
   }
 

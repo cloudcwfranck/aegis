@@ -70,21 +70,16 @@ markdown_extensions:
       toc_depth: 3
 
 extra:
+  generator: false  # Remove "Made with Material for MkDocs"
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/cloudcwfranck/aegis
-  analytics:
-    feedback:
-      title: Was this page helpful?
-      ratings:
-        - icon: material/thumb-up-outline
-          name: This page was helpful
-          data: 1
-          note: Thanks for your feedback!
-        - icon: material/thumb-down-outline
-          name: This page could be improved
-          data: 0
-          note: Thanks for your feedback!
+
+extra_css:
+  - stylesheets/feedback.css
+
+extra_javascript:
+  - javascripts/feedback.js
 
 nav:
   - Introduction:

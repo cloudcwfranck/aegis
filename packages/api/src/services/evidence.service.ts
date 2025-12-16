@@ -18,8 +18,8 @@ import {
   SPDXDocument,
   GrypeScanResults,
 } from '../dto/upload-scan.dto';
-import { logger } from '../utils/logger';
 import { QueueService } from '../queues/queue.service';
+import { logger } from '../utils/logger';
 
 export class EvidenceService {
   private evidenceRepo: Repository<EvidenceEntity>;

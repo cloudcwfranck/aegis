@@ -198,7 +198,7 @@ export class Evidence {
   @CreateDateColumn()
   uploadedAt: Date;
 
-  @OneToMany(() => Vulnerability, vuln => vuln.evidence)
+  @OneToMany(() => Vulnerability, (vuln) => vuln.evidence)
   vulnerabilities: Vulnerability[];
 }
 ```
@@ -311,19 +311,19 @@ Evidence processing is handled by background workers:
 await sbomParserQueue.add('parse-sbom', {
   evidenceId: evidence.id,
   blobUrl: evidence.blobUrl,
-  format: 'spdx-2.3'
+  format: 'spdx-2.3',
 });
 
 // Vulnerability Indexer Queue
 await vulnerabilityIndexerQueue.add('scan-components', {
   evidenceId: evidence.id,
-  components: parsedComponents
+  components: parsedComponents,
 });
 
 // POA&M Generator Queue
 await poamGeneratorQueue.add('generate-poam', {
   evidenceId: evidence.id,
-  vulnerabilities: criticalAndHighVulns
+  vulnerabilities: criticalAndHighVulns,
 });
 ```
 

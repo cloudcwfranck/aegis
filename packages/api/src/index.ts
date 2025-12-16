@@ -3,12 +3,12 @@
  * GraphQL + REST API for evidence ingestion, policy enforcement, and compliance management
  */
 
-import 'reflect-metadata'; // Required for type-graphql
+import { createServer } from 'http';
+
 import { initializeDatabase } from '@aegis/db';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
-import { createServer } from 'http';
 
 import { createApolloServer } from './graphql/server';
 import { errorHandler, notFoundHandler } from './middleware/error-handler';
@@ -45,7 +45,7 @@ app.get('/api/v1', (_req, res) => {
       incidents: '/api/v1/incidents',
       incidentStats: '/api/v1/incidents/stats',
       incidentClusters: '/api/v1/incidents/clusters',
-      poam: '/api/v1/poam',
+      poam: '/api/v1/poam (coming in M2)',
     },
   });
 });
@@ -86,7 +86,10 @@ async function start() {
       logger.info(`🚀 Aegis API server running on http://localhost:${PORT}`);
       logger.info(`📊 Health check: http://localhost:${PORT}/health`);
       logger.info(`🔮 GraphQL playground: http://localhost:${PORT}/graphql`);
-      logger.info(`📡 REST API: http://localhost:${PORT}/api/v1/scans`);
+      logger.info(`📡 REST API - Scans: http://localhost:${PORT}/api/v1/scans`);
+      logger.info(
+        `🛡️  REST API - Policies: http://localhost:${PORT}/api/v1/policies`
+      );
       logger.info(`⚙️  BullMQ workers processing async jobs`);
     });
   } catch (error) {

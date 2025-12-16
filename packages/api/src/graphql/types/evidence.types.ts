@@ -2,8 +2,8 @@
  * GraphQL Types for Evidence
  */
 
-import { ObjectType, Field, InputType, Int } from 'type-graphql';
 import GraphQLJSON from 'graphql-type-json';
+import { ObjectType, Field, InputType, Int } from 'type-graphql';
 
 /**
  * Input type for uploading scan results

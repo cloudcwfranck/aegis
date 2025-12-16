@@ -5,9 +5,9 @@
 
 import { Worker } from 'bullmq';
 
+import { createPOAMGeneratorWorker } from './workers/poam-generator.worker';
 import { createSBOMParserWorker } from './workers/sbom-parser.worker';
 import { createVulnerabilityIndexerWorker } from './workers/vulnerability-indexer.worker';
-import { createPOAMGeneratorWorker } from './workers/poam-generator.worker';
 import { logger } from '../utils/logger';
 
 let workers: Worker[] = [];
@@ -23,7 +23,11 @@ export async function startWorkers(): Promise<void> {
     const vulnerabilityIndexerWorker = createVulnerabilityIndexerWorker();
     const poamGeneratorWorker = createPOAMGeneratorWorker();
 
-    workers = [sbomParserWorker, vulnerabilityIndexerWorker, poamGeneratorWorker];
+    workers = [
+      sbomParserWorker,
+      vulnerabilityIndexerWorker,
+      poamGeneratorWorker,
+    ];
 
     logger.info('All BullMQ workers started successfully', {
       workerCount: workers.length,

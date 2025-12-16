@@ -6,9 +6,9 @@
 import { Queue } from 'bullmq';
 
 import { createQueue, QueueName } from './config';
+import { POAMGeneratorJobData } from './workers/poam-generator.worker';
 import { SBOMParserJobData } from './workers/sbom-parser.worker';
 import { VulnerabilityIndexerJobData } from './workers/vulnerability-indexer.worker';
-import { POAMGeneratorJobData } from './workers/poam-generator.worker';
 import { logger } from '../utils/logger';
 
 export class QueueService {
@@ -20,10 +20,9 @@ export class QueueService {
     this.sbomParserQueue = createQueue<SBOMParserJobData>(
       QueueName.SBOM_PARSER
     );
-    this.vulnerabilityIndexerQueue =
-      createQueue<VulnerabilityIndexerJobData>(
-        QueueName.VULNERABILITY_INDEXER
-      );
+    this.vulnerabilityIndexerQueue = createQueue<VulnerabilityIndexerJobData>(
+      QueueName.VULNERABILITY_INDEXER
+    );
     this.poamGeneratorQueue = createQueue<POAMGeneratorJobData>(
       QueueName.POAM_GENERATOR
     );

@@ -2,15 +2,29 @@
  * Main App Component with Routing
  */
 
-import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Link,
+  useLocation,
+} from 'react-router-dom';
+
 import { Dashboard } from './components/Dashboard';
+import { LandingPage } from './components/LandingPage';
 import { MonitoringDashboard } from './components/MonitoringDashboard';
+import { PolicyManagement } from './components/PolicyManagement';
 import { UploadForm } from './components/UploadForm';
 
 const AEGIS_VERSION = '0.1.0';
 
 function Navigation() {
   const location = useLocation();
+
+  // Don't show navigation on landing page
+  if (location.pathname === '/') {
+    return null;
+  }
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -19,7 +33,9 @@ function Navigation() {
     textDecoration: 'none',
     color: isActive(path) ? '#007bff' : '#495057',
     fontWeight: isActive(path) ? 'bold' : 'normal',
-    borderBottom: isActive(path) ? '3px solid #007bff' : '3px solid transparent',
+    borderBottom: isActive(path)
+      ? '3px solid #007bff'
+      : '3px solid transparent',
     display: 'inline-block',
   });
 
@@ -35,11 +51,23 @@ function Navigation() {
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
-        <div style={{ padding: '1rem 0', fontWeight: 'bold', fontSize: '1.2rem' }}>
-          🛡️ Aegis <span style={{ color: '#6c757d', fontSize: '0.9rem' }}>v{AEGIS_VERSION}</span>
-        </div>
+        <Link
+          to="/"
+          style={{
+            padding: '1rem 0',
+            fontWeight: 'bold',
+            fontSize: '1.2rem',
+            textDecoration: 'none',
+            color: '#495057',
+          }}
+        >
+          🛡️ Aegis{' '}
+          <span style={{ color: '#6c757d', fontSize: '0.9rem' }}>
+            v{AEGIS_VERSION}
+          </span>
+        </Link>
         <div style={{ display: 'flex', gap: '0.5rem', flex: 1 }}>
-          <Link to="/" style={linkStyle('/')}>
+          <Link to="/dashboard" style={linkStyle('/dashboard')}>
             🏠 Dashboard
           </Link>
           <Link to="/monitoring" style={linkStyle('/monitoring')}>
@@ -98,12 +126,14 @@ function EvidenceListPlaceholder() {
 
 function AppContent() {
   return (
-    <div style={{ minHeight: '100vh', background: '#f8f9fa' }}>
+    <div style={{ minHeight: '100vh' }}>
       <Navigation />
       <Routes>
-        <Route path="/" element={<Dashboard />} />
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/monitoring" element={<MonitoringDashboard />} />
         <Route path="/upload" element={<UploadForm />} />
+        <Route path="/policies" element={<PolicyManagement />} />
         <Route path="/evidence" element={<EvidenceListPlaceholder />} />
       </Routes>
     </div>
