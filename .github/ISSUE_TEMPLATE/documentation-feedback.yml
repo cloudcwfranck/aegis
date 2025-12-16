@@ -1,0 +1,47 @@
+name: Documentation Feedback
+description: Provide feedback on Aegis documentation
+title: "[Docs Feedback] "
+labels: ["documentation", "feedback"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to provide feedback on our documentation!
+
+  - type: input
+    id: page
+    attributes:
+      label: Page URL
+      description: Which documentation page are you providing feedback about?
+      placeholder: https://aegis-cseproject.vercel.app/docs/introduction/welcome/
+    validations:
+      required: true
+
+  - type: dropdown
+    id: feedback-type
+    attributes:
+      label: Feedback Type
+      description: How would you rate this page?
+      options:
+        - 👍 Helpful
+        - 👎 Needs Improvement
+    validations:
+      required: true
+
+  - type: textarea
+    id: comments
+    attributes:
+      label: Additional Comments
+      description: Please provide any additional details about your feedback
+      placeholder: What could be improved? What was confusing? What was helpful?
+    validations:
+      required: false
+
+  - type: textarea
+    id: suggestions
+    attributes:
+      label: Suggestions for Improvement
+      description: If you selected "Needs Improvement", what specific changes would help?
+      placeholder: Specific suggestions for improvement
+    validations:
+      required: false

@@ -12,6 +12,7 @@ import {
 } from 'typeorm';
 
 import { BuildEntity } from './build.entity';
+import { PackageEntity } from './package.entity';
 import { TenantEntity } from './tenant.entity';
 import { VulnerabilityEntity } from './vulnerability.entity';
 
@@ -84,6 +85,9 @@ export class EvidenceEntity {
 
   @OneToMany(() => VulnerabilityEntity, (vuln) => vuln.evidence)
   vulnerabilities!: VulnerabilityEntity[];
+
+  @OneToMany(() => PackageEntity, (pkg) => pkg.evidence)
+  packages!: PackageEntity[];
 
   @CreateDateColumn({ type: 'timestamptz' })
   createdAt!: Date;

@@ -4,6 +4,7 @@
 
 import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { Dashboard } from './components/Dashboard';
+import { MonitoringDashboard } from './components/MonitoringDashboard';
 import { UploadForm } from './components/UploadForm';
 
 const AEGIS_VERSION = '0.1.0';
@@ -40,6 +41,9 @@ function Navigation() {
         <div style={{ display: 'flex', gap: '0.5rem', flex: 1 }}>
           <Link to="/" style={linkStyle('/')}>
             🏠 Dashboard
+          </Link>
+          <Link to="/monitoring" style={linkStyle('/monitoring')}>
+            📊 Monitoring
           </Link>
           <Link to="/upload" style={linkStyle('/upload')}>
             📤 Upload Scan
@@ -98,6 +102,7 @@ function AppContent() {
       <Navigation />
       <Routes>
         <Route path="/" element={<Dashboard />} />
+        <Route path="/monitoring" element={<MonitoringDashboard />} />
         <Route path="/upload" element={<UploadForm />} />
         <Route path="/evidence" element={<EvidenceListPlaceholder />} />
       </Routes>

@@ -10,11 +10,13 @@ import dotenv from 'dotenv';
 import express from 'express';
 import { createServer } from 'http';
 
-import { logger } from './utils/logger';
-import evidenceRoutes from './routes/evidence.routes';
-import { errorHandler, notFoundHandler } from './middleware/error-handler';
 import { createApolloServer } from './graphql/server';
+import { errorHandler, notFoundHandler } from './middleware/error-handler';
 import { startWorkers, stopWorkers } from './queues/worker-manager';
+import evidenceRoutes from './routes/evidence.routes';
+import incidentRoutes from './routes/incident.routes';
+import policyRoutes from './routes/policy.routes';
+import { logger } from './utils/logger';
 
 dotenv.config();
 
@@ -39,14 +41,19 @@ app.get('/api/v1', (_req, res) => {
       health: '/health',
       graphql: '/graphql',
       scans: '/api/v1/scans',
-      policies: '/api/v1/policies (coming in M2)',
-      poam: '/api/v1/poam (coming in M2)',
+      policies: '/api/v1/policies',
+      incidents: '/api/v1/incidents',
+      incidentStats: '/api/v1/incidents/stats',
+      incidentClusters: '/api/v1/incidents/clusters',
+      poam: '/api/v1/poam',
     },
   });
 });
 
 // REST API Routes
 app.use('/api/v1/scans', evidenceRoutes);
+app.use('/api/v1/policies', policyRoutes);
+app.use('/api/v1/incidents', incidentRoutes);
 
 async function start() {
   try {
