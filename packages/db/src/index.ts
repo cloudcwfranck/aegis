@@ -5,4 +5,7 @@
 
 export * from './data-source';
 export * from './entities';
-// export * from './repositories'; // No repositories yet
+// export * from './repositories'; // TODO: Implement custom repositories in M1
+
+// Export incident enums separately
+export { IncidentStatus, IncidentSeverity, IncidentType } from './entities/incident.entity';

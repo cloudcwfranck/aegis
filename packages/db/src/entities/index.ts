@@ -14,3 +14,4 @@ export { PackageEntity } from './package.entity';
 export { POAMEntity } from './poam.entity';
 export { PolicyEntity } from './policy.entity';
 export { PolicyEvaluationEntity } from './policy-evaluation.entity';
+export { IncidentEntity } from './incident.entity';
