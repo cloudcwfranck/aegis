@@ -73,7 +73,8 @@ class ApiClient {
 
   constructor() {
     this.tenantId =
-      localStorage.getItem('tenantId') || '00000000-0000-0000-0000-000000000000';
+      localStorage.getItem('tenantId') ||
+      '00000000-0000-0000-0000-000000000000';
 
     this.client = axios.create({
       baseURL: API_BASE_URL,
@@ -92,10 +93,14 @@ class ApiClient {
           throw new Error('Request timeout - API took too long to respond');
         }
         if (error.response) {
-          throw new Error(`API Error: ${error.response.status} - ${error.response.data?.message || error.message}`);
+          throw new Error(
+            `API Error: ${error.response.status} - ${error.response.data?.message || error.message}`
+          );
         }
         if (error.request) {
-          throw new Error('No response from API - please check if the API is running');
+          throw new Error(
+            'No response from API - please check if the API is running'
+          );
         }
         throw error;
       }
@@ -149,7 +154,10 @@ class ApiClient {
     return response.data;
   }
 
-  async evaluatePolicies(evidenceId: string, policyIds?: string[]): Promise<PolicyEvaluationResponse> {
+  async evaluatePolicies(
+    evidenceId: string,
+    policyIds?: string[]
+  ): Promise<PolicyEvaluationResponse> {
     const response = await this.client.post<PolicyEvaluationResponse>(
       '/api/v1/policies/evaluate',
       { evidenceId, policyIds }

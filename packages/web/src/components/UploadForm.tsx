@@ -5,7 +5,11 @@
 import { useState } from 'react';
 
 import { PolicyEvaluationResults } from './PolicyEvaluationResults';
-import { apiClient, UploadScanResponse, PolicyEvaluationResponse } from '../api/client';
+import {
+  apiClient,
+  UploadScanResponse,
+  PolicyEvaluationResponse,
+} from '../api/client';
 
 export function UploadForm() {
   const [projectName, setProjectName] = useState('');
@@ -16,7 +20,8 @@ export function UploadForm() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<UploadScanResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [policyResults, setPolicyResults] = useState<PolicyEvaluationResponse | null>(null);
+  const [policyResults, setPolicyResults] =
+    useState<PolicyEvaluationResponse | null>(null);
   const [evaluatingPolicies, setEvaluatingPolicies] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -51,7 +56,9 @@ export function UploadForm() {
       if (response.success && response.evidenceId) {
         setEvaluatingPolicies(true);
         try {
-          const policyResponse = await apiClient.evaluatePolicies(response.evidenceId);
+          const policyResponse = await apiClient.evaluatePolicies(
+            response.evidenceId
+          );
           setPolicyResults(policyResponse);
         } catch (policyError) {
           console.error('Policy evaluation failed:', policyError);
@@ -85,7 +92,11 @@ export function UploadForm() {
         <div style={{ marginBottom: '1.5rem' }}>
           <label
             htmlFor="projectName"
-            style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}
+            style={{
+              display: 'block',
+              marginBottom: '0.5rem',
+              fontWeight: 'bold',
+            }}
           >
             Project Name *
           </label>
@@ -109,7 +120,11 @@ export function UploadForm() {
         <div style={{ marginBottom: '1.5rem' }}>
           <label
             htmlFor="buildId"
-            style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}
+            style={{
+              display: 'block',
+              marginBottom: '0.5rem',
+              fontWeight: 'bold',
+            }}
           >
             Build ID *
           </label>
@@ -133,7 +148,11 @@ export function UploadForm() {
         <div style={{ marginBottom: '1.5rem' }}>
           <label
             htmlFor="imageDigest"
-            style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}
+            style={{
+              display: 'block',
+              marginBottom: '0.5rem',
+              fontWeight: 'bold',
+            }}
           >
             Image Digest *
           </label>
@@ -158,7 +177,11 @@ export function UploadForm() {
         <div style={{ marginBottom: '1.5rem' }}>
           <label
             htmlFor="sbomFile"
-            style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}
+            style={{
+              display: 'block',
+              marginBottom: '0.5rem',
+              fontWeight: 'bold',
+            }}
           >
             SBOM File (SPDX JSON) *
           </label>
@@ -181,7 +204,11 @@ export function UploadForm() {
         <div style={{ marginBottom: '1.5rem' }}>
           <label
             htmlFor="vulnFile"
-            style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}
+            style={{
+              display: 'block',
+              marginBottom: '0.5rem',
+              fontWeight: 'bold',
+            }}
           >
             Vulnerability Scan (Grype JSON) *
           </label>
@@ -278,9 +305,17 @@ export function UploadForm() {
               }}
             >
               <h4 style={{ marginTop: 0 }}>Summary Statistics:</h4>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: '1fr 1fr',
+                  gap: '0.5rem',
+                }}
+              >
                 <div>📦 Packages: {result.summary.packageCount}</div>
-                <div>🔍 Vulnerabilities: {result.summary.vulnerabilityCount}</div>
+                <div>
+                  🔍 Vulnerabilities: {result.summary.vulnerabilityCount}
+                </div>
                 <div style={{ color: '#dc3545' }}>
                   🔴 Critical: {result.summary.criticalCount}
                 </div>
@@ -314,9 +349,7 @@ export function UploadForm() {
         </div>
       )}
 
-      {policyResults && (
-        <PolicyEvaluationResults results={policyResults} />
-      )}
+      {policyResults && <PolicyEvaluationResults results={policyResults} />}
 
       <div
         style={{

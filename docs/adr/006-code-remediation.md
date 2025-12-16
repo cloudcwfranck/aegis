@@ -9,6 +9,7 @@
 Government agencies and contractors often have legacy codebases with 50-200 CVEs per application. Manual remediation is time-consuming (weeks to months), error-prone, and blocks FedRAMP ATO approval.
 
 **Problem Statement**:
+
 - Manual dependency upgrades take 2-4 hours per application
 - Breaking changes in major version upgrades cause production incidents
 - Dockerfile hardening requires deep security expertise
@@ -16,6 +17,7 @@ Government agencies and contractors often have legacy codebases with 50-200 CVEs
 
 **M7 Goal**:
 Enable "one-click remediation" where users bring vulnerable code and Aegis generates:
+
 - Hardened Dockerfile (Chainguard base images)
 - Upgraded dependencies (zero-CVE versions)
 - Rebuilt application with passing tests
@@ -43,23 +45,24 @@ Aegis Remediation API
 
 ### 2. Language Support Matrix
 
-| Language | Dependency Files | Package Manager | SBOM Tool |
-|----------|-----------------|-----------------|-----------|
-| Node.js | package.json, package-lock.json | npm, yarn, pnpm | Syft |
-| Python | requirements.txt, poetry.lock, Pipfile | pip, poetry, pipenv | Syft |
-| Java | pom.xml, build.gradle | Maven, Gradle | Syft |
-| Go | go.mod, go.sum | go modules | Syft |
-| Ruby | Gemfile, Gemfile.lock | bundler | Syft |
+| Language | Dependency Files                       | Package Manager     | SBOM Tool |
+| -------- | -------------------------------------- | ------------------- | --------- |
+| Node.js  | package.json, package-lock.json        | npm, yarn, pnpm     | Syft      |
+| Python   | requirements.txt, poetry.lock, Pipfile | pip, poetry, pipenv | Syft      |
+| Java     | pom.xml, build.gradle                  | Maven, Gradle       | Syft      |
+| Go       | go.mod, go.sum                         | go modules          | Syft      |
+| Ruby     | Gemfile, Gemfile.lock                  | bundler             | Syft      |
 
 ### 3. Dependency Upgrade Logic
 
 **Smart Version Resolution**:
+
 ```typescript
 interface DependencyUpgrade {
   packageName: string;
   currentVersion: string;
   vulnerabilities: Vulnerability[];
-  fixedVersion: string;  // Minimum version with zero CVEs
+  fixedVersion: string; // Minimum version with zero CVEs
   latestVersion: string; // Latest stable version
   breakingChanges: boolean; // Detected via semver major version bump
   confidence: 'high' | 'medium' | 'low'; // Upgrade safety score
@@ -72,8 +75,8 @@ async function resolveDependencyUpgrades(
   const upgrades: DependencyUpgrade[] = [];
 
   for (const dep of dependencies) {
-    const depVulns = vulnerabilities.filter(v =>
-      v.packageName === dep.name && v.packageVersion === dep.version
+    const depVulns = vulnerabilities.filter(
+      (v) => v.packageName === dep.name && v.packageVersion === dep.version
     );
 
     if (depVulns.length === 0) {
@@ -87,7 +90,11 @@ async function resolveDependencyUpgrades(
     const breakingChanges = isBreakingChange(dep.version, fixedVersion);
 
     // Calculate confidence score
-    const confidence = calculateUpgradeConfidence(dep, fixedVersion, breakingChanges);
+    const confidence = calculateUpgradeConfidence(
+      dep,
+      fixedVersion,
+      breakingChanges
+    );
 
     upgrades.push({
       packageName: dep.name,
@@ -114,7 +121,10 @@ function calculateUpgradeConfidence(
   }
 
   // Medium confidence: Major version but within same major.x
-  if (breakingChanges && semver.major(dep.version) === semver.major(fixedVersion)) {
+  if (
+    breakingChanges &&
+    semver.major(dep.version) === semver.major(fixedVersion)
+  ) {
     return 'medium';
   }
 
@@ -126,6 +136,7 @@ function calculateUpgradeConfidence(
 ### 4. Dockerfile Generation
 
 **Template-Based Generation**:
+
 ```typescript
 interface DockerfileTemplate {
   language: string;
@@ -135,7 +146,7 @@ interface DockerfileTemplate {
 }
 
 const templates: Record<string, DockerfileTemplate> = {
-  'nodejs': {
+  nodejs: {
     language: 'Node.js',
     baseImage: 'cgr.dev/chainguard/node:latest',
     buildCommands: [
@@ -157,7 +168,7 @@ const templates: Record<string, DockerfileTemplate> = {
       'CMD ["node", "dist/index.js"]',
     ],
   },
-  'python': {
+  python: {
     language: 'Python',
     baseImage: 'cgr.dev/chainguard/python:latest',
     buildCommands: [
@@ -202,6 +213,7 @@ function generateDockerfile(language: string, config: AppConfig): string {
 ### 5. Build Validation
 
 **Ephemeral Build Environment**:
+
 ```typescript
 import Docker from 'dockerode';
 
@@ -222,7 +234,11 @@ async function validateBuild(
 
   try {
     // 1. Create ephemeral build environment
-    const tarStream = createTarball(repository, dockerfile, upgradedDependencies);
+    const tarStream = createTarball(
+      repository,
+      dockerfile,
+      upgradedDependencies
+    );
 
     // 2. Build image
     const buildStream = await docker.buildImage(tarStream, {
@@ -255,7 +271,6 @@ async function validateBuild(
       testResults,
       imageDigest,
     };
-
   } catch (error) {
     return {
       success: false,
@@ -272,6 +287,7 @@ async function validateBuild(
 ### 6. Pull Request Generation
 
 **Git Integration**:
+
 ```typescript
 import { Octokit } from '@octokit/rest';
 
@@ -342,14 +358,20 @@ This PR was automatically generated by Aegis to remediate security vulnerabiliti
 ### Vulnerability Remediation
 | CVE ID | Package | Current Version | Fixed Version | Severity |
 |--------|---------|-----------------|---------------|----------|
-${changes.vulnerabilities.map(v =>
-  `| ${v.cveId} | ${v.packageName} | ${v.currentVersion} | ${v.fixedVersion} | ${v.severity} |`
-).join('\n')}
+${changes.vulnerabilities
+  .map(
+    (v) =>
+      `| ${v.cveId} | ${v.packageName} | ${v.currentVersion} | ${v.fixedVersion} | ${v.severity} |`
+  )
+  .join('\n')}
 
 ### Dependency Upgrades
-${changes.upgrades.map(u =>
-  `- **${u.packageName}**: ${u.currentVersion} → ${u.fixedVersion} ${u.breakingChanges ? '⚠️ Major version' : '✅ Safe'}`
-).join('\n')}
+${changes.upgrades
+  .map(
+    (u) =>
+      `- **${u.packageName}**: ${u.currentVersion} → ${u.fixedVersion} ${u.breakingChanges ? '⚠️ Major version' : '✅ Safe'}`
+  )
+  .join('\n')}
 
 ### Dockerfile Changes
 - ✅ Switched to Chainguard base image (\`${changes.chainguardImage}\`)
@@ -414,6 +436,7 @@ function RemediationDashboard() {
 ## Consequences
 
 ### Positive
+
 ✅ **Time savings**: Remediation time reduced from weeks to minutes
 ✅ **Accuracy**: Eliminates human error in dependency upgrades
 ✅ **Safety**: Build validation prevents broken deployments
@@ -422,6 +445,7 @@ function RemediationDashboard() {
 ✅ **ATO acceleration**: Automated evidence generation speeds FedRAMP approval
 
 ### Negative
+
 ❌ **False positives**: May propose upgrades that break application logic
 ❌ **Test coverage dependency**: Requires existing test suite to validate changes
 ❌ **AI model cost**: LLM usage for changelog analysis adds operational cost
@@ -429,18 +453,22 @@ function RemediationDashboard() {
 ❌ **Trust barrier**: Users may be skeptical of automated code changes
 
 ### Neutral
+
 ⚖️ **Human oversight**: Users still review and approve PRs (not fully autonomous)
 ⚖️ **Incremental rollout**: Can start with low-confidence upgrades disabled
 
 ## Alternatives Considered
 
 ### Alternative 1: Dependabot / Renovate Bot (status quo)
+
 **Rejected**: Only upgrades dependencies, does not fix Dockerfiles. No build validation. Creates 20+ PRs per repo (noisy).
 
 ### Alternative 2: Manual remediation by security team
+
 **Rejected**: Does not scale. Average 2-4 weeks per application. Bottleneck for ATO.
 
 ### Alternative 3: AI code generation (fully autonomous)
+
 **Rejected**: Too risky without human review. Cannot guarantee correctness.
 
 ## Implementation Notes

@@ -9,6 +9,7 @@
 Aegis requires enterprise-grade authentication and role-based access control (RBAC) to support multi-tenant government deployments. Users have varying roles (OrgAdmin, ISSO, DevSecOps, Developer, Auditor) with different permission levels.
 
 **Requirements**:
+
 - NIST 800-53 IA-2: Identification and Authentication
 - NIST 800-53 AC-2: Account Management
 - NIST 800-53 AC-3: Access Enforcement
@@ -19,6 +20,7 @@ Aegis requires enterprise-grade authentication and role-based access control (RB
 - Support for 5 distinct roles with different permissions
 
 **Constraints**:
+
 - Must work with Platform One Big Bang deployment
 - Government cloud environments (Azure Gov, AWS GovCloud)
 - Cannot build custom auth system (security risk, compliance burden)
@@ -30,21 +32,20 @@ We will integrate with **Platform One Keycloak** for authentication and RBAC:
 ### 1. Keycloak Configuration
 
 **Platform One Keycloak Instance**:
+
 - URL: `https://login.dso.mil`
 - Realm: `baby-yoda` (Platform One standard realm)
 - Protocol: OpenID Connect (OIDC)
 
 **Client Configuration**:
+
 ```json
 {
   "clientId": "aegis",
   "name": "Aegis DevSecOps Platform",
   "protocol": "openid-connect",
   "rootUrl": "https://aegis.dso.mil",
-  "redirectUris": [
-    "https://aegis.dso.mil/*",
-    "http://localhost:3000/*"
-  ],
+  "redirectUris": ["https://aegis.dso.mil/*", "http://localhost:3000/*"],
   "webOrigins": ["+"],
   "publicClient": false,
   "clientAuthenticatorType": "client-secret",
@@ -67,38 +68,38 @@ We will integrate with **Platform One Keycloak** for authentication and RBAC:
 ```yaml
 roles:
   - name: aegis-org-admin
-    description: "Organization Administrator - Full tenant management"
+    description: 'Organization Administrator - Full tenant management'
     composite: false
 
   - name: aegis-isso
-    description: "Information System Security Officer - Compliance & audit"
+    description: 'Information System Security Officer - Compliance & audit'
     composite: false
 
   - name: aegis-devsecops
-    description: "DevSecOps Engineer - CI/CD and policy management"
+    description: 'DevSecOps Engineer - CI/CD and policy management'
     composite: false
 
   - name: aegis-developer
-    description: "Developer - Read-only evidence access"
+    description: 'Developer - Read-only evidence access'
     composite: false
 
   - name: aegis-auditor
-    description: "Auditor - Cross-tenant read-only (compliance review)"
+    description: 'Auditor - Cross-tenant read-only (compliance review)'
     composite: false
 ```
 
 **Permission Matrix**:
 
-| Resource | OrgAdmin | ISSO | DevSecOps | Developer | Auditor |
-|----------|----------|------|-----------|-----------|---------|
-| Manage Users | ✅ | ❌ | ❌ | ❌ | ❌ |
-| Manage Projects | ✅ | ✅ | ✅ | ❌ | ❌ |
-| View Evidence | ✅ | ✅ | ✅ | ✅ | ✅ (all tenants) |
-| Triage CVEs | ✅ | ✅ | ✅ | ❌ | ❌ |
-| Manage Policies | ✅ | ✅ | ✅ | ❌ | ❌ |
-| Export POA&M | ✅ | ✅ | ❌ | ❌ | ✅ (all tenants) |
-| Deploy to Prod | ✅ | ✅ | ✅ | ❌ | ❌ |
-| View Audit Logs | ✅ | ✅ | ❌ | ❌ | ✅ (all tenants) |
+| Resource        | OrgAdmin | ISSO | DevSecOps | Developer | Auditor          |
+| --------------- | -------- | ---- | --------- | --------- | ---------------- |
+| Manage Users    | ✅       | ❌   | ❌        | ❌        | ❌               |
+| Manage Projects | ✅       | ✅   | ✅        | ❌        | ❌               |
+| View Evidence   | ✅       | ✅   | ✅        | ✅        | ✅ (all tenants) |
+| Triage CVEs     | ✅       | ✅   | ✅        | ❌        | ❌               |
+| Manage Policies | ✅       | ✅   | ✅        | ❌        | ❌               |
+| Export POA&M    | ✅       | ✅   | ❌        | ❌        | ✅ (all tenants) |
+| Deploy to Prod  | ✅       | ✅   | ✅        | ❌        | ❌               |
+| View Audit Logs | ✅       | ✅   | ❌        | ❌        | ✅ (all tenants) |
 
 ### 3. Group-Based Role Assignment
 
@@ -121,6 +122,7 @@ Use Keycloak Groups to organize users by tenant:
 ```
 
 **Group Attributes**:
+
 ```json
 {
   "name": "acme-corp-admins",
@@ -168,14 +170,17 @@ Keycloak JWT includes custom claims for Aegis:
 ```
 
 **Custom Claim Mapper** (Keycloak configuration):
+
 ```javascript
 // Protocol Mapper: Tenant ID
-const group = user.getGroups().find(g => g.path.startsWith('/aegis/tenants/'));
+const group = user
+  .getGroups()
+  .find((g) => g.path.startsWith('/aegis/tenants/'));
 if (group) {
   token.setOtherClaims('aegis', {
     tenantId: group.attributes.tenantId[0],
     tenantSlug: group.attributes.tenantSlug[0],
-    role: mapKeycloakRoleToAegisRole(user.realmRoles)
+    role: mapKeycloakRoleToAegisRole(user.realmRoles),
   });
 }
 ```
@@ -192,7 +197,8 @@ export const requireAuth = expressjwt({
     cache: true,
     rateLimit: true,
     jwksRequestsPerMinute: 5,
-    jwksUri: 'https://login.dso.mil/realms/baby-yoda/protocol/openid-connect/certs'
+    jwksUri:
+      'https://login.dso.mil/realms/baby-yoda/protocol/openid-connect/certs',
   }),
 
   audience: 'aegis',
@@ -205,7 +211,7 @@ export const requireAuth = expressjwt({
       return authHeader.substring(7);
     }
     return null;
-  }
+  },
 });
 
 // Extract Aegis-specific claims
@@ -247,6 +253,7 @@ export function Authorized(roles: UserRole[]) {
 ```
 
 **Usage in GraphQL Resolver**:
+
 ```typescript
 @Resolver()
 export class ProjectResolver {
@@ -342,6 +349,7 @@ export async function logAuthEvent(event: AuthEvent): Promise<void> {
 ## Consequences
 
 ### Positive
+
 ✅ **Enterprise SSO**: Users authenticated once for all Platform One apps
 ✅ **MFA Support**: Keycloak supports TOTP, SMS, CAC/PIV cards
 ✅ **Compliance**: Meets NIST 800-53 IA-2, AC-2, AC-3 requirements
@@ -350,24 +358,29 @@ export async function logAuthEvent(event: AuthEvent): Promise<void> {
 ✅ **Flexible RBAC**: Easy to add new roles without code changes
 
 ### Negative
+
 ❌ **External Dependency**: Aegis depends on Keycloak availability
 ❌ **Configuration Complexity**: Initial Keycloak setup requires expertise
 ❌ **Token Refresh**: Frontend must handle token expiration (5-minute lifetime)
 ❌ **Network Latency**: JWT verification adds 10-50ms per request
 
 ### Neutral
+
 ⚖️ **Migration Path**: Can migrate to alternative OIDC provider if needed
 ⚖️ **Local Development**: Requires running Keycloak locally or using shared dev instance
 
 ## Alternatives Considered
 
 ### Alternative 1: Custom auth system (username/password + JWT)
+
 **Rejected**: Security risk (rolling own crypto). No MFA. Does not meet NIST 800-53 requirements.
 
 ### Alternative 2: Auth0 or Okta (commercial SaaS)
+
 **Rejected**: Not FedRAMP authorized. Vendor lock-in. Data residency concerns for government cloud.
 
 ### Alternative 3: AWS Cognito or Azure AD B2C
+
 **Rejected**: Vendor lock-in (cloud-specific). Does not integrate with Platform One ecosystem.
 
 ## Implementation Notes
