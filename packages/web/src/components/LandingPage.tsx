@@ -310,84 +310,174 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* Getting Started Section - WHITE BACKGROUND */}
+      {/* Compliance Tools Section - WHITE BACKGROUND with Document Layout */}
       <section style={{
         padding: '6rem 3rem',
-        maxWidth: '1200px',
-        margin: '0 auto',
         background: '#ffffff'
       }}>
-        <div style={{ marginBottom: '3rem' }}>
-          <h2 style={{ fontSize: '2.5rem', fontWeight: '600', marginBottom: '1rem', color: '#000000' }}>
-            Compliance Tools
-          </h2>
-          <p style={{ fontSize: '1.125rem', color: '#525252', maxWidth: '700px', lineHeight: 1.6 }}>
-            Deploy and monitor compliance with open infrastructure,
-            free from vendor lock-in
-          </p>
-          <Link
-            to="/upload"
-            style={{
-              display: 'inline-block',
-              marginTop: '1.5rem',
-              padding: '0.75rem 1.5rem',
-              background: '#000000',
-              color: '#ffffff',
-              textDecoration: 'none',
-              borderRadius: '6px',
-              fontWeight: '500',
-              fontSize: '0.95rem'
-            }}
-          >
-            Upload scans →
-          </Link>
-        </div>
+        <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.5fr', gap: '4rem', alignItems: 'center' }}>
 
-        {/* Feature boxes - No icons */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-          gap: '2.5rem',
-          marginTop: '3rem'
-        }}>
-          <div>
-            <h3 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '0.75rem', color: '#000000' }}>
-              Real-time dashboard
-            </h3>
-            <p style={{ color: '#525252', lineHeight: 1.7, fontSize: '0.95rem' }}>
-              Generate compliance dashboards from your scan results.
-              Focus on remediation, not UI frameworks.
-            </p>
-          </div>
+            {/* Left side - Content */}
+            <div>
+              <h2 style={{ fontSize: '2.5rem', fontWeight: '600', marginBottom: '1rem', color: '#000000' }}>
+                Compliance Tools
+              </h2>
+              <p style={{ fontSize: '1.125rem', color: '#525252', lineHeight: 1.6, marginBottom: '2rem' }}>
+                Deploy and monitor compliance with open infrastructure,
+                free from vendor lock-in
+              </p>
+              <Link
+                to="/upload"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  padding: '0.875rem 1.75rem',
+                  background: '#000000',
+                  color: '#ffffff',
+                  textDecoration: 'none',
+                  borderRadius: '6px',
+                  fontWeight: '500',
+                  fontSize: '1rem'
+                }}
+              >
+                Learn more →
+              </Link>
+            </div>
 
-          <div>
-            <h3 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '0.75rem', color: '#000000' }}>
-              Production deployment
-            </h3>
-            <p style={{ color: '#525252', lineHeight: 1.7, fontSize: '0.95rem' }}>
-              Go from container to production-ready. We handle database,
-              storage, and scaling for Azure Government Cloud.
-            </p>
-          </div>
+            {/* Right side - Document/Research Paper Style */}
+            <div style={{
+              background: '#ffffff',
+              border: '1px solid #e0e0e0',
+              borderRadius: '8px',
+              padding: '2.5rem',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.08)'
+            }}>
+              {/* Document Header */}
+              <div style={{ marginBottom: '2rem', paddingBottom: '1.5rem', borderBottom: '1px solid #e0e0e0' }}>
+                <div style={{ fontSize: '0.875rem', color: '#888888', marginBottom: '0.5rem' }}>AEGIS COMPLIANCE REPORT</div>
+                <h3 style={{ fontSize: '1.5rem', fontWeight: '600', color: '#000000', marginBottom: '0.75rem' }}>
+                  FedRAMP Vulnerability Management Overview
+                </h3>
+                <p style={{ fontSize: '0.95rem', color: '#525252', lineHeight: 1.6 }}>
+                  Automated compliance monitoring and POA&M generation for federal systems
+                </p>
+              </div>
 
-          <div>
-            <h3 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '0.75rem', color: '#000000' }}>
-              Multi-scanner support
-            </h3>
-            <p style={{ color: '#525252', lineHeight: 1.7, fontSize: '0.95rem' }}>
-              Test across Grype, Trivy, and other scanners. Compare results
-              and find optimal scanning strategy.
-            </p>
-          </div>
+              {/* Feature List in Document Style */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
+                  <div style={{
+                    minWidth: '24px',
+                    height: '24px',
+                    borderRadius: '50%',
+                    background: '#000000',
+                    color: '#ffffff',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '0.75rem',
+                    fontWeight: '600'
+                  }}>1</div>
+                  <div>
+                    <h4 style={{ fontSize: '1rem', fontWeight: '600', color: '#000000', marginBottom: '0.25rem' }}>
+                      Real-time dashboard
+                    </h4>
+                    <p style={{ fontSize: '0.875rem', color: '#525252', lineHeight: 1.6 }}>
+                      Generate compliance dashboards from scan results. Focus on remediation, not UI frameworks.
+                    </p>
+                  </div>
+                </div>
 
-          <div>
-            <h3 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '0.75rem', color: '#000000' }}>
-              Framework-agnostic
-            </h3>
-            <p style={{ color: '#525252', lineHeight: 1.7, fontSize: '0.95rem' }}>
-              Work with any SBOM generator or scanner on a single platform.
-              Enable cross-tool workflows without vendor lock-in.
-            </p>
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
+                  <div style={{
+                    minWidth: '24px',
+                    height: '24px',
+                    borderRadius: '50%',
+                    background: '#000000',
+                    color: '#ffffff',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '0.75rem',
+                    fontWeight: '600'
+                  }}>2</div>
+                  <div>
+                    <h4 style={{ fontSize: '1rem', fontWeight: '600', color: '#000000', marginBottom: '0.25rem' }}>
+                      Production deployment
+                    </h4>
+                    <p style={{ fontSize: '0.875rem', color: '#525252', lineHeight: 1.6 }}>
+                      Container to production-ready. Database, storage, and scaling for Azure Government Cloud.
+                    </p>
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
+                  <div style={{
+                    minWidth: '24px',
+                    height: '24px',
+                    borderRadius: '50%',
+                    background: '#000000',
+                    color: '#ffffff',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '0.75rem',
+                    fontWeight: '600'
+                  }}>3</div>
+                  <div>
+                    <h4 style={{ fontSize: '1rem', fontWeight: '600', color: '#000000', marginBottom: '0.25rem' }}>
+                      Multi-scanner support
+                    </h4>
+                    <p style={{ fontSize: '0.875rem', color: '#525252', lineHeight: 1.6 }}>
+                      Test across Grype, Trivy, and other scanners. Compare results and find optimal strategy.
+                    </p>
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
+                  <div style={{
+                    minWidth: '24px',
+                    height: '24px',
+                    borderRadius: '50%',
+                    background: '#000000',
+                    color: '#ffffff',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '0.75rem',
+                    fontWeight: '600'
+                  }}>4</div>
+                  <div>
+                    <h4 style={{ fontSize: '1rem', fontWeight: '600', color: '#000000', marginBottom: '0.25rem' }}>
+                      Framework-agnostic
+                    </h4>
+                    <p style={{ fontSize: '0.875rem', color: '#525252', lineHeight: 1.6 }}>
+                      Work with any SBOM generator or scanner. Enable cross-tool workflows without vendor lock-in.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Document Footer */}
+              <div style={{
+                marginTop: '2rem',
+                paddingTop: '1.5rem',
+                borderTop: '1px solid #e0e0e0',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center'
+              }}>
+                <div style={{ fontSize: '0.75rem', color: '#888888' }}>
+                  Last updated: December 2025
+                </div>
+                <div style={{ fontSize: '0.75rem', color: '#000000', fontWeight: '600' }}>
+                  4 capabilities
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </section>
