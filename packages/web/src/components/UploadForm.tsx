@@ -3,7 +3,9 @@
  */
 
 import { useState } from 'react';
-import { apiClient, UploadScanResponse } from '../api/client';
+
+import { PolicyEvaluationResults } from './PolicyEvaluationResults';
+import { apiClient, UploadScanResponse, PolicyEvaluationResponse } from '../api/client';
 
 export function UploadForm() {
   const [projectName, setProjectName] = useState('');

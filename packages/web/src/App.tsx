@@ -3,8 +3,10 @@
  */
 
 import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
-import { LandingPage } from './components/LandingPage';
+
 import { Dashboard } from './components/Dashboard';
+import { LandingPage } from './components/LandingPage';
+import { PolicyManagement } from './components/PolicyManagement';
 import { UploadForm } from './components/UploadForm';
 
 const AEGIS_VERSION = '0.1.0';

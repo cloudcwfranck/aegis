@@ -3,15 +3,8 @@
  * Supports Azure Blob Storage (Azure Gov) and S3-compatible (MinIO local dev)
  */
 
-import { createHash, webcrypto } from 'crypto';
+import { createHash } from 'crypto';
 import { Readable } from 'stream';
-
-// Ensure crypto is available globally for Azure SDK
-// Azure SDK sometimes looks for global.crypto or globalThis.crypto
-if (typeof globalThis.crypto === 'undefined') {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (globalThis as any).crypto = webcrypto;
-}
 
 import {
   S3Client,
@@ -21,11 +14,6 @@ import {
   DeleteObjectCommand,
   PutObjectCommandInput,
 } from '@aws-sdk/client-s3';
-import {
-  BlobServiceClient,
-  StorageSharedKeyCredential,
-  ContainerClient,
-} from '@azure/storage-blob';
 
 import { logger } from '../utils/logger';
 

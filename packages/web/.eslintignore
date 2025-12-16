@@ -1,0 +1,6 @@
+dist
+node_modules
+coverage
+*.spec.ts
+*.test.ts
+vite.config.ts

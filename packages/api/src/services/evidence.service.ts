@@ -2,8 +2,7 @@
  * Evidence Service - Business logic for evidence ingestion
  */
 
-import {
-  AppDataSource,
+import { AppDataSource ,
   EvidenceEntity,
   BuildEntity,
   ProjectEntity,
@@ -11,7 +10,7 @@ import {
 import { EvidenceType, SBOMFormat } from '@aegis/shared';
 import { Repository } from 'typeorm';
 
-import { IStorageService, UploadResult } from './storage.service';
+import { StorageService } from './storage.service';
 import {
   UploadScanInputDto,
   UploadScanResponse,

@@ -12,7 +12,7 @@
     "lint": "eslint . --ext .ts",
     "typecheck": "tsc --noEmit",
     "test": "jest --passWithNoTests",
-    "test:ci": "jest --ci --coverage --passWithNoTests"
+    "test:ci": "jest --ci --coverage"
   },
   "dependencies": {
     "@aegis/db": "*",

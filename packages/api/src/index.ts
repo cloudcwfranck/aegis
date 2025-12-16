@@ -3,9 +3,6 @@
  * GraphQL + REST API for evidence ingestion, policy enforcement, and compliance management
  */
 
-import 'reflect-metadata'; // Required for type-graphql
-import { createServer } from 'http';
-
 import { initializeDatabase } from '@aegis/db';
 import cors from 'cors';
 import dotenv from 'dotenv';
@@ -17,6 +14,7 @@ import { startWorkers, stopWorkers } from './queues/worker-manager';
 import evidenceRoutes from './routes/evidence.routes';
 import policyRoutes from './routes/policy.routes';
 import { logger } from './utils/logger';
+
 
 dotenv.config();
 
