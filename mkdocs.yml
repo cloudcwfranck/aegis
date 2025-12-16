@@ -1,0 +1,112 @@
+site_name: Aegis DevSecOps Platform
+site_description: Enterprise-grade DevSecOps platform for FedRAMP compliance and vulnerability management
+site_author: Aegis Team
+site_url: https://aegis.dev
+
+repo_name: cloudcwfranck/aegis
+repo_url: https://github.com/cloudcwfranck/aegis
+
+theme:
+  name: material
+  palette:
+    # Light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: black
+      accent: black
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: black
+      accent: white
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  font:
+    text: IBM Plex Sans
+    code: IBM Plex Mono
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - navigation.footer
+    - search.suggest
+    - search.highlight
+    - search.share
+    - content.code.copy
+    - content.code.annotate
+    - toc.follow
+  icon:
+    repo: fontawesome/brands/github
+
+plugins:
+  - search:
+      separator: '[\s\-,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
+  - tags
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+      toc_depth: 3
+
+extra:
+  generator: false  # Remove "Made with Material for MkDocs"
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/cloudcwfranck/aegis
+
+extra_css:
+  - stylesheets/feedback.css
+
+extra_javascript:
+  - javascripts/feedback.js
+
+nav:
+  - Introduction:
+      - Welcome: introduction/welcome.md
+      - Quickstart: introduction/quickstart.md
+      - Architecture Overview: introduction/architecture.md
+  - Core Concepts:
+      - Evidence Ingestion: core-concepts/evidence.md
+      - SBOM Processing: core-concepts/sbom.md
+      - Vulnerability Scanning: core-concepts/vulnerabilities.md
+      - POA&M Generation: core-concepts/poam.md
+      - Compliance Mapping: core-concepts/compliance.md
+      - Multi-tenancy: core-concepts/multi-tenancy.md
+  - Deployment:
+      - Local Development: deployment/local.md
+      - Azure Deployment: deployment/azure.md
+      - Configuration: deployment/configuration.md
+      - Environment Variables: deployment/environment.md
+  - API Reference:
+      - GraphQL API: api-reference/graphql.md
+      - REST API: api-reference/rest.md
+      - Authentication: api-reference/authentication.md
+      - Webhooks: api-reference/webhooks.md
+  - Guides:
+      - Upload Evidence: guides/upload-evidence.md
+      - Managing POA&Ms: guides/managing-poams.md
+      - Compliance Reports: guides/compliance-reports.md
+      - Integrations: guides/integrations.md
+
+copyright: Copyright &copy; 2025 Aegis DevSecOps Platform

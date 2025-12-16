@@ -52,9 +52,6 @@ function Navigation() {
           <Link to="/upload" style={linkStyle('/upload')}>
             📤 Upload Scan
           </Link>
-          <Link to="/policies" style={linkStyle('/policies')}>
-            🛡️ Policies
-          </Link>
           <Link to="/evidence" style={linkStyle('/evidence')}>
             📋 Evidence List
           </Link>
@@ -111,7 +108,6 @@ function AppContent() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/upload" element={<UploadForm />} />
-        <Route path="/policies" element={<PolicyManagement />} />
         <Route path="/evidence" element={<EvidenceListPlaceholder />} />
       </Routes>
     </div>

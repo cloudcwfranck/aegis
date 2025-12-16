@@ -9,6 +9,7 @@
 Aegis is a multi-tenant SaaS platform serving government agencies and contractors with varying security clearance levels (IL2, IL4, IL5). We need to ensure complete data isolation between tenants while maximizing resource efficiency on shared Kubernetes infrastructure.
 
 **Requirements**:
+
 - FedRAMP Moderate compliance (NIST 800-53 AC-3, SC-7)
 - Complete data isolation between tenants
 - Support for cross-tenant auditor role (read-only access for compliance)
@@ -17,6 +18,7 @@ Aegis is a multi-tenant SaaS platform serving government agencies and contractor
 - Integration with Platform One Big Bang deployment model
 
 **Constraints**:
+
 - Must work with both AKS-Gov and EKS-Gov
 - Must support Istio service mesh with mTLS
 - Cannot use cluster-per-tenant (cost prohibitive at scale)
@@ -28,17 +30,20 @@ We will implement **namespace-based multi-tenancy** with the following architect
 ### 1. Namespace Structure
 
 Each tenant receives a dedicated Kubernetes namespace:
+
 ```
 aegis-tenant-<tenant-slug>
 ```
 
 Example:
+
 - `aegis-tenant-acme-corp`
 - `aegis-tenant-dod-agency-x`
 
 ### 2. Isolation Mechanisms
 
 #### Network Isolation (NIST 800-53 SC-7)
+
 - Calico Network Policies (default deny-all)
 - Explicit allow rules only for:
   - Tenant namespace → Shared services (PostgreSQL, Redis)
@@ -54,11 +59,12 @@ metadata:
 spec:
   podSelector: {}
   policyTypes:
-  - Ingress
-  - Egress
+    - Ingress
+    - Egress
 ```
 
 #### Resource Quotas (NIST 800-53 SC-6)
+
 - CPU limits per namespace (based on tenant tier)
 - Memory limits per namespace
 - Storage limits (PVC count and capacity)
@@ -72,14 +78,15 @@ metadata:
   namespace: aegis-tenant-acme-corp
 spec:
   hard:
-    requests.cpu: "10"
+    requests.cpu: '10'
     requests.memory: 20Gi
-    limits.cpu: "20"
+    limits.cpu: '20'
     limits.memory: 40Gi
-    persistentvolumeclaims: "10"
+    persistentvolumeclaims: '10'
 ```
 
 #### RBAC Isolation (NIST 800-53 AC-3)
+
 - Service accounts scoped to namespace
 - RoleBindings (not ClusterRoleBindings) for tenant users
 - ClusterRole with namespace-scoped permissions
@@ -91,9 +98,9 @@ metadata:
   name: tenant-admin
   namespace: aegis-tenant-acme-corp
 subjects:
-- kind: Group
-  name: acme-corp-admins
-  apiGroup: rbac.authorization.k8s.io
+  - kind: Group
+    name: acme-corp-admins
+    apiGroup: rbac.authorization.k8s.io
 roleRef:
   kind: ClusterRole
   name: aegis-tenant-admin
@@ -101,6 +108,7 @@ roleRef:
 ```
 
 #### Pod Security Standards
+
 - Enforce `restricted` Pod Security Standard per namespace
 - No privileged containers allowed
 - No hostPath volumes
@@ -120,12 +128,14 @@ metadata:
 ### 3. Shared Services Architecture
 
 Shared services run in dedicated namespaces:
+
 - `aegis-system` - Aegis API, Workers, Web UI
 - `aegis-data` - PostgreSQL, Redis (with row-level security)
 - `istio-system` - Istio control plane
 - `gatekeeper-system` - OPA Gatekeeper
 
 #### Database Multi-tenancy (PostgreSQL Row-Level Security)
+
 All tables include `tenantId` column with RLS policies:
 
 ```sql
@@ -136,6 +146,7 @@ ALTER TABLE evidence ENABLE ROW LEVEL SECURITY;
 ```
 
 Application sets session variable before queries:
+
 ```sql
 SET app.current_tenant = '<tenant-uuid>';
 ```
@@ -154,13 +165,13 @@ kind: ClusterRole
 metadata:
   name: aegis-auditor
 rules:
-- apiGroups: [""]
-  resources: ["pods", "services", "configmaps"]
-  verbs: ["get", "list"]
-  resourceNames: []
-- apiGroups: ["apps"]
-  resources: ["deployments", "statefulsets"]
-  verbs: ["get", "list"]
+  - apiGroups: ['']
+    resources: ['pods', 'services', 'configmaps']
+    verbs: ['get', 'list']
+    resourceNames: []
+  - apiGroups: ['apps']
+    resources: ['deployments', 'statefulsets']
+    verbs: ['get', 'list']
 ```
 
 ### 5. Gatekeeper Policy Enforcement
@@ -174,16 +185,17 @@ metadata:
   name: tenant-required-labels
 spec:
   match:
-    namespaces: ["aegis-tenant-acme-corp"]
+    namespaces: ['aegis-tenant-acme-corp']
   parameters:
     labels:
-      - key: "tenant"
-        value: "acme-corp"
+      - key: 'tenant'
+        value: 'acme-corp'
 ```
 
 ## Consequences
 
 ### Positive
+
 ✅ **Cost-efficient**: Shared cluster reduces infrastructure costs vs. cluster-per-tenant
 ✅ **Compliance**: Meets NIST 800-53 AC-3 (Access Enforcement) and SC-7 (Boundary Protection)
 ✅ **Scalability**: Can support 1000+ tenants on single cluster
@@ -192,24 +204,29 @@ spec:
 ✅ **Big Bang compatible**: Works with Platform One deployment model
 
 ### Negative
+
 ❌ **Noisy neighbor risk**: Resource quotas must be carefully tuned
 ❌ **Blast radius**: Cluster-level security issue affects all tenants (mitigated by private cluster)
 ❌ **Operational complexity**: More namespaces to manage vs. single namespace
 ❌ **Istio overhead**: Service mesh adds latency (~5ms) and resource usage
 
 ### Neutral
+
 ⚖️ **Migration path**: If IL5+ requires dedicated clusters, namespace structure remains the same
 ⚖️ **Database performance**: Row-level security adds ~2% query overhead (acceptable for compliance)
 
 ## Alternatives Considered
 
 ### Alternative 1: Cluster-per-tenant
+
 **Rejected**: Cost prohibitive (each cluster ~$500/month), operational overhead unmanageable at scale.
 
 ### Alternative 2: Single namespace with label-based isolation
+
 **Rejected**: Does not meet NIST 800-53 requirement for boundary protection (SC-7). Gatekeeper policies cannot enforce tenant isolation without namespaces.
 
 ### Alternative 3: Virtual clusters (vCluster)
+
 **Rejected**: Adds significant complexity, not supported by Platform One Big Bang, unproven in government cloud environments.
 
 ## Implementation Notes

@@ -17,17 +17,20 @@ import {
   SPDXDocument,
   GrypeScanResults,
 } from '../dto/upload-scan.dto';
+import { QueueService } from '../queues/queue.service';
 import { logger } from '../utils/logger';
 
 export class EvidenceService {
   private evidenceRepo: Repository<EvidenceEntity>;
   private buildRepo: Repository<BuildEntity>;
   private projectRepo: Repository<ProjectEntity>;
+  private queueService: QueueService;
 
-  constructor(private storageService: StorageService) {
+  constructor(private storageService: IStorageService) {
     this.evidenceRepo = AppDataSource.getRepository(EvidenceEntity);
     this.buildRepo = AppDataSource.getRepository(BuildEntity);
     this.projectRepo = AppDataSource.getRepository(ProjectEntity);
+    this.queueService = new QueueService();
   }
 
   /**
@@ -95,15 +98,46 @@ export class EvidenceService {
       scanUpload
     );
 
-    // 9. TODO: Enqueue worker job for async processing (Week 5)
-    // Will implement BullMQ queue in next iteration
+    // 9. Enqueue async processing jobs
     logger.info('Evidence records created', {
       sbomEvidenceId: sbomEvidence.id,
       scanEvidenceId: scanEvidence.id,
     });
 
+    // Enqueue SBOM parsing job
+    await this.queueService.enqueueSBOMParsing(
+      sbomEvidence.id,
+      tenantId,
+      input.sbom,
+      'spdx'
+    );
+
+    // Enqueue vulnerability indexing job
+    await this.queueService.enqueueVulnerabilityIndexing(
+      scanEvidence.id,
+      tenantId,
+      input.projectName,
+      input.vulnerabilities,
+      'grype'
+    );
+
     // 10. Calculate summary statistics
     const summary = this.calculateSummary(sbomDoc, scanResults);
+
+    // Enqueue POA&M generation job (for Critical and High vulnerabilities)
+    if (summary.criticalCount > 0 || summary.highCount > 0) {
+      await this.queueService.enqueuePOAMGeneration(
+        sbomEvidence.id,
+        tenantId,
+        input.projectName,
+        {
+          critical: summary.criticalCount,
+          high: summary.highCount,
+          medium: summary.mediumCount,
+          low: summary.lowCount,
+        }
+      );
+    }
 
     logger.info('Evidence upload completed', {
       tenantId,
@@ -206,7 +240,7 @@ export class EvidenceService {
     imageDigest: string,
     type: EvidenceType,
     format: SBOMFormat | undefined,
-    upload: { s3Uri: string; s3Bucket: string; s3Key: string; sha256: string; sizeBytes: number }
+    upload: UploadResult
   ): Promise<EvidenceEntity> {
     const evidence = this.evidenceRepo.create({
       tenantId,
@@ -216,9 +250,9 @@ export class EvidenceService {
       imageDigest,
       type,
       format,
-      s3Uri: upload.s3Uri,
-      s3Bucket: upload.s3Bucket,
-      s3Key: upload.s3Key,
+      storageUri: upload.uri,
+      storageContainer: upload.container,
+      storageKey: upload.key,
       fileSizeBytes: upload.sizeBytes,
       sha256Checksum: upload.sha256,
       metadata: {},
@@ -252,7 +286,8 @@ export class EvidenceService {
     ).length;
 
     const lowCount = scanResults.matches.filter(
-      (m) => m.vulnerability.severity === 'Low' ||
+      (m) =>
+        m.vulnerability.severity === 'Low' ||
         m.vulnerability.severity === 'Negligible'
     ).length;
 
