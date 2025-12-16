@@ -15,6 +15,7 @@ import { createApolloServer } from './graphql/server';
 import { errorHandler, notFoundHandler } from './middleware/error-handler';
 import { startWorkers, stopWorkers } from './queues/worker-manager';
 import evidenceRoutes from './routes/evidence.routes';
+import policyRoutes from './routes/policy.routes';
 import { logger } from './utils/logger';
 
 dotenv.config();
@@ -40,7 +41,7 @@ app.get('/api/v1', (_req, res) => {
       health: '/health',
       graphql: '/graphql',
       scans: '/api/v1/scans',
-      policies: '/api/v1/policies (coming in M2)',
+      policies: '/api/v1/policies',
       poam: '/api/v1/poam (coming in M2)',
     },
   });
@@ -48,6 +49,7 @@ app.get('/api/v1', (_req, res) => {
 
 // REST API Routes
 app.use('/api/v1/scans', evidenceRoutes);
+app.use('/api/v1/policies', policyRoutes);
 
 async function start() {
   try {
@@ -80,7 +82,8 @@ async function start() {
       logger.info(`🚀 Aegis API server running on http://localhost:${PORT}`);
       logger.info(`📊 Health check: http://localhost:${PORT}/health`);
       logger.info(`🔮 GraphQL playground: http://localhost:${PORT}/graphql`);
-      logger.info(`📡 REST API: http://localhost:${PORT}/api/v1/scans`);
+      logger.info(`📡 REST API - Scans: http://localhost:${PORT}/api/v1/scans`);
+      logger.info(`🛡️  REST API - Policies: http://localhost:${PORT}/api/v1/policies`);
       logger.info(`⚙️  BullMQ workers processing async jobs`);
     });
   } catch (error) {
