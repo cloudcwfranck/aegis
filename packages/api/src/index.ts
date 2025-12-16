@@ -8,6 +8,11 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
 
+import { createApolloServer } from './graphql/server';
+import { errorHandler, notFoundHandler } from './middleware/error-handler';
+import { startWorkers, stopWorkers } from './queues/worker-manager';
+import evidenceRoutes from './routes/evidence.routes';
+import policyRoutes from './routes/policy.routes';
 import { logger } from './utils/logger';
 
 dotenv.config();
@@ -24,20 +29,24 @@ app.get('/health', (_req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// Placeholder routes (will be implemented in M1+)
+// API Info endpoint
 app.get('/api/v1', (_req, res) => {
   res.json({
     name: 'Aegis DevSecOps Platform API',
     version: '0.1.0',
     endpoints: {
       health: '/health',
-      graphql: '/graphql (coming in M1)',
-      scans: '/api/v1/scans (coming in M1)',
-      policies: '/api/v1/policies (coming in M2)',
+      graphql: '/graphql',
+      scans: '/api/v1/scans',
+      policies: '/api/v1/policies',
       poam: '/api/v1/poam (coming in M2)',
     },
   });
 });
+
+// REST API Routes
+app.use('/api/v1/scans', evidenceRoutes);
+app.use('/api/v1/policies', policyRoutes);
 
 async function start() {
   try {
@@ -46,13 +55,37 @@ async function start() {
     await initializeDatabase();
     logger.info('Database connected successfully');
 
+    // Start BullMQ workers
+    logger.info('Starting BullMQ workers...');
+    await startWorkers();
+    logger.info('BullMQ workers started successfully');
+
+    // Create HTTP server (required for Apollo Server)
+    const httpServer = createServer(app);
+
+    // Initialize Apollo GraphQL Server
+    logger.info('Initializing GraphQL server...');
+    await createApolloServer(app, httpServer);
+    logger.info('GraphQL server initialized');
+
+    // 404 handler (must be after all routes including GraphQL)
+    app.use(notFoundHandler);
+
+    // Global error handler (must be last)
+    app.use(errorHandler);
+
     // Start server
-    app.listen(PORT, () => {
+    httpServer.listen(PORT, () => {
       logger.info(`🚀 Aegis API server running on http://localhost:${PORT}`);
       logger.info(`📊 Health check: http://localhost:${PORT}/health`);
+      logger.info(`🔮 GraphQL playground: http://localhost:${PORT}/graphql`);
+      logger.info(`📡 REST API - Scans: http://localhost:${PORT}/api/v1/scans`);
+      logger.info(`🛡️  REST API - Policies: http://localhost:${PORT}/api/v1/policies`);
+      logger.info(`⚙️  BullMQ workers processing async jobs`);
     });
   } catch (error) {
     logger.error('Failed to start server:', error);
+    await stopWorkers();
     process.exit(1);
   }
 }

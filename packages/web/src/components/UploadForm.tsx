@@ -29,7 +29,6 @@ export function UploadForm() {
     setLoading(true);
     setError(null);
     setResult(null);
-    setPolicyResults(null);
 
     try {
       if (!sbomFile || !vulnFile) {

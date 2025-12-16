@@ -15,6 +15,14 @@ module.exports = {
     'plugin:import/typescript',
     'prettier',
   ],
+  ignorePatterns: [
+    'dist',
+    'build',
+    'node_modules',
+    '*.config.js',
+    '.turbo',
+    'coverage',
+  ],
   env: {
     node: true,
     es2022: true,

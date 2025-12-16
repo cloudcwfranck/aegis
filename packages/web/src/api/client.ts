@@ -42,31 +42,6 @@ export interface EvidenceItem {
   createdAt: string;
 }
 
-export interface PolicyEvaluationResponse {
-  success: boolean;
-  allPassed: boolean;
-  evaluatedPolicies: number;
-  passedPolicies: number;
-  failedPolicies: number;
-  results: PolicyEvaluationResult[];
-}
-
-export interface PolicyEvaluationResult {
-  policyId: string;
-  policyName: string;
-  policyType: string;
-  passed: boolean;
-  violations: PolicyViolation[];
-  message: string;
-  evaluatedAt: string;
-}
-
-export interface PolicyViolation {
-  severity: string;
-  message: string;
-  metadata?: Record<string, unknown>;
-}
-
 class ApiClient {
   private client: AxiosInstance;
   private tenantId: string;
