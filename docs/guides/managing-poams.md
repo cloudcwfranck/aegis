@@ -57,10 +57,10 @@ mutation UpdatePOAM($id: ID!) {
 
 ```graphql
 mutation CompletePOAM($id: ID!) {
-  updatePOAM(id: $id, input: {
-    status: COMPLETED
-    actualCompletionDate: "2026-01-10"
-  }) {
+  updatePOAM(
+    id: $id
+    input: { status: COMPLETED, actualCompletionDate: "2026-01-10" }
+  ) {
     id
     status
     actualCompletionDate
@@ -72,13 +72,13 @@ mutation CompletePOAM($id: ID!) {
 
 ```graphql
 mutation AcceptRisk($id: ID!, $reason: String!) {
-  updatePOAM(id: $id, input: {
-    status: RISK_ACCEPTED
-    riskAcceptance: {
-      reason: $reason
-      approvedBy: "CISO"
+  updatePOAM(
+    id: $id
+    input: {
+      status: RISK_ACCEPTED
+      riskAcceptance: { reason: $reason, approvedBy: "CISO" }
     }
-  }) {
+  ) {
     id
     status
   }

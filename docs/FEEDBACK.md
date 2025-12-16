@@ -20,6 +20,7 @@ This directory tracks user feedback on Aegis documentation.
 All feedback is tracked via GitHub Issues with the `feedback` and `documentation` labels.
 
 **View all feedback**:
+
 ```
 https://github.com/cloudcwfranck/aegis/issues?q=is%3Aissue+label%3Afeedback+label%3Adocumentation
 ```

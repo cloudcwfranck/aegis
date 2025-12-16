@@ -37,14 +37,14 @@ Unlike general-purpose DevOps tools, Aegis is designed from the ground up for fe
 
 ## Key Features
 
-| Feature | Description |
-|---------|-------------|
-| **SBOM Processing** | Automated Software Bill of Materials parsing supporting SPDX 2.3 and CycloneDX formats |
-| **Vulnerability Scanning** | Integration with Grype, Trivy, and other industry-standard scanners |
-| **POA&M Automation** | Generate OSCAL-compliant Plans of Action & Milestones with FedRAMP timelines |
-| **Compliance Dashboard** | Real-time visibility into security posture and remediation status |
-| **Evidence Storage** | Tamper-proof evidence collection with Azure Blob Storage |
-| **Multi-tenant** | Enterprise-ready tenant isolation with PostgreSQL RLS |
+| Feature                    | Description                                                                            |
+| -------------------------- | -------------------------------------------------------------------------------------- |
+| **SBOM Processing**        | Automated Software Bill of Materials parsing supporting SPDX 2.3 and CycloneDX formats |
+| **Vulnerability Scanning** | Integration with Grype, Trivy, and other industry-standard scanners                    |
+| **POA&M Automation**       | Generate OSCAL-compliant Plans of Action & Milestones with FedRAMP timelines           |
+| **Compliance Dashboard**   | Real-time visibility into security posture and remediation status                      |
+| **Evidence Storage**       | Tamper-proof evidence collection with Azure Blob Storage                               |
+| **Multi-tenant**           | Enterprise-ready tenant isolation with PostgreSQL RLS                                  |
 
 ## Technology Stack
 

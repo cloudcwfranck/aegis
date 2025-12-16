@@ -72,6 +72,7 @@ aegis/
 ## Search Functionality
 
 The documentation includes built-in search powered by MkDocs Material:
+
 - Search index: `/docs/search/search_index.json` (253KB)
 - Supports keyword search across all pages
 - Search suggestions and highlighting

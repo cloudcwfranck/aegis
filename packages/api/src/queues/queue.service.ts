@@ -20,10 +20,9 @@ export class QueueService {
     this.sbomParserQueue = createQueue<SBOMParserJobData>(
       QueueName.SBOM_PARSER
     );
-    this.vulnerabilityIndexerQueue =
-      createQueue<VulnerabilityIndexerJobData>(
-        QueueName.VULNERABILITY_INDEXER
-      );
+    this.vulnerabilityIndexerQueue = createQueue<VulnerabilityIndexerJobData>(
+      QueueName.VULNERABILITY_INDEXER
+    );
     this.poamGeneratorQueue = createQueue<POAMGeneratorJobData>(
       QueueName.POAM_GENERATOR
     );

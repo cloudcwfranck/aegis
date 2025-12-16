@@ -4,10 +4,11 @@
  * Supports SPDX 2.3 and CycloneDX formats
  */
 
-import { Worker, Job } from 'bullmq';
 
 import { AppDataSource } from '@aegis/db/src/data-source';
 import { PackageEntity } from '@aegis/db/src/entities';
+import { Worker, Job } from 'bullmq';
+
 import { logger } from '../../utils/logger';
 import { createRedisConnection, QueueName } from '../config';
 

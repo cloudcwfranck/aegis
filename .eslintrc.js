@@ -40,6 +40,8 @@ module.exports = {
     '@typescript-eslint/no-unsafe-return': 'warn',
     '@typescript-eslint/no-misused-promises': 'warn',
     '@typescript-eslint/no-floating-promises': 'warn',
+    '@typescript-eslint/require-await': 'off',
+    '@typescript-eslint/restrict-template-expressions': 'warn',
     'import/no-named-as-default-member': 'warn',
     'import/order': [
       'error',

@@ -93,10 +93,7 @@ export async function getEvaluationResults(
  * Get all policies for tenant
  * GET /api/v1/policies
  */
-export async function getPolicies(
-  req: Request,
-  res: Response
-): Promise<void> {
+export async function getPolicies(req: Request, res: Response): Promise<void> {
   try {
     const tenantId = req.headers['x-tenant-id'] as string;
 
@@ -125,10 +122,7 @@ export async function getPolicies(
  * Create a new policy
  * POST /api/v1/policies
  */
-export async function createPolicy(
-  req: Request,
-  res: Response
-): Promise<void> {
+export async function createPolicy(req: Request, res: Response): Promise<void> {
   try {
     const tenantId = req.headers['x-tenant-id'] as string;
 
@@ -161,10 +155,7 @@ export async function createPolicy(
  * Update a policy
  * PUT /api/v1/policies/:policyId
  */
-export async function updatePolicy(
-  req: Request,
-  res: Response
-): Promise<void> {
+export async function updatePolicy(req: Request, res: Response): Promise<void> {
   try {
     const { policyId } = req.params;
     const updates = req.body;
@@ -193,10 +184,7 @@ export async function updatePolicy(
  * Delete a policy
  * DELETE /api/v1/policies/:policyId
  */
-export async function deletePolicy(
-  req: Request,
-  res: Response
-): Promise<void> {
+export async function deletePolicy(req: Request, res: Response): Promise<void> {
   try {
     const { policyId } = req.params;
 

@@ -3,6 +3,8 @@
  * GraphQL + REST API for evidence ingestion, policy enforcement, and compliance management
  */
 
+import { createServer } from 'http';
+
 import { initializeDatabase } from '@aegis/db';
 import cors from 'cors';
 import dotenv from 'dotenv';
@@ -80,7 +82,9 @@ async function start() {
       logger.info(`📊 Health check: http://localhost:${PORT}/health`);
       logger.info(`🔮 GraphQL playground: http://localhost:${PORT}/graphql`);
       logger.info(`📡 REST API - Scans: http://localhost:${PORT}/api/v1/scans`);
-      logger.info(`🛡️  REST API - Policies: http://localhost:${PORT}/api/v1/policies`);
+      logger.info(
+        `🛡️  REST API - Policies: http://localhost:${PORT}/api/v1/policies`
+      );
       logger.info(`⚙️  BullMQ workers processing async jobs`);
     });
   } catch (error) {

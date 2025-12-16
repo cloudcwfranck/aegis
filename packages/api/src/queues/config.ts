@@ -23,7 +23,9 @@ export function createRedisConnection(): Redis {
     maxRetriesPerRequest: null,
     retryStrategy: (times: number) => {
       const delay = Math.min(times * 50, 2000);
-      logger.warn(`Redis connection retry attempt ${times}, waiting ${delay}ms`);
+      logger.warn(
+        `Redis connection retry attempt ${times}, waiting ${delay}ms`
+      );
       return delay;
     },
   };

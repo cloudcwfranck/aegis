@@ -110,10 +110,10 @@ export class Vulnerability {
   @Column({ nullable: true })
   fixedVersion: string; // Version that fixes the vulnerability
 
-  @ManyToOne(() => Component, component => component.vulnerabilities)
+  @ManyToOne(() => Component, (component) => component.vulnerabilities)
   component: Component;
 
-  @OneToOne(() => POAM, poam => poam.vulnerability)
+  @OneToOne(() => POAM, (poam) => poam.vulnerability)
   poam: POAM;
 }
 ```
@@ -122,13 +122,13 @@ export class Vulnerability {
 
 Aegis uses CVSS 3.1 scores to classify vulnerabilities:
 
-| Severity | CVSS Score | Color | FedRAMP Deadline |
-|----------|------------|-------|------------------|
-| **CRITICAL** | 9.0 - 10.0 | 🔴 Red | 30 days |
-| **HIGH** | 7.0 - 8.9 | 🟠 Orange | 90 days |
-| **MEDIUM** | 4.0 - 6.9 | 🟡 Yellow | 180 days |
-| **LOW** | 0.1 - 3.9 | ⚪ Gray | No deadline |
-| **NONE** | 0.0 | ⚪ Gray | N/A |
+| Severity     | CVSS Score | Color     | FedRAMP Deadline |
+| ------------ | ---------- | --------- | ---------------- |
+| **CRITICAL** | 9.0 - 10.0 | 🔴 Red    | 30 days          |
+| **HIGH**     | 7.0 - 8.9  | 🟠 Orange | 90 days          |
+| **MEDIUM**   | 4.0 - 6.9  | 🟡 Yellow | 180 days         |
+| **LOW**      | 0.1 - 3.9  | ⚪ Gray   | No deadline      |
+| **NONE**     | 0.0        | ⚪ Gray   | N/A              |
 
 ## CVSS Scoring
 
@@ -174,14 +174,11 @@ export class VulnerabilityIndexerWorker {
       const allVulns = this.mergeVulnerabilities([
         ...nvdVulns,
         ...osvVulns,
-        ...ghVulns
+        ...ghVulns,
       ]);
 
       // Filter to applicable versions
-      const applicableVulns = this.filterByVersion(
-        allVulns,
-        component.version
-      );
+      const applicableVulns = this.filterByVersion(allVulns, component.version);
 
       vulnerabilities.push(...applicableVulns);
     }
@@ -191,7 +188,7 @@ export class VulnerabilityIndexerWorker {
 
     // Queue POA&M generation for Critical and High
     const criticalAndHigh = vulnerabilities.filter(
-      v => v.severity === 'CRITICAL' || v.severity === 'HIGH'
+      (v) => v.severity === 'CRITICAL' || v.severity === 'HIGH'
     );
 
     if (criticalAndHigh.length > 0) {
@@ -200,8 +197,8 @@ export class VulnerabilityIndexerWorker {
 
     return {
       vulnerabilitiesFound: vulnerabilities.length,
-      critical: vulnerabilities.filter(v => v.severity === 'CRITICAL').length,
-      high: vulnerabilities.filter(v => v.severity === 'HIGH').length
+      critical: vulnerabilities.filter((v) => v.severity === 'CRITICAL').length,
+      high: vulnerabilities.filter((v) => v.severity === 'HIGH').length,
     };
   }
 }
@@ -340,10 +337,7 @@ Aegis provides remediation recommendations:
   "remediation": {
     "action": "UPDATE",
     "recommendation": "Update express to version 4.18.2 or later",
-    "commands": [
-      "npm install express@4.18.2",
-      "npm update express"
-    ],
+    "commands": ["npm install express@4.18.2", "npm update express"],
     "breakingChanges": false,
     "estimatedEffort": "LOW"
   }
@@ -366,7 +360,7 @@ cron.schedule('0 2 * * *', async () => {
       await sendNotification({
         type: 'NEW_VULNERABILITY',
         component: component.name,
-        vulnerabilities: newVulns
+        vulnerabilities: newVulns,
       });
 
       await generatePOAMs(newVulns);
@@ -445,10 +439,10 @@ Use tools like Dependabot or Renovate to automatically update dependencies:
 # .github/dependabot.yml
 version: 2
 updates:
-  - package-ecosystem: "npm"
-    directory: "/"
+  - package-ecosystem: 'npm'
+    directory: '/'
     schedule:
-      interval: "weekly"
+      interval: 'weekly'
     open-pull-requests-limit: 10
 ```
 

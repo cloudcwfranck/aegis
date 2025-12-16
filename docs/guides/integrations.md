@@ -101,10 +101,12 @@ Configure Slack webhook for notifications:
 
 ```graphql
 mutation CreateSlackWebhook {
-  createWebhook(input: {
-    url: "https://hooks.slack.com/services/YOUR/WEBHOOK/URL"
-    events: ["VULNERABILITY_DETECTED", "POAM_OVERDUE"]
-  }) {
+  createWebhook(
+    input: {
+      url: "https://hooks.slack.com/services/YOUR/WEBHOOK/URL"
+      events: ["VULNERABILITY_DETECTED", "POAM_OVERDUE"]
+    }
+  ) {
     id
     active
   }
@@ -117,13 +119,13 @@ Alert on-call for Critical vulnerabilities:
 
 ```graphql
 mutation CreatePagerDutyWebhook {
-  createWebhook(input: {
-    url: "https://events.pagerduty.com/v2/enqueue"
-    events: ["VULNERABILITY_DETECTED"]
-    filters: {
-      severities: ["CRITICAL"]
+  createWebhook(
+    input: {
+      url: "https://events.pagerduty.com/v2/enqueue"
+      events: ["VULNERABILITY_DETECTED"]
+      filters: { severities: ["CRITICAL"] }
     }
-  }) {
+  ) {
     id
     active
   }

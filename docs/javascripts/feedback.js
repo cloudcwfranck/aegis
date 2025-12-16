@@ -1,5 +1,5 @@
 // Custom documentation feedback widget
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   // Create feedback widget
   const feedbackWidget = document.createElement('div');
   feedbackWidget.className = 'feedback-widget';
@@ -39,8 +39,12 @@ document.addEventListener('DOMContentLoaded', function() {
   const positiveBtn = feedbackWidget.querySelector('.feedback-btn-positive');
   const negativeBtn = feedbackWidget.querySelector('.feedback-btn-negative');
   const buttons = feedbackWidget.querySelector('.feedback-buttons');
-  const positiveResponse = feedbackWidget.querySelector('.feedback-response-positive');
-  const negativeResponse = feedbackWidget.querySelector('.feedback-response-negative');
+  const positiveResponse = feedbackWidget.querySelector(
+    '.feedback-response-positive'
+  );
+  const negativeResponse = feedbackWidget.querySelector(
+    '.feedback-response-negative'
+  );
   const issueLink = feedbackWidget.querySelector('.feedback-issue-link');
 
   // Get current page info
@@ -49,15 +53,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Update GitHub issue link
   const issueTitle = encodeURIComponent(`[Docs Feedback] ${pageTitle}`);
-  const issueBody = encodeURIComponent(`**Page**: ${pageUrl}\n**Feedback**: This page could be improved\n\n**Additional comments**:\n`);
+  const issueBody = encodeURIComponent(
+    `**Page**: ${pageUrl}\n**Feedback**: This page could be improved\n\n**Additional comments**:\n`
+  );
   issueLink.href = `https://github.com/cloudcwfranck/aegis/issues/new?title=${issueTitle}&labels=documentation,feedback&body=${issueBody}`;
 
-  positiveBtn.addEventListener('click', function() {
+  positiveBtn.addEventListener('click', function () {
     buttons.style.display = 'none';
     positiveResponse.style.display = 'block';
   });
 
-  negativeBtn.addEventListener('click', function() {
+  negativeBtn.addEventListener('click', function () {
     buttons.style.display = 'none';
     negativeResponse.style.display = 'block';
   });
