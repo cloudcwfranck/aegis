@@ -19,9 +19,9 @@ export function LandingPage() {
       }}>
         <div style={{ fontSize: '1.25rem', fontWeight: '600', color: '#000000' }}>Aegis</div>
         <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
-          <Link to="/dashboard" style={{ color: '#000000', textDecoration: 'none', fontSize: '0.95rem' }}>
+          <a href="/docs/" style={{ color: '#000000', textDecoration: 'none', fontSize: '0.95rem' }}>
             Documentation →
-          </Link>
+          </a>
           <a href="https://github.com/cloudcwfranck/aegis" style={{ color: '#000000', textDecoration: 'none', fontSize: '0.95rem' }}>
             GitHub →
           </a>
