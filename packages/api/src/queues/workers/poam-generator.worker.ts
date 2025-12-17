@@ -5,8 +5,7 @@
  */
 
 
-import { AppDataSource } from '@aegis/db/src/data-source';
-import { POAMItemEntity, VulnerabilityEntity } from '@aegis/db/src/entities';
+import { AppDataSource, POAMItemEntity, VulnerabilityEntity } from '@aegis/db';
 import { VulnerabilitySeverity, POAMStatus } from '@aegis/shared';
 import { Worker, Job } from 'bullmq';
 import { In } from 'typeorm';
