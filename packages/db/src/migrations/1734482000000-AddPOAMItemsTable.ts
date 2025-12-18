@@ -99,6 +99,71 @@ export class AddPOAMItemsTable1734482000000 implements MigrationInterface {
       )
     `);
 
+    // Ensure all columns exist (in case table was partially created before)
+    await queryRunner.query(`
+      DO $$ BEGIN
+        ALTER TABLE "poam_items" ADD COLUMN IF NOT EXISTS "scheduledCompletionDate" timestamp with time zone NOT NULL;
+      EXCEPTION
+        WHEN others THEN null;
+      END $$;
+    `);
+
+    await queryRunner.query(`
+      DO $$ BEGIN
+        ALTER TABLE "poam_items" ADD COLUMN IF NOT EXISTS "actualCompletionDate" timestamp with time zone;
+      EXCEPTION
+        WHEN others THEN null;
+      END $$;
+    `);
+
+    await queryRunner.query(`
+      DO $$ BEGIN
+        ALTER TABLE "poam_items" ADD COLUMN IF NOT EXISTS "remediationSteps" jsonb DEFAULT '[]'::jsonb;
+      EXCEPTION
+        WHEN others THEN null;
+      END $$;
+    `);
+
+    await queryRunner.query(`
+      DO $$ BEGIN
+        ALTER TABLE "poam_items" ADD COLUMN IF NOT EXISTS "affectedControls" jsonb DEFAULT '[]'::jsonb;
+      EXCEPTION
+        WHEN others THEN null;
+      END $$;
+    `);
+
+    await queryRunner.query(`
+      DO $$ BEGIN
+        ALTER TABLE "poam_items" ADD COLUMN IF NOT EXISTS "relatedObservations" jsonb DEFAULT '[]'::jsonb;
+      EXCEPTION
+        WHEN others THEN null;
+      END $$;
+    `);
+
+    await queryRunner.query(`
+      DO $$ BEGIN
+        ALTER TABLE "poam_items" ADD COLUMN IF NOT EXISTS "affectedSystems" jsonb DEFAULT '[]'::jsonb;
+      EXCEPTION
+        WHEN others THEN null;
+      END $$;
+    `);
+
+    await queryRunner.query(`
+      DO $$ BEGIN
+        ALTER TABLE "poam_items" ADD COLUMN IF NOT EXISTS "metadata" jsonb DEFAULT '{}'::jsonb;
+      EXCEPTION
+        WHEN others THEN null;
+      END $$;
+    `);
+
+    await queryRunner.query(`
+      DO $$ BEGIN
+        ALTER TABLE "poam_items" ADD COLUMN IF NOT EXISTS "oscalData" jsonb;
+      EXCEPTION
+        WHEN others THEN null;
+      END $$;
+    `);
+
     // Create indexes for efficient querying
     await queryRunner.query(`
       CREATE INDEX IF NOT EXISTS "idx_poam_items_tenant_status"
