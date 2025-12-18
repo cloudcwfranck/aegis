@@ -5,8 +5,7 @@
  */
 
 
-import { AppDataSource } from '@aegis/db/src/data-source';
-import { PackageEntity } from '@aegis/db/src/entities';
+import { AppDataSource, PackageEntity } from '@aegis/db';
 import { Worker, Job } from 'bullmq';
 
 import { logger } from '../../utils/logger';
