@@ -5,14 +5,14 @@
  */
 
 
-import { AppDataSource } from '@aegis/db/src/data-source';
 import {
+  AppDataSource,
   EvidenceEntity,
   VulnerabilityEntity,
   PackageEntity,
   PolicyEntity,
   PolicyEvaluationEntity,
-} from '@aegis/db/src/entities';
+} from '@aegis/db';
 import { PolicyType, VulnerabilitySeverity } from '@aegis/shared';
 import { Repository } from 'typeorm';
 
