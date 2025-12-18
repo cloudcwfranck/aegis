@@ -4,48 +4,64 @@ export class AddPOAMItemsTable1734482000000 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     // Create POA&M Status enum
     await queryRunner.query(`
-      CREATE TYPE "poam_status_enum" AS ENUM (
-        'open',
-        'risk-accepted',
-        'investigating',
-        'remediation-planned',
-        'remediation-in-progress',
-        'deviation-requested',
-        'closed'
-      )
+      DO $$ BEGIN
+        CREATE TYPE "poam_status_enum" AS ENUM (
+          'open',
+          'risk-accepted',
+          'investigating',
+          'remediation-planned',
+          'remediation-in-progress',
+          'deviation-requested',
+          'closed'
+        );
+      EXCEPTION
+        WHEN duplicate_object THEN null;
+      END $$;
     `);
 
     // Create Risk Level enum (NIST 800-30)
     await queryRunner.query(`
-      CREATE TYPE "risk_level_enum" AS ENUM (
-        'very-high',
-        'high',
-        'moderate',
-        'low'
-      )
+      DO $$ BEGIN
+        CREATE TYPE "risk_level_enum" AS ENUM (
+          'very-high',
+          'high',
+          'moderate',
+          'low'
+        );
+      EXCEPTION
+        WHEN duplicate_object THEN null;
+      END $$;
     `);
 
     // Create Likelihood enum
     await queryRunner.query(`
-      CREATE TYPE "likelihood_enum" AS ENUM (
-        'high',
-        'medium',
-        'low'
-      )
+      DO $$ BEGIN
+        CREATE TYPE "likelihood_enum" AS ENUM (
+          'high',
+          'medium',
+          'low'
+        );
+      EXCEPTION
+        WHEN duplicate_object THEN null;
+      END $$;
     `);
 
     // Create Impact enum
     await queryRunner.query(`
-      CREATE TYPE "impact_enum" AS ENUM (
-        'high',
-        'medium',
-        'low'
-      )
+      DO $$ BEGIN
+        CREATE TYPE "impact_enum" AS ENUM (
+          'high',
+          'medium',
+          'low'
+        );
+      EXCEPTION
+        WHEN duplicate_object THEN null;
+      END $$;
     `);
 
     // Create poam_items table
     await queryRunner.query(`
-      CREATE TABLE "poam_items" (
+      CREATE TABLE IF NOT EXISTS "poam_items" (
         "id" uuid PRIMARY KEY DEFAULT gen_random_uuid(),
         "tenantId" uuid NOT NULL,
         "oscalUuid" uuid UNIQUE NOT NULL,
@@ -85,27 +101,27 @@ export class AddPOAMItemsTable1734482000000 implements MigrationInterface {
 
     // Create indexes for efficient querying
     await queryRunner.query(`
-      CREATE INDEX "idx_poam_items_tenant_status"
+      CREATE INDEX IF NOT EXISTS "idx_poam_items_tenant_status"
       ON "poam_items" ("tenantId", "status")
     `);
 
     await queryRunner.query(`
-      CREATE INDEX "idx_poam_items_tenant_risk_level"
+      CREATE INDEX IF NOT EXISTS "idx_poam_items_tenant_risk_level"
       ON "poam_items" ("tenantId", "riskLevel")
     `);
 
     await queryRunner.query(`
-      CREATE INDEX "idx_poam_items_tenant_scheduled_completion"
+      CREATE INDEX IF NOT EXISTS "idx_poam_items_tenant_scheduled_completion"
       ON "poam_items" ("tenantId", "scheduledCompletionDate")
     `);
 
     await queryRunner.query(`
-      CREATE INDEX "idx_poam_items_cve_id"
+      CREATE INDEX IF NOT EXISTS "idx_poam_items_cve_id"
       ON "poam_items" ("cveId")
     `);
 
     await queryRunner.query(`
-      CREATE INDEX "idx_poam_items_vulnerability_id"
+      CREATE INDEX IF NOT EXISTS "idx_poam_items_vulnerability_id"
       ON "poam_items" ("vulnerabilityId")
     `);
   }
