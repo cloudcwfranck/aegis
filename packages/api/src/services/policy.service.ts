@@ -4,7 +4,6 @@
  * Supports CVE severity thresholds, SBOM completeness, image provenance
  */
 
-
 import {
   AppDataSource,
   EvidenceEntity,

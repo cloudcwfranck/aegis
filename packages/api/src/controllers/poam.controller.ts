@@ -27,13 +27,8 @@ export async function getPOAMItems(req: Request, res: Response): Promise<void> {
       return;
     }
 
-    const {
-      status,
-      riskLevel,
-      assignedTo,
-      overdue,
-      limit,
-    } = req.query as Record<string, string>;
+    const { status, riskLevel, assignedTo, overdue, limit } =
+      req.query as Record<string, string>;
 
     const filters: {
       status?: POAMStatus[];

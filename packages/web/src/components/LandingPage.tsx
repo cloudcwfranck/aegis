@@ -96,7 +96,8 @@ export function LandingPage() {
               lineHeight: 1.6,
             }}
           >
-            A series of open-source tools for FedRAMP vulnerability management
+            Provider-neutral DevSecOps control plane for FedRAMP compliance and
+            vulnerability management
           </p>
           <Link
             to="/dashboard"

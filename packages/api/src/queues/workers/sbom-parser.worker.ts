@@ -4,7 +4,6 @@
  * Supports SPDX 2.3 and CycloneDX formats
  */
 
-
 import { AppDataSource, PackageEntity } from '@aegis/db';
 import { Worker, Job } from 'bullmq';
 

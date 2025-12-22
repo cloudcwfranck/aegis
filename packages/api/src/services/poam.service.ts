@@ -256,7 +256,7 @@ export class POAMService {
     if (data.metadata?.['fixedVersion']) {
       steps.push({
         uuid: uuidv4(),
-        title: `Update ${data.metadata['packageName']} to ${data.metadata['fixedVersion']}`,
+        title: `Update ${String(data.metadata['packageName'] ?? 'package')} to ${String(data.metadata['fixedVersion'])}`,
         description: `Upgrade package in dependency manifest and rebuild container image.`,
       });
     }
@@ -270,7 +270,8 @@ export class POAMService {
     steps.push({
       uuid: uuidv4(),
       title: 'Deploy to production with approval',
-      description: 'Follow change management process for production deployment.',
+      description:
+        'Follow change management process for production deployment.',
     });
 
     steps.push({
@@ -422,7 +423,9 @@ export class POAMService {
     }
 
     if (filters?.overdue) {
-      query.andWhere('poam.scheduledCompletionDate < :now', { now: new Date() });
+      query.andWhere('poam.scheduledCompletionDate < :now', {
+        now: new Date(),
+      });
       query.andWhere('poam.status != :closed', { closed: POAMStatus.CLOSED });
     }
 

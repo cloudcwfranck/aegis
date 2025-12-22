@@ -100,9 +100,98 @@ export class AddPOAMItemsTable1734482000000 implements MigrationInterface {
     `);
 
     // Ensure all columns exist (in case table was partially created before)
+    // Core columns
     await queryRunner.query(`
       DO $$ BEGIN
-        ALTER TABLE "poam_items" ADD COLUMN IF NOT EXISTS "scheduledCompletionDate" timestamp with time zone NOT NULL;
+        ALTER TABLE "poam_items" ADD COLUMN IF NOT EXISTS "vulnerabilityId" uuid;
+      EXCEPTION
+        WHEN others THEN null;
+      END $$;
+    `);
+
+    await queryRunner.query(`
+      DO $$ BEGIN
+        ALTER TABLE "poam_items" ADD COLUMN IF NOT EXISTS "cveId" varchar(50);
+      EXCEPTION
+        WHEN others THEN null;
+      END $$;
+    `);
+
+    await queryRunner.query(`
+      DO $$ BEGIN
+        ALTER TABLE "poam_items" ADD COLUMN IF NOT EXISTS "title" varchar(500) NOT NULL DEFAULT 'Untitled';
+      EXCEPTION
+        WHEN others THEN null;
+      END $$;
+    `);
+
+    await queryRunner.query(`
+      DO $$ BEGIN
+        ALTER TABLE "poam_items" ADD COLUMN IF NOT EXISTS "description" text NOT NULL DEFAULT '';
+      EXCEPTION
+        WHEN others THEN null;
+      END $$;
+    `);
+
+    await queryRunner.query(`
+      DO $$ BEGIN
+        ALTER TABLE "poam_items" ADD COLUMN IF NOT EXISTS "status" poam_status_enum NOT NULL DEFAULT 'open';
+      EXCEPTION
+        WHEN others THEN null;
+      END $$;
+    `);
+
+    await queryRunner.query(`
+      DO $$ BEGIN
+        ALTER TABLE "poam_items" ADD COLUMN IF NOT EXISTS "riskLevel" risk_level_enum;
+      EXCEPTION
+        WHEN others THEN null;
+      END $$;
+    `);
+
+    await queryRunner.query(`
+      DO $$ BEGIN
+        ALTER TABLE "poam_items" ADD COLUMN IF NOT EXISTS "likelihood" likelihood_enum;
+      EXCEPTION
+        WHEN others THEN null;
+      END $$;
+    `);
+
+    await queryRunner.query(`
+      DO $$ BEGIN
+        ALTER TABLE "poam_items" ADD COLUMN IF NOT EXISTS "impact" impact_enum;
+      EXCEPTION
+        WHEN others THEN null;
+      END $$;
+    `);
+
+    await queryRunner.query(`
+      DO $$ BEGIN
+        ALTER TABLE "poam_items" ADD COLUMN IF NOT EXISTS "cvssScore" decimal(3,1);
+      EXCEPTION
+        WHEN others THEN null;
+      END $$;
+    `);
+
+    await queryRunner.query(`
+      DO $$ BEGIN
+        ALTER TABLE "poam_items" ADD COLUMN IF NOT EXISTS "remediationPlan" text NOT NULL DEFAULT '';
+      EXCEPTION
+        WHEN others THEN null;
+      END $$;
+    `);
+
+    await queryRunner.query(`
+      DO $$ BEGIN
+        ALTER TABLE "poam_items" ADD COLUMN IF NOT EXISTS "remediationSteps" jsonb DEFAULT '[]'::jsonb;
+      EXCEPTION
+        WHEN others THEN null;
+      END $$;
+    `);
+
+    await queryRunner.query(`
+      DO $$ BEGIN
+        ALTER TABLE "poam_items" ADD COLUMN IF NOT EXISTS "scheduledCompletionDate" timestamp with time zone;
       EXCEPTION
         WHEN others THEN null;
       END $$;
@@ -118,7 +207,15 @@ export class AddPOAMItemsTable1734482000000 implements MigrationInterface {
 
     await queryRunner.query(`
       DO $$ BEGIN
-        ALTER TABLE "poam_items" ADD COLUMN IF NOT EXISTS "remediationSteps" jsonb DEFAULT '[]'::jsonb;
+        ALTER TABLE "poam_items" ADD COLUMN IF NOT EXISTS "assignedTo" varchar(255);
+      EXCEPTION
+        WHEN others THEN null;
+      END $$;
+    `);
+
+    await queryRunner.query(`
+      DO $$ BEGIN
+        ALTER TABLE "poam_items" ADD COLUMN IF NOT EXISTS "assignedTeam" varchar(255);
       EXCEPTION
         WHEN others THEN null;
       END $$;
@@ -143,6 +240,62 @@ export class AddPOAMItemsTable1734482000000 implements MigrationInterface {
     await queryRunner.query(`
       DO $$ BEGIN
         ALTER TABLE "poam_items" ADD COLUMN IF NOT EXISTS "affectedSystems" jsonb DEFAULT '[]'::jsonb;
+      EXCEPTION
+        WHEN others THEN null;
+      END $$;
+    `);
+
+    await queryRunner.query(`
+      DO $$ BEGIN
+        ALTER TABLE "poam_items" ADD COLUMN IF NOT EXISTS "isDeviation" boolean DEFAULT false;
+      EXCEPTION
+        WHEN others THEN null;
+      END $$;
+    `);
+
+    await queryRunner.query(`
+      DO $$ BEGIN
+        ALTER TABLE "poam_items" ADD COLUMN IF NOT EXISTS "deviationRationale" text;
+      EXCEPTION
+        WHEN others THEN null;
+      END $$;
+    `);
+
+    await queryRunner.query(`
+      DO $$ BEGIN
+        ALTER TABLE "poam_items" ADD COLUMN IF NOT EXISTS "approvedBy" varchar(255);
+      EXCEPTION
+        WHEN others THEN null;
+      END $$;
+    `);
+
+    await queryRunner.query(`
+      DO $$ BEGIN
+        ALTER TABLE "poam_items" ADD COLUMN IF NOT EXISTS "approvedDate" timestamp with time zone;
+      EXCEPTION
+        WHEN others THEN null;
+      END $$;
+    `);
+
+    await queryRunner.query(`
+      DO $$ BEGIN
+        ALTER TABLE "poam_items" ADD COLUMN IF NOT EXISTS "closureRationale" text;
+      EXCEPTION
+        WHEN others THEN null;
+      END $$;
+    `);
+
+    await queryRunner.query(`
+      DO $$ BEGIN
+        ALTER TABLE "poam_items" ADD COLUMN IF NOT EXISTS "closedBy" varchar(255);
+      EXCEPTION
+        WHEN others THEN null;
+      END $$;
+    `);
+
+    await queryRunner.query(`
+      DO $$ BEGIN
+        ALTER TABLE "poam_items" ADD COLUMN IF NOT EXISTS "closedDate" timestamp with time zone;
       EXCEPTION
         WHEN others THEN null;
       END $$;
@@ -193,13 +346,19 @@ export class AddPOAMItemsTable1734482000000 implements MigrationInterface {
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     // Drop indexes
-    await queryRunner.query(`DROP INDEX IF EXISTS "idx_poam_items_vulnerability_id"`);
+    await queryRunner.query(
+      `DROP INDEX IF EXISTS "idx_poam_items_vulnerability_id"`
+    );
     await queryRunner.query(`DROP INDEX IF EXISTS "idx_poam_items_cve_id"`);
     await queryRunner.query(
       `DROP INDEX IF EXISTS "idx_poam_items_tenant_scheduled_completion"`
     );
-    await queryRunner.query(`DROP INDEX IF EXISTS "idx_poam_items_tenant_risk_level"`);
-    await queryRunner.query(`DROP INDEX IF EXISTS "idx_poam_items_tenant_status"`);
+    await queryRunner.query(
+      `DROP INDEX IF EXISTS "idx_poam_items_tenant_risk_level"`
+    );
+    await queryRunner.query(
+      `DROP INDEX IF EXISTS "idx_poam_items_tenant_status"`
+    );
 
     // Drop table
     await queryRunner.query(`DROP TABLE IF EXISTS "poam_items"`);

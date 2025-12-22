@@ -4,7 +4,7 @@
  * Based on ADR-003: OSCAL-Native POA&M Generation
  */
 
-import { POAMItemEntity } from '@aegis/db';
+import { POAMItemEntity, POAMStatus } from '@aegis/db';
 import { v4 as uuidv4 } from 'uuid';
 
 interface OSCALMetadata {
@@ -171,7 +171,8 @@ export class OSCALExportService {
           },
           ...poamItem.remediationSteps.map((step) => ({
             uuid: step.uuid,
-            'date-time-stamp': step.completedDate || poamItem.createdAt.toISOString(),
+            'date-time-stamp':
+              step.completedDate || poamItem.createdAt.toISOString(),
             title: step.title,
             description: step.description,
           })),
@@ -257,7 +258,7 @@ export class OSCALExportService {
 
     const overdueItems = poamItems.filter(
       (item) =>
-        item.status !== 'closed' && item.scheduledCompletionDate < now
+        item.status !== POAMStatus.CLOSED && item.scheduledCompletionDate < now
     ).length;
 
     const averageDaysToCompletion =
