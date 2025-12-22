@@ -21,6 +21,7 @@ The control plane contains the core business logic for policy enforcement, evide
 #### Policy Enforcement Engine
 
 **Components:**
+
 - OPA/Conftest policy evaluation
 - Policy data model (PolicyEntity, PolicyEvaluationEntity)
 - Policy service (CVE severity thresholds, SBOM completeness, image provenance)
@@ -33,6 +34,7 @@ The control plane contains the core business logic for policy enforcement, evide
 #### Evidence and Compliance Engine
 
 **Components:**
+
 - Evidence data model (EvidenceEntity, VulnerabilityEntity, PackageEntity, POAMItemEntity)
 - OSCAL 1.0.4 export service
 - NIST 800-30 risk assessment engine
@@ -46,6 +48,7 @@ The control plane contains the core business logic for policy enforcement, evide
 #### SBOM and Vulnerability Processing
 
 **Components:**
+
 - SBOM parser (SPDX 2.3, CycloneDX)
 - Vulnerability indexer (Grype integration)
 - Package dependency resolver
@@ -58,6 +61,7 @@ The control plane contains the core business logic for policy enforcement, evide
 #### Remediation Orchestration (Future: M5)
 
 **Components:**
+
 - Dockerfile hardening engine
 - Dependency upgrade automation
 - Image rebasing workflows (Chainguard, Iron Bank)
@@ -99,10 +103,18 @@ interface StorageAdapter {
   getSignedUrl(key: string, expiresIn: number): Promise<string>;
 }
 
-class AzureBlobAdapter implements StorageAdapter { /* ... */ }
-class S3Adapter implements StorageAdapter { /* ... */ }
-class GCSAdapter implements StorageAdapter { /* ... */ }
-class MinIOAdapter implements StorageAdapter { /* ... */ }
+class AzureBlobAdapter implements StorageAdapter {
+  /* ... */
+}
+class S3Adapter implements StorageAdapter {
+  /* ... */
+}
+class GCSAdapter implements StorageAdapter {
+  /* ... */
+}
+class MinIOAdapter implements StorageAdapter {
+  /* ... */
+}
 ```
 
 **Effort to Abstract:** 1-2 weeks (M6 milestone)
@@ -125,10 +137,18 @@ interface RegistryAdapter {
   verify(image: string): Promise<boolean>;
 }
 
-class ACRAdapter implements RegistryAdapter { /* ... */ }
-class ECRAdapter implements RegistryAdapter { /* ... */ }
-class GCRAdapter implements RegistryAdapter { /* ... */ }
-class HarborAdapter implements RegistryAdapter { /* ... */ }
+class ACRAdapter implements RegistryAdapter {
+  /* ... */
+}
+class ECRAdapter implements RegistryAdapter {
+  /* ... */
+}
+class GCRAdapter implements RegistryAdapter {
+  /* ... */
+}
+class HarborAdapter implements RegistryAdapter {
+  /* ... */
+}
 ```
 
 **Effort to Abstract:** 2-3 weeks (M6 milestone)
@@ -144,6 +164,7 @@ class HarborAdapter implements RegistryAdapter { /* ... */ }
 **Design Intent (M6-M7):** Deploy to any Kubernetes distribution
 
 **Deployment Targets:**
+
 - AWS: EKS-Gov (Elastic Kubernetes Service)
 - GCP: GKE (Google Kubernetes Engine)
 - Red Hat: OpenShift
@@ -160,6 +181,7 @@ class HarborAdapter implements RegistryAdapter { /* ... */ }
 **Portability Status:** ✅ Already portable
 
 **Supported Databases:**
+
 - AWS RDS PostgreSQL
 - GCP Cloud SQL PostgreSQL
 - Azure Database for PostgreSQL
@@ -176,6 +198,7 @@ class HarborAdapter implements RegistryAdapter { /* ... */ }
 **Portability Status:** ✅ Already portable
 
 **Supported Caches:**
+
 - AWS ElastiCache
 - GCP Memorystore
 - Azure Cache for Redis
@@ -190,6 +213,7 @@ These components integrate with external systems via standard APIs and are inher
 #### CI/CD Platform Adapters
 
 **Supported Platforms:**
+
 - GitHub Actions (webhook integration)
 - GitLab CI (pipeline integration)
 - Azure DevOps (pipeline tasks)
@@ -202,6 +226,7 @@ These components integrate with external systems via standard APIs and are inher
 #### Security Tool Integrations
 
 **Integrated Tools:**
+
 - Syft (SBOM generation)
 - Grype (vulnerability scanning)
 - cosign (artifact signing)
@@ -222,6 +247,7 @@ These components integrate with external systems via standard APIs and are inher
 **Portability:** Standard OIDC; works with any provider
 
 **Supported Providers:**
+
 - Platform One Keycloak
 - Azure AD / Entra ID
 - AWS Cognito
@@ -232,25 +258,25 @@ These components integrate with external systems via standard APIs and are inher
 
 ## Portability Assessment Matrix
 
-| Component | Current State | Portability | Multi-Cloud Ready | Effort to Abstract |
-|-----------|---------------|-------------|-------------------|-------------------|
-| **Control Plane** |
-| Policy Engine | TypeScript | Cloud-agnostic | ✅ Yes | None (already portable) |
-| Evidence Model | TypeScript | Cloud-agnostic | ✅ Yes | None (already portable) |
-| OSCAL Export | TypeScript | Cloud-agnostic | ✅ Yes | None (already portable) |
-| POA&M Generator | TypeScript | Cloud-agnostic | ✅ Yes | None (already portable) |
-| **Database Layer** |
-| PostgreSQL | TypeORM | Cloud-agnostic | ✅ Yes | Low (connection string) |
-| **Queue Layer** |
-| Redis/BullMQ | BullMQ | Cloud-agnostic | ✅ Yes | Low (connection string) |
+| Component                   | Current State | Portability    | Multi-Cloud Ready | Effort to Abstract             |
+| --------------------------- | ------------- | -------------- | ----------------- | ------------------------------ |
+| **Control Plane**           |
+| Policy Engine               | TypeScript    | Cloud-agnostic | ✅ Yes            | None (already portable)        |
+| Evidence Model              | TypeScript    | Cloud-agnostic | ✅ Yes            | None (already portable)        |
+| OSCAL Export                | TypeScript    | Cloud-agnostic | ✅ Yes            | None (already portable)        |
+| POA&M Generator             | TypeScript    | Cloud-agnostic | ✅ Yes            | None (already portable)        |
+| **Database Layer**          |
+| PostgreSQL                  | TypeORM       | Cloud-agnostic | ✅ Yes            | Low (connection string)        |
+| **Queue Layer**             |
+| Redis/BullMQ                | BullMQ        | Cloud-agnostic | ✅ Yes            | Low (connection string)        |
 | **Infrastructure Adapters** |
-| Blob Storage | Azure Blob | Azure-specific | ❌ No | Medium (1-2 weeks, M6) |
-| Container Registry | ACR | Azure-specific | ❌ No | Medium (2-3 weeks, M6) |
-| Compute Platform | ACA | Azure-specific | ⚠️ Partial | Low (Helm exists, needs CI/CD) |
-| **Integration Adapters** |
-| CI/CD Integration | REST API | Cloud-agnostic | ✅ Yes | None (standard APIs) |
-| Security Tools | CLI/API | Cloud-agnostic | ✅ Yes | None (standard tools) |
-| Identity (OIDC) | Keycloak | Cloud-agnostic | ✅ Yes | None (standard protocol) |
+| Blob Storage                | Azure Blob    | Azure-specific | ❌ No             | Medium (1-2 weeks, M6)         |
+| Container Registry          | ACR           | Azure-specific | ❌ No             | Medium (2-3 weeks, M6)         |
+| Compute Platform            | ACA           | Azure-specific | ⚠️ Partial        | Low (Helm exists, needs CI/CD) |
+| **Integration Adapters**    |
+| CI/CD Integration           | REST API      | Cloud-agnostic | ✅ Yes            | None (standard APIs)           |
+| Security Tools              | CLI/API       | Cloud-agnostic | ✅ Yes            | None (standard tools)          |
+| Identity (OIDC)             | Keycloak      | Cloud-agnostic | ✅ Yes            | None (standard protocol)       |
 
 ## Multi-Cloud Roadmap
 
@@ -259,6 +285,7 @@ These components integrate with external systems via standard APIs and are inher
 **Status:** Production deployment on Azure Government
 
 **Components:**
+
 - Azure Blob Storage for evidence artifacts
 - Azure Container Registry for images
 - Azure Container Apps for hosting
@@ -270,6 +297,7 @@ These components integrate with external systems via standard APIs and are inher
 ### Phase 2: Storage Abstraction (M6 - Est. 4 weeks)
 
 **Objectives:**
+
 - Create `StorageAdapter` interface
 - Implement `AzureBlobAdapter` (refactor existing code)
 - Implement `S3Adapter` for AWS
@@ -277,6 +305,7 @@ These components integrate with external systems via standard APIs and are inher
 - Implement `MinIOAdapter` for on-premises
 
 **Deliverables:**
+
 - `/packages/api/src/adapters/storage/` module
 - Adapter selection via environment variable (`STORAGE_PROVIDER=azure|s3|gcs|minio`)
 - Backward compatibility with existing Azure deployments
@@ -284,6 +313,7 @@ These components integrate with external systems via standard APIs and are inher
 ### Phase 3: Registry Abstraction (M6 - Est. 3 weeks)
 
 **Objectives:**
+
 - Create `RegistryAdapter` interface
 - Implement `ACRAdapter` (refactor existing code)
 - Implement `ECRAdapter` for AWS
@@ -291,18 +321,21 @@ These components integrate with external systems via standard APIs and are inher
 - Implement `HarborAdapter` for on-premises
 
 **Deliverables:**
+
 - `/packages/api/src/adapters/registry/` module
 - Adapter selection via environment variable (`REGISTRY_PROVIDER=acr|ecr|gcr|harbor`)
 
 ### Phase 4: Multi-Cloud Infrastructure as Code (M6 - Est. 6 weeks)
 
 **Objectives:**
+
 - Terraform modules for AWS EKS-Gov
 - Terraform modules for GCP GKE
 - Helm chart updates for multi-cloud deployment
 - CI/CD pipeline templates for AWS and GCP
 
 **Deliverables:**
+
 - `/infrastructure/terraform/modules/aws-eks-gov/`
 - `/infrastructure/terraform/modules/gcp-gke/`
 - Updated Helm chart with cloud-specific value overrides
@@ -310,12 +343,14 @@ These components integrate with external systems via standard APIs and are inher
 ### Phase 5: Production Validation (M7 - Est. 4 weeks)
 
 **Objectives:**
+
 - Deploy to AWS EKS-Gov test environment
 - Deploy to GCP GKE test environment
 - Performance and compatibility testing
 - Update deployment runbooks
 
 **Deliverables:**
+
 - Validated AWS GovCloud deployment
 - Validated GCP deployment
 - Multi-cloud deployment guide
@@ -325,23 +360,25 @@ These components integrate with external systems via standard APIs and are inher
 ### FedRAMP Authorization Strategy
 
 **Current State (Azure):**
+
 - Inherits Azure Government FedRAMP High authorization
 - SSP references Azure Gov Cloud compliance artifacts
 - POA&M items track Aegis-specific vulnerabilities
 
 **Multi-Cloud Strategy:**
+
 - Control plane authorization is cloud-independent (same codebase)
 - Infrastructure authorization varies by cloud (AWS FedRAMP, GCP compliance)
 - Customers choose cloud provider based on their ATO requirements
 
 ### DoD Impact Level Support
 
-| Impact Level | Azure | AWS | GCP | On-Premises |
-|--------------|-------|-----|-----|-------------|
-| IL2 | ✅ Supported | ⏳ M6 | ⏳ M6 | ⏳ M7 |
-| IL4 | ✅ Supported | ⏳ M6 | ⏳ M6 | ⏳ M7 |
-| IL5 | ✅ Supported | ⏳ M6 | ❌ Not available | ⏳ M7 |
-| IL6 | ⏳ Future | ⏳ Future | ❌ Not available | ⏳ M7 |
+| Impact Level | Azure        | AWS       | GCP              | On-Premises |
+| ------------ | ------------ | --------- | ---------------- | ----------- |
+| IL2          | ✅ Supported | ⏳ M6     | ⏳ M6            | ⏳ M7       |
+| IL4          | ✅ Supported | ⏳ M6     | ⏳ M6            | ⏳ M7       |
+| IL5          | ✅ Supported | ⏳ M6     | ❌ Not available | ⏳ M7       |
+| IL6          | ⏳ Future    | ⏳ Future | ❌ Not available | ⏳ M7       |
 
 ## Technical Validation
 
@@ -366,6 +403,6 @@ This architecture is:
 
 ## Document History
 
-| Version | Date | Changes | Author |
-|---------|------|---------|--------|
-| 1.0 | 2024-12-19 | Initial architecture layers document | Aegis Team |
+| Version | Date       | Changes                              | Author     |
+| ------- | ---------- | ------------------------------------ | ---------- |
+| 1.0     | 2024-12-19 | Initial architecture layers document | Aegis Team |

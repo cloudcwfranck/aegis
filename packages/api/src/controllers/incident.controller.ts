@@ -24,15 +24,8 @@ export async function getIncidents(req: Request, res: Response): Promise<void> {
       return;
     }
 
-    const {
-      status,
-      severity,
-      type,
-      projectName,
-      fromDate,
-      toDate,
-      limit,
-    } = req.query;
+    const { status, severity, type, projectName, fromDate, toDate, limit } =
+      req.query;
 
     const filters: {
       status?: IncidentStatus[];
@@ -258,16 +251,18 @@ export async function generateIncidents(
     }
 
     // Generate incidents from vulnerabilities
-    const vulnIncidents = await incidentService.generateIncidentsFromVulnerabilities(
-      tenantId,
-      evidenceId
-    );
+    const vulnIncidents =
+      await incidentService.generateIncidentsFromVulnerabilities(
+        tenantId,
+        evidenceId
+      );
 
     // Generate incidents from policy violations
-    const policyIncidents = await incidentService.generateIncidentsFromPolicyViolations(
-      tenantId,
-      evidenceId
-    );
+    const policyIncidents =
+      await incidentService.generateIncidentsFromPolicyViolations(
+        tenantId,
+        evidenceId
+      );
 
     const allIncidents = [...vulnIncidents, ...policyIncidents];
 

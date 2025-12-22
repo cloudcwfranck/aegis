@@ -4,7 +4,6 @@
  * Creates remediation plans for Critical and High severity findings
  */
 
-
 import { AppDataSource, POAMItemEntity, VulnerabilityEntity } from '@aegis/db';
 import { VulnerabilitySeverity, POAMStatus } from '@aegis/shared';
 import { Worker, Job } from 'bullmq';

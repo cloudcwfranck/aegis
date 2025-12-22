@@ -246,7 +246,9 @@ export class IncidentService {
       if (incidentList.length > 0) {
         const firstIncident = incidentList[0]!;
         const affectedServices = [
-          ...new Set(incidentList.map((i) => i.impactedService).filter(Boolean)),
+          ...new Set(
+            incidentList.map((i) => i.impactedService).filter(Boolean)
+          ),
         ] as string[];
 
         result.push({
@@ -263,7 +265,13 @@ export class IncidentService {
 
     return result.sort((a, b) => {
       // Sort by severity and count
-      const severityOrder = { CRITICAL: 0, HIGH: 1, MEDIUM: 2, LOW: 3, INFO: 4 };
+      const severityOrder = {
+        CRITICAL: 0,
+        HIGH: 1,
+        MEDIUM: 2,
+        LOW: 3,
+        INFO: 4,
+      };
       const aDiff = severityOrder[a.severity] - severityOrder[b.severity];
       if (aDiff !== 0) return aDiff;
       return b.incidentCount - a.incidentCount;
@@ -278,17 +286,25 @@ export class IncidentService {
 
     const stats: IncidentStats = {
       total: incidents.length,
-      active: incidents.filter((i) => i.status === IncidentStatus.ACTIVE).length,
-      acknowledged: incidents.filter((i) => i.status === IncidentStatus.ACKNOWLEDGED)
+      active: incidents.filter((i) => i.status === IncidentStatus.ACTIVE)
         .length,
-      resolved: incidents.filter((i) => i.status === IncidentStatus.RESOLVED).length,
+      acknowledged: incidents.filter(
+        (i) => i.status === IncidentStatus.ACKNOWLEDGED
+      ).length,
+      resolved: incidents.filter((i) => i.status === IncidentStatus.RESOLVED)
+        .length,
       bySeverity: {
-        critical: incidents.filter((i) => i.severity === IncidentSeverity.CRITICAL)
+        critical: incidents.filter(
+          (i) => i.severity === IncidentSeverity.CRITICAL
+        ).length,
+        high: incidents.filter((i) => i.severity === IncidentSeverity.HIGH)
           .length,
-        high: incidents.filter((i) => i.severity === IncidentSeverity.HIGH).length,
-        medium: incidents.filter((i) => i.severity === IncidentSeverity.MEDIUM).length,
-        low: incidents.filter((i) => i.severity === IncidentSeverity.LOW).length,
-        info: incidents.filter((i) => i.severity === IncidentSeverity.INFO).length,
+        medium: incidents.filter((i) => i.severity === IncidentSeverity.MEDIUM)
+          .length,
+        low: incidents.filter((i) => i.severity === IncidentSeverity.LOW)
+          .length,
+        info: incidents.filter((i) => i.severity === IncidentSeverity.INFO)
+          .length,
       },
       byType: {},
       avgTTA: 0,
@@ -300,11 +316,15 @@ export class IncidentService {
     const withTTR = incidents.filter((i) => i.ttrMinutes);
 
     if (withTTA.length > 0) {
-      stats.avgTTA = withTTA.reduce((sum, i) => sum + (i.ttaMinutes || 0), 0) / withTTA.length;
+      stats.avgTTA =
+        withTTA.reduce((sum, i) => sum + (i.ttaMinutes || 0), 0) /
+        withTTA.length;
     }
 
     if (withTTR.length > 0) {
-      stats.avgTTR = withTTR.reduce((sum, i) => sum + (i.ttrMinutes || 0), 0) / withTTR.length;
+      stats.avgTTR =
+        withTTR.reduce((sum, i) => sum + (i.ttrMinutes || 0), 0) /
+        withTTR.length;
     }
 
     // Count by type
@@ -386,7 +406,9 @@ export class IncidentService {
     query.where('incident.tenantId = :tenantId', { tenantId });
 
     if (filters?.status && filters.status.length > 0) {
-      query.andWhere('incident.status IN (:...statuses)', { statuses: filters.status });
+      query.andWhere('incident.status IN (:...statuses)', {
+        statuses: filters.status,
+      });
     }
 
     if (filters?.severity && filters.severity.length > 0) {

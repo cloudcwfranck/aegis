@@ -346,13 +346,19 @@ export class AddPOAMItemsTable1734482000000 implements MigrationInterface {
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     // Drop indexes
-    await queryRunner.query(`DROP INDEX IF EXISTS "idx_poam_items_vulnerability_id"`);
+    await queryRunner.query(
+      `DROP INDEX IF EXISTS "idx_poam_items_vulnerability_id"`
+    );
     await queryRunner.query(`DROP INDEX IF EXISTS "idx_poam_items_cve_id"`);
     await queryRunner.query(
       `DROP INDEX IF EXISTS "idx_poam_items_tenant_scheduled_completion"`
     );
-    await queryRunner.query(`DROP INDEX IF EXISTS "idx_poam_items_tenant_risk_level"`);
-    await queryRunner.query(`DROP INDEX IF EXISTS "idx_poam_items_tenant_status"`);
+    await queryRunner.query(
+      `DROP INDEX IF EXISTS "idx_poam_items_tenant_risk_level"`
+    );
+    await queryRunner.query(
+      `DROP INDEX IF EXISTS "idx_poam_items_tenant_status"`
+    );
 
     // Drop table
     await queryRunner.query(`DROP TABLE IF EXISTS "poam_items"`);

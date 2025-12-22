@@ -54,6 +54,7 @@ These components are provider-specific in the current deployment:
 - **Cache/Queue**: Azure Cache for Redis (portable via BullMQ)
 
 **Why Azure is the reference implementation:**
+
 - FedRAMP High authorization for Azure Gov Cloud
 - DoD IL4/IL5 compliance baseline
 - Rapid deployment via Azure Container Apps
@@ -73,12 +74,14 @@ These components are provider-specific in the current deployment:
 ### Infrastructure Layer (Provider-Specific)
 
 **Current Deployment (Azure Government):**
+
 - Kubernetes: Azure Kubernetes Service (AKS-Gov)
 - Storage: Azure Blob Storage
 - Registry: Azure Container Registry
 - KMS: Azure Key Vault (FIPS 140-2)
 
 **Supported Kubernetes Distributions (Design Intent):**
+
 - Amazon Elastic Kubernetes Service (EKS-Gov)
 - Google Kubernetes Engine (GKE)
 - Red Hat OpenShift
@@ -198,6 +201,7 @@ aegis/
 ### ⏳ M3: UI v2 + RBAC + Vulnerability Dashboard (Weeks 12-16)
 
 **Objectives:**
+
 - Platform One Keycloak OIDC integration
 - Multi-tenant RBAC (5 roles: OrgAdmin, ISSO, DevSecOps, Developer, Auditor)
 - Vulnerability dashboard with risk heatmap
@@ -207,6 +211,7 @@ aegis/
 ### ⏳ M4: Signing/Attestation + Gatekeeper Enforcement (Weeks 18-22)
 
 **Objectives:**
+
 - cosign integration for artifact signing
 - Sigstore attestation generation
 - OPA Gatekeeper deployment to Kubernetes
@@ -216,6 +221,7 @@ aegis/
 ### ⏳ M5: Image Hardening + Chainguard Rebasing (Weeks 23-28)
 
 **Objectives:**
+
 - Automated Dockerfile generation with Chainguard base images
 - Iron Bank baseline integration
 - Dependency upgrade automation
@@ -225,6 +231,7 @@ aegis/
 ### ⏳ M6: Multi-Cloud Storage Abstraction (Weeks 30-34)
 
 **Objectives:**
+
 - Storage interface abstraction layer
 - AWS S3 adapter implementation
 - GCP Cloud Storage adapter implementation
@@ -234,6 +241,7 @@ aegis/
 ### ⏳ M7: Production Readiness + ATO Package (Weeks 35-40)
 
 **Objectives:**
+
 - Prometheus + Grafana dashboards
 - Security hardening (DISA STIGs, CIS Benchmark)
 - OSCAL System Security Plan (SSP) generation
@@ -258,6 +266,7 @@ All major architectural decisions are documented in [docs/adr/](docs/adr/):
 **What is deployed today:**
 
 Aegis runs on Azure Government Cloud infrastructure:
+
 - Azure Blob Storage for evidence artifact storage
 - Azure Container Registry for hardened image storage
 - Azure Container Apps for control plane hosting

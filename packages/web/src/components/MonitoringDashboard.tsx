@@ -172,11 +172,7 @@ export function MonitoringDashboard() {
           value={stats?.total || 0}
           color="#007bff"
         />
-        <StatCard
-          title="Active"
-          value={stats?.active || 0}
-          color="#dc3545"
-        />
+        <StatCard title="Active" value={stats?.active || 0} color="#dc3545" />
         <StatCard
           title="Acknowledged"
           value={stats?.acknowledged || 0}
@@ -241,7 +237,8 @@ export function MonitoringDashboard() {
                   {cluster.clusterName}
                 </div>
                 <div style={{ fontSize: '0.9rem', color: '#6c757d' }}>
-                  {cluster.incidentCount} incidents · {cluster.totalAlerts} alerts
+                  {cluster.incidentCount} incidents · {cluster.totalAlerts}{' '}
+                  alerts
                 </div>
               </div>
             ))}
@@ -314,7 +311,9 @@ export function MonitoringDashboard() {
             <p style={{ color: '#6c757d' }}>No incidents found</p>
           </div>
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <div
+            style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}
+          >
             {filterIncidents().map((incident) => (
               <IncidentCard
                 key={incident.id}
@@ -330,7 +329,15 @@ export function MonitoringDashboard() {
   );
 }
 
-function StatCard({ title, value, color }: { title: string; value: string | number; color: string }) {
+function StatCard({
+  title,
+  value,
+  color,
+}: {
+  title: string;
+  value: string | number;
+  color: string;
+}) {
   return (
     <div
       style={{
@@ -340,7 +347,13 @@ function StatCard({ title, value, color }: { title: string; value: string | numb
         border: '1px solid #dee2e6',
       }}
     >
-      <div style={{ fontSize: '0.85rem', color: '#6c757d', marginBottom: '0.5rem' }}>
+      <div
+        style={{
+          fontSize: '0.85rem',
+          color: '#6c757d',
+          marginBottom: '0.5rem',
+        }}
+      >
         {title}
       </div>
       <div style={{ fontSize: '2rem', fontWeight: 'bold', color }}>{value}</div>
@@ -396,9 +409,17 @@ function IncidentCard({
         borderLeft: `4px solid ${getSeverityColor(incident.severity)}`,
       }}
     >
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'start',
+        }}
+      >
         <div style={{ flex: 1 }}>
-          <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.5rem' }}>
+          <div
+            style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.5rem' }}
+          >
             <span
               style={{
                 padding: '0.25rem 0.5rem',
@@ -426,13 +447,14 @@ function IncidentCard({
           </div>
           <h3 style={{ margin: '0.5rem 0' }}>{incident.title}</h3>
           <div style={{ fontSize: '0.9rem', color: '#6c757d' }}>
-            {incident.projectName && (
-              <span>📦 {incident.projectName} · </span>
-            )}
-            {incident.type} · {incident.alertCount} alerts · {incident.affectedAssets} assets
+            {incident.projectName && <span>📦 {incident.projectName} · </span>}
+            {incident.type} · {incident.alertCount} alerts ·{' '}
+            {incident.affectedAssets} assets
           </div>
         </div>
-        <div style={{ textAlign: 'right', fontSize: '0.85rem', color: '#6c757d' }}>
+        <div
+          style={{ textAlign: 'right', fontSize: '0.85rem', color: '#6c757d' }}
+        >
           <div>{new Date(incident.createdAt).toLocaleString()}</div>
         </div>
       </div>
