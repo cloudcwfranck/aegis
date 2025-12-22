@@ -64,12 +64,14 @@ Ready to get started? Check out our [Quickstart Guide](quickstart.md) to set up 
 
 For a comprehensive understanding of the platform architecture, see [Architecture Overview](architecture.md).
 
-## Open Source
+## Licensing
 
-Aegis is open source and available on [GitHub](https://github.com/cloudcwfranck/aegis) under open governance, ensuring transparency, community-driven development, and enterprise-grade stability.
+Aegis is proprietary software provided under a license for government use only.
+
+Copyright © 2024 Aegis Platform Team. All rights reserved.
 
 ## Support
 
-- **Documentation**: You're reading it!
-- **GitHub Issues**: [Report bugs or request features](https://github.com/cloudcwfranck/aegis/issues)
-- **GitHub Discussions**: [Ask questions and share ideas](https://github.com/cloudcwfranck/aegis/discussions)
+- **Documentation**: [docs.aegis.dso.mil](https://docs.aegis.dso.mil)
+- **Platform One Party Bus**: [https://p1.dso.mil](https://p1.dso.mil)
+- **Email**: aegis-support@example.gov

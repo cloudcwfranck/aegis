@@ -42,14 +42,6 @@ docs/
 
 The documentation includes built-in search powered by MkDocs Material. Search is automatically generated during the build process.
 
-## Contributing
-
-To contribute to the documentation:
-
-1. Edit markdown files in the `docs/` directory
-2. Test locally with `mkdocs serve`
-3. Submit a pull request
-
 ## Publishing
 
 The documentation is built and deployed automatically via CI/CD.

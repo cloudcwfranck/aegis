@@ -452,10 +452,6 @@ mkdocs build
 
 The documentation will be available at http://localhost:8000.
 
-## Contributing
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for development guidelines.
-
 ## License
 
 Copyright © 2024 Aegis Platform Team. All rights reserved.
